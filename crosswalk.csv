@@ -1,0 +1,1296 @@
+code_acs,name_long,code_edf,vintage
+ALT0E001,Total,pop_tot,acs2015-2019
+ALT0E002,Male,pop_m,acs2015-2019
+ALT0E003,Male: Under 5 years,pop_m_lt5,acs2015-2019
+ALT0E004,Male: 5 to 9 years,pop_m_5-9,acs2015-2019
+ALT0E005,Male: 10 to 14 years,pop_m_10-14,acs2015-2019
+ALT0E006,Male: 15 to 17 years,pop_m_15-17,acs2015-2019
+ALT0E007,Male: 18 and 19 years,pop_m_18-19,acs2015-2019
+ALT0E008,Male: 20 years,pop_m_20,acs2015-2019
+ALT0E009,Male: 21 years,pop_m_21,acs2015-2019
+ALT0E010,Male: 22 to 24 years,pop_m_22-24,acs2015-2019
+ALT0E011,Male: 25 to 29 years,pop_m_25-29,acs2015-2019
+ALT0E012,Male: 30 to 34 years,pop_m_30-34,acs2015-2019
+ALT0E013,Male: 35 to 39 years,pop_m_35-39,acs2015-2019
+ALT0E014,Male: 40 to 44 years,pop_m_40-44,acs2015-2019
+ALT0E015,Male: 45 to 49 years,pop_m_45-49,acs2015-2019
+ALT0E016,Male: 50 to 54 years,pop_m_50-54,acs2015-2019
+ALT0E017,Male: 55 to 59 years,pop_m_55-59,acs2015-2019
+ALT0E018,Male: 60 and 61 years,pop_m_60-61,acs2015-2019
+ALT0E019,Male: 62 to 64 years,pop_m_62-64,acs2015-2019
+ALT0E020,Male: 65 and 66 years,pop_m_65-66,acs2015-2019
+ALT0E021,Male: 67 to 69 years,pop_m_67-69,acs2015-2019
+ALT0E022,Male: 70 to 74 years,pop_m_70-74,acs2015-2019
+ALT0E023,Male: 75 to 79 years,pop_m_75-79,acs2015-2019
+ALT0E024,Male: 80 to 84 years,pop_m_80-84,acs2015-2019
+ALT0E025,Male: 85 years and over,pop_m_gt85,acs2015-2019
+ALT0E026,Female,pop_f,acs2015-2019
+ALT0E027,Female: Under 5 years,pop_f_lt5,acs2015-2019
+ALT0E028,Female: 5 to 9 years,pop_f_5-9,acs2015-2019
+ALT0E029,Female: 10 to 14 years,pop_f_10-14,acs2015-2019
+ALT0E030,Female: 15 to 17 years,pop_f_15-17,acs2015-2019
+ALT0E031,Female: 18 and 19 years,pop_f_18-19,acs2015-2019
+ALT0E032,Female: 20 years,pop_f_20,acs2015-2019
+ALT0E033,Female: 21 years,pop_f_21,acs2015-2019
+ALT0E034,Female: 22 to 24 years,pop_f_22-24,acs2015-2019
+ALT0E035,Female: 25 to 29 years,pop_f_25-29,acs2015-2019
+ALT0E036,Female: 30 to 34 years,pop_f_30-34,acs2015-2019
+ALT0E037,Female: 35 to 39 years,pop_f_35-39,acs2015-2019
+ALT0E038,Female: 40 to 44 years,pop_f_40-44,acs2015-2019
+ALT0E039,Female: 45 to 49 years,pop_f_45-49,acs2015-2019
+ALT0E040,Female: 50 to 54 years,pop_f_50-54,acs2015-2019
+ALT0E041,Female: 55 to 59 years,pop_f_55-59,acs2015-2019
+ALT0E042,Female: 60 and 61 years,pop_f_60-61,acs2015-2019
+ALT0E043,Female: 62 to 64 years,pop_f_62-64,acs2015-2019
+ALT0E044,Female: 65 and 66 years,pop_f_65-66,acs2015-2019
+ALT0E045,Female: 67 to 69 years,pop_f_67-69,acs2015-2019
+ALT0E046,Female: 70 to 74 years,pop_f_70-74,acs2015-2019
+ALT0E047,Female: 75 to 79 years,pop_f_75-79,acs2015-2019
+ALT0E048,Female: 80 to 84 years,pop_f_80-84,acs2015-2019
+ALT0E049,Female: 85 years and over,pop_f_gt85,acs2015-2019
+ALUKE001,Total,race_tot,acs2015-2019
+ALUKE002,Not Hispanic or Latino,race_nh,acs2015-2019
+ALUKE003,Not Hispanic or Latino: White alone,race_nh_white,acs2015-2019
+ALUKE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2015-2019
+ALUKE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2015-2019
+ALUKE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2015-2019
+ALUKE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2015-2019
+ALUKE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2015-2019
+ALUKE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2015-2019
+ALUKE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2015-2019
+ALUKE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2015-2019
+ALUKE012,Hispanic or Latino,race_h,acs2015-2019
+ALUKE013,Hispanic or Latino: White alone,race_h_white,acs2015-2019
+ALUKE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2015-2019
+ALUKE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2015-2019
+ALUKE016,Hispanic or Latino: Asian alone,race_h_asian,acs2015-2019
+ALUKE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2015-2019
+ALUKE018,Hispanic or Latino: Some other race alone,race_h_other,acs2015-2019
+ALUKE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2015-2019
+ALUKE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2015-2019
+ALUKE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2015-2019
+ALWGE001,Total,education_tot,acs2015-2019
+ALWGE002,No schooling completed ,education_none,acs2015-2019
+ALWGE003,Nursery school,education_nursery,acs2015-2019
+ALWGE004,Kindergarten,education_gradekindergarten,acs2015-2019
+ALWGE005,1st grade,education_grade1,acs2015-2019
+ALWGE006,2nd grade,education_grade2,acs2015-2019
+ALWGE007,3rd grade,education_grade3,acs2015-2019
+ALWGE008,4th grade,education_grade4,acs2015-2019
+ALWGE009,5th grade,education_grade5,acs2015-2019
+ALWGE010,6th grade,education_grade6,acs2015-2019
+ALWGE011,7th grade,education_grade7,acs2015-2019
+ALWGE012,8th grade,education_grade8,acs2015-2019
+ALWGE013,9th grade,education_grade9,acs2015-2019
+ALWGE014,10th grade,education_grade10,acs2015-2019
+ALWGE015,11th grade,education_grade11,acs2015-2019
+ALWGE016,"12th grade, no diploma",education_grade12,acs2015-2019
+ALWGE017,Regular high school diploma,education_highschool,acs2015-2019
+ALWGE018,GED or alternative credential,education_ged,acs2015-2019
+ALWGE019,"Some college, less than 1 year",education_collegelt1,acs2015-2019
+ALWGE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2015-2019
+ALWGE021,Associate's degree,education_associates,acs2015-2019
+ALWGE022,Bachelor's degree,education_bachelors,acs2015-2019
+ALWGE023,Master's degree,education_masters,acs2015-2019
+ALWGE024,Professional school degree,education_professional,acs2015-2019
+ALWGE025,Doctorate degree,education_doctorate,acs2015-2019
+ALW1E001,Median household income in the past 12 months (in 2019 inflation-adjusted dollars),income,acs2015-2019
+AL0NE001,Total,housing_tot,acs2015-2019
+AL0NE002,Owner occupied,housing_own,acs2015-2019
+AL0NE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2015-2019
+AL0NE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2015-2019
+AL0NE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2015-2019
+AL0NE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2015-2019
+AL0NE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2015-2019
+AL0NE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2015-2019
+AL0NE009,Renter occupied,housing_rent,acs2015-2019
+AL0NE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2015-2019
+AL0NE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2015-2019
+AL0NE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2015-2019
+AL0NE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2015-2019
+AL0NE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2015-2019
+AL0NE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2015-2019
+AL5ME001,Total,nativity_tot,acs2015-2019
+AL5ME002,Native,nativity_native,acs2015-2019
+AL5ME003,Foreign-Born,nativity_foreign,acs2015-2019
+AMEME001,Gini Index,gini,acs2015-2019
+AJWBE001,Total,pop_tot,acs2014-2018
+AJWBE002,Male,pop_m,acs2014-2018
+AJWBE003,Male: Under 5 years,pop_m_lt5,acs2014-2018
+AJWBE004,Male: 5 to 9 years,pop_m_5-9,acs2014-2018
+AJWBE005,Male: 10 to 14 years,pop_m_10-14,acs2014-2018
+AJWBE006,Male: 15 to 17 years,pop_m_15-17,acs2014-2018
+AJWBE007,Male: 18 and 19 years,pop_m_18-19,acs2014-2018
+AJWBE008,Male: 20 years,pop_m_20,acs2014-2018
+AJWBE009,Male: 21 years,pop_m_21,acs2014-2018
+AJWBE010,Male: 22 to 24 years,pop_m_22-24,acs2014-2018
+AJWBE011,Male: 25 to 29 years,pop_m_25-29,acs2014-2018
+AJWBE012,Male: 30 to 34 years,pop_m_30-34,acs2014-2018
+AJWBE013,Male: 35 to 39 years,pop_m_35-39,acs2014-2018
+AJWBE014,Male: 40 to 44 years,pop_m_40-44,acs2014-2018
+AJWBE015,Male: 45 to 49 years,pop_m_45-49,acs2014-2018
+AJWBE016,Male: 50 to 54 years,pop_m_50-54,acs2014-2018
+AJWBE017,Male: 55 to 59 years,pop_m_55-59,acs2014-2018
+AJWBE018,Male: 60 and 61 years,pop_m_60-61,acs2014-2018
+AJWBE019,Male: 62 to 64 years,pop_m_62-64,acs2014-2018
+AJWBE020,Male: 65 and 66 years,pop_m_65-66,acs2014-2018
+AJWBE021,Male: 67 to 69 years,pop_m_67-69,acs2014-2018
+AJWBE022,Male: 70 to 74 years,pop_m_70-74,acs2014-2018
+AJWBE023,Male: 75 to 79 years,pop_m_75-79,acs2014-2018
+AJWBE024,Male: 80 to 84 years,pop_m_80-84,acs2014-2018
+AJWBE025,Male: 85 years and over,pop_m_gt85,acs2014-2018
+AJWBE026,Female,pop_f,acs2014-2018
+AJWBE027,Female: Under 5 years,pop_f_lt5,acs2014-2018
+AJWBE028,Female: 5 to 9 years,pop_f_5-9,acs2014-2018
+AJWBE029,Female: 10 to 14 years,pop_f_10-14,acs2014-2018
+AJWBE030,Female: 15 to 17 years,pop_f_15-17,acs2014-2018
+AJWBE031,Female: 18 and 19 years,pop_f_18-19,acs2014-2018
+AJWBE032,Female: 20 years,pop_f_20,acs2014-2018
+AJWBE033,Female: 21 years,pop_f_21,acs2014-2018
+AJWBE034,Female: 22 to 24 years,pop_f_22-24,acs2014-2018
+AJWBE035,Female: 25 to 29 years,pop_f_25-29,acs2014-2018
+AJWBE036,Female: 30 to 34 years,pop_f_30-34,acs2014-2018
+AJWBE037,Female: 35 to 39 years,pop_f_35-39,acs2014-2018
+AJWBE038,Female: 40 to 44 years,pop_f_40-44,acs2014-2018
+AJWBE039,Female: 45 to 49 years,pop_f_45-49,acs2014-2018
+AJWBE040,Female: 50 to 54 years,pop_f_50-54,acs2014-2018
+AJWBE041,Female: 55 to 59 years,pop_f_55-59,acs2014-2018
+AJWBE042,Female: 60 and 61 years,pop_f_60-61,acs2014-2018
+AJWBE043,Female: 62 to 64 years,pop_f_62-64,acs2014-2018
+AJWBE044,Female: 65 and 66 years,pop_f_65-66,acs2014-2018
+AJWBE045,Female: 67 to 69 years,pop_f_67-69,acs2014-2018
+AJWBE046,Female: 70 to 74 years,pop_f_70-74,acs2014-2018
+AJWBE047,Female: 75 to 79 years,pop_f_75-79,acs2014-2018
+AJWBE048,Female: 80 to 84 years,pop_f_80-84,acs2014-2018
+AJWBE049,Female: 85 years and over,pop_f_gt85,acs2014-2018
+AJWVE001,Total,race_tot,acs2014-2018
+AJWVE002,Not Hispanic or Latino,race_nh,acs2014-2018
+AJWVE003,Not Hispanic or Latino: White alone,race_nh_white,acs2014-2018
+AJWVE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2014-2018
+AJWVE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2014-2018
+AJWVE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2014-2018
+AJWVE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2014-2018
+AJWVE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2014-2018
+AJWVE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2014-2018
+AJWVE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2014-2018
+AJWVE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2014-2018
+AJWVE012,Hispanic or Latino,race_h,acs2014-2018
+AJWVE013,Hispanic or Latino: White alone,race_h_white,acs2014-2018
+AJWVE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2014-2018
+AJWVE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2014-2018
+AJWVE016,Hispanic or Latino: Asian alone,race_h_asian,acs2014-2018
+AJWVE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2014-2018
+AJWVE018,Hispanic or Latino: Some other race alone,race_h_other,acs2014-2018
+AJWVE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2014-2018
+AJWVE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2014-2018
+AJWVE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2014-2018
+AJYPE001,Total,education_tot,acs2014-2018
+AJYPE002,No schooling completed ,education_none,acs2014-2018
+AJYPE003,Nursery school,education_nursery,acs2014-2018
+AJYPE004,Kindergarten,education_gradekindergarten,acs2014-2018
+AJYPE005,1st grade,education_grade1,acs2014-2018
+AJYPE006,2nd grade,education_grade2,acs2014-2018
+AJYPE007,3rd grade,education_grade3,acs2014-2018
+AJYPE008,4th grade,education_grade4,acs2014-2018
+AJYPE009,5th grade,education_grade5,acs2014-2018
+AJYPE010,6th grade,education_grade6,acs2014-2018
+AJYPE011,7th grade,education_grade7,acs2014-2018
+AJYPE012,8th grade,education_grade8,acs2014-2018
+AJYPE013,9th grade,education_grade9,acs2014-2018
+AJYPE014,10th grade,education_grade10,acs2014-2018
+AJYPE015,11th grade,education_grade11,acs2014-2018
+AJYPE016,"12th grade, no diploma",education_grade12,acs2014-2018
+AJYPE017,Regular high school diploma,education_highschool,acs2014-2018
+AJYPE018,GED or alternative credential,education_ged,acs2014-2018
+AJYPE019,"Some college, less than 1 year",education_collegelt1,acs2014-2018
+AJYPE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2014-2018
+AJYPE021,Associate's degree,education_associates,acs2014-2018
+AJYPE022,Bachelor's degree,education_bachelors,acs2014-2018
+AJYPE023,Master's degree,education_masters,acs2014-2018
+AJYPE024,Professional school degree,education_professional,acs2014-2018
+AJYPE025,Doctorate degree,education_doctorate,acs2014-2018
+AJZAE001,Median household income in the past 12 months (in 2018 inflation-adjusted dollars),income,acs2014-2018
+AJ2WE001,Total,housing_tot,acs2014-2018
+AJ2WE002,Owner occupied,housing_own,acs2014-2018
+AJ2WE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2014-2018
+AJ2WE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2014-2018
+AJ2WE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2014-2018
+AJ2WE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2014-2018
+AJ2WE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2014-2018
+AJ2WE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2014-2018
+AJ2WE009,Renter occupied,housing_rent,acs2014-2018
+AJ2WE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2014-2018
+AJ2WE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2014-2018
+AJ2WE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2014-2018
+AJ2WE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2014-2018
+AJ2WE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2014-2018
+AJ2WE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2014-2018
+AJ7VE001,Total,nativity_tot,acs2014-2018
+AJ7VE002,Native,nativity_native,acs2014-2018
+AJ7VE003,Foreign-Born,nativity_foreign,acs2014-2018
+AKGVE001,Gini Index,gini,acs2014-2018
+AHYQE001,Total,pop_tot,acs2013-2017
+AHYQE002,Male,pop_m,acs2013-2017
+AHYQE003,Male: Under 5 years,pop_m_lt5,acs2013-2017
+AHYQE004,Male: 5 to 9 years,pop_m_5-9,acs2013-2017
+AHYQE005,Male: 10 to 14 years,pop_m_10-14,acs2013-2017
+AHYQE006,Male: 15 to 17 years,pop_m_15-17,acs2013-2017
+AHYQE007,Male: 18 and 19 years,pop_m_18-19,acs2013-2017
+AHYQE008,Male: 20 years,pop_m_20,acs2013-2017
+AHYQE009,Male: 21 years,pop_m_21,acs2013-2017
+AHYQE010,Male: 22 to 24 years,pop_m_22-24,acs2013-2017
+AHYQE011,Male: 25 to 29 years,pop_m_25-29,acs2013-2017
+AHYQE012,Male: 30 to 34 years,pop_m_30-34,acs2013-2017
+AHYQE013,Male: 35 to 39 years,pop_m_35-39,acs2013-2017
+AHYQE014,Male: 40 to 44 years,pop_m_40-44,acs2013-2017
+AHYQE015,Male: 45 to 49 years,pop_m_45-49,acs2013-2017
+AHYQE016,Male: 50 to 54 years,pop_m_50-54,acs2013-2017
+AHYQE017,Male: 55 to 59 years,pop_m_55-59,acs2013-2017
+AHYQE018,Male: 60 and 61 years,pop_m_60-61,acs2013-2017
+AHYQE019,Male: 62 to 64 years,pop_m_62-64,acs2013-2017
+AHYQE020,Male: 65 and 66 years,pop_m_65-66,acs2013-2017
+AHYQE021,Male: 67 to 69 years,pop_m_67-69,acs2013-2017
+AHYQE022,Male: 70 to 74 years,pop_m_70-74,acs2013-2017
+AHYQE023,Male: 75 to 79 years,pop_m_75-79,acs2013-2017
+AHYQE024,Male: 80 to 84 years,pop_m_80-84,acs2013-2017
+AHYQE025,Male: 85 years and over,pop_m_gt85,acs2013-2017
+AHYQE026,Female,pop_f,acs2013-2017
+AHYQE027,Female: Under 5 years,pop_f_lt5,acs2013-2017
+AHYQE028,Female: 5 to 9 years,pop_f_5-9,acs2013-2017
+AHYQE029,Female: 10 to 14 years,pop_f_10-14,acs2013-2017
+AHYQE030,Female: 15 to 17 years,pop_f_15-17,acs2013-2017
+AHYQE031,Female: 18 and 19 years,pop_f_18-19,acs2013-2017
+AHYQE032,Female: 20 years,pop_f_20,acs2013-2017
+AHYQE033,Female: 21 years,pop_f_21,acs2013-2017
+AHYQE034,Female: 22 to 24 years,pop_f_22-24,acs2013-2017
+AHYQE035,Female: 25 to 29 years,pop_f_25-29,acs2013-2017
+AHYQE036,Female: 30 to 34 years,pop_f_30-34,acs2013-2017
+AHYQE037,Female: 35 to 39 years,pop_f_35-39,acs2013-2017
+AHYQE038,Female: 40 to 44 years,pop_f_40-44,acs2013-2017
+AHYQE039,Female: 45 to 49 years,pop_f_45-49,acs2013-2017
+AHYQE040,Female: 50 to 54 years,pop_f_50-54,acs2013-2017
+AHYQE041,Female: 55 to 59 years,pop_f_55-59,acs2013-2017
+AHYQE042,Female: 60 and 61 years,pop_f_60-61,acs2013-2017
+AHYQE043,Female: 62 to 64 years,pop_f_62-64,acs2013-2017
+AHYQE044,Female: 65 and 66 years,pop_f_65-66,acs2013-2017
+AHYQE045,Female: 67 to 69 years,pop_f_67-69,acs2013-2017
+AHYQE046,Female: 70 to 74 years,pop_f_70-74,acs2013-2017
+AHYQE047,Female: 75 to 79 years,pop_f_75-79,acs2013-2017
+AHYQE048,Female: 80 to 84 years,pop_f_80-84,acs2013-2017
+AHYQE049,Female: 85 years and over,pop_f_gt85,acs2013-2017
+AHZAE001,Total,race_tot,acs2013-2017
+AHZAE002,Not Hispanic or Latino,race_nh,acs2013-2017
+AHZAE003,Not Hispanic or Latino: White alone,race_nh_white,acs2013-2017
+AHZAE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2013-2017
+AHZAE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2013-2017
+AHZAE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2013-2017
+AHZAE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2013-2017
+AHZAE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2013-2017
+AHZAE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2013-2017
+AHZAE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2013-2017
+AHZAE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2013-2017
+AHZAE012,Hispanic or Latino,race_h,acs2013-2017
+AHZAE013,Hispanic or Latino: White alone,race_h_white,acs2013-2017
+AHZAE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2013-2017
+AHZAE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2013-2017
+AHZAE016,Hispanic or Latino: Asian alone,race_h_asian,acs2013-2017
+AHZAE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2013-2017
+AHZAE018,Hispanic or Latino: Some other race alone,race_h_other,acs2013-2017
+AHZAE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2013-2017
+AHZAE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2013-2017
+AHZAE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2013-2017
+AH04E001,Total,education_tot,acs2013-2017
+AH04E002,No schooling completed ,education_none,acs2013-2017
+AH04E003,Nursery school,education_nursery,acs2013-2017
+AH04E004,Kindergarten,education_gradekindergarten,acs2013-2017
+AH04E005,1st grade,education_grade1,acs2013-2017
+AH04E006,2nd grade,education_grade2,acs2013-2017
+AH04E007,3rd grade,education_grade3,acs2013-2017
+AH04E008,4th grade,education_grade4,acs2013-2017
+AH04E009,5th grade,education_grade5,acs2013-2017
+AH04E010,6th grade,education_grade6,acs2013-2017
+AH04E011,7th grade,education_grade7,acs2013-2017
+AH04E012,8th grade,education_grade8,acs2013-2017
+AH04E013,9th grade,education_grade9,acs2013-2017
+AH04E014,10th grade,education_grade10,acs2013-2017
+AH04E015,11th grade,education_grade11,acs2013-2017
+AH04E016,"12th grade, no diploma",education_grade12,acs2013-2017
+AH04E017,Regular high school diploma,education_highschool,acs2013-2017
+AH04E018,GED or alternative credential,education_ged,acs2013-2017
+AH04E019,"Some college, less than 1 year",education_collegelt1,acs2013-2017
+AH04E020,"Some college, 1 or more years, no degree",education_collegegt1,acs2013-2017
+AH04E021,Associate's degree,education_associates,acs2013-2017
+AH04E022,Bachelor's degree,education_bachelors,acs2013-2017
+AH04E023,Master's degree,education_masters,acs2013-2017
+AH04E024,Professional school degree,education_professional,acs2013-2017
+AH04E025,Doctorate degree,education_doctorate,acs2013-2017
+AH1PE001,Median household income in the past 12 months (in 2019 inflation-adjusted dollars),income,acs2013-2017
+AH49E001,Total,housing_tot,acs2013-2017
+AH49E002,Owner occupied,housing_own,acs2013-2017
+AH49E003,Owner occupied: No vehicle available,housing_own_novehicle,acs2013-2017
+AH49E004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2013-2017
+AH49E005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2013-2017
+AH49E006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2013-2017
+AH49E007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2013-2017
+AH49E008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2013-2017
+AH49E009,Renter occupied,housing_rent,acs2013-2017
+AH49E010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2013-2017
+AH49E011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2013-2017
+AH49E012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2013-2017
+AH49E013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2013-2017
+AH49E014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2013-2017
+AH49E015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2013-2017
+AH9IE001,Total,nativity_tot,acs2013-2017
+AH9IE002,Native,nativity_native,acs2013-2017
+AH9IE003,Foreign-Born,nativity_foreign,acs2013-2017
+AIIJE001,Gini Index,gini,acs2013-2017
+AF2AE001,Total,pop_tot,acs2012-2016
+AF2AE002,Male,pop_m,acs2012-2016
+AF2AE003,Male: Under 5 years,pop_m_lt5,acs2012-2016
+AF2AE004,Male: 5 to 9 years,pop_m_5-9,acs2012-2016
+AF2AE005,Male: 10 to 14 years,pop_m_10-14,acs2012-2016
+AF2AE006,Male: 15 to 17 years,pop_m_15-17,acs2012-2016
+AF2AE007,Male: 18 and 19 years,pop_m_18-19,acs2012-2016
+AF2AE008,Male: 20 years,pop_m_20,acs2012-2016
+AF2AE009,Male: 21 years,pop_m_21,acs2012-2016
+AF2AE010,Male: 22 to 24 years,pop_m_22-24,acs2012-2016
+AF2AE011,Male: 25 to 29 years,pop_m_25-29,acs2012-2016
+AF2AE012,Male: 30 to 34 years,pop_m_30-34,acs2012-2016
+AF2AE013,Male: 35 to 39 years,pop_m_35-39,acs2012-2016
+AF2AE014,Male: 40 to 44 years,pop_m_40-44,acs2012-2016
+AF2AE015,Male: 45 to 49 years,pop_m_45-49,acs2012-2016
+AF2AE016,Male: 50 to 54 years,pop_m_50-54,acs2012-2016
+AF2AE017,Male: 55 to 59 years,pop_m_55-59,acs2012-2016
+AF2AE018,Male: 60 and 61 years,pop_m_60-61,acs2012-2016
+AF2AE019,Male: 62 to 64 years,pop_m_62-64,acs2012-2016
+AF2AE020,Male: 65 and 66 years,pop_m_65-66,acs2012-2016
+AF2AE021,Male: 67 to 69 years,pop_m_67-69,acs2012-2016
+AF2AE022,Male: 70 to 74 years,pop_m_70-74,acs2012-2016
+AF2AE023,Male: 75 to 79 years,pop_m_75-79,acs2012-2016
+AF2AE024,Male: 80 to 84 years,pop_m_80-84,acs2012-2016
+AF2AE025,Male: 85 years and over,pop_m_gt85,acs2012-2016
+AF2AE026,Female,pop_f,acs2012-2016
+AF2AE027,Female: Under 5 years,pop_f_lt5,acs2012-2016
+AF2AE028,Female: 5 to 9 years,pop_f_5-9,acs2012-2016
+AF2AE029,Female: 10 to 14 years,pop_f_10-14,acs2012-2016
+AF2AE030,Female: 15 to 17 years,pop_f_15-17,acs2012-2016
+AF2AE031,Female: 18 and 19 years,pop_f_18-19,acs2012-2016
+AF2AE032,Female: 20 years,pop_f_20,acs2012-2016
+AF2AE033,Female: 21 years,pop_f_21,acs2012-2016
+AF2AE034,Female: 22 to 24 years,pop_f_22-24,acs2012-2016
+AF2AE035,Female: 25 to 29 years,pop_f_25-29,acs2012-2016
+AF2AE036,Female: 30 to 34 years,pop_f_30-34,acs2012-2016
+AF2AE037,Female: 35 to 39 years,pop_f_35-39,acs2012-2016
+AF2AE038,Female: 40 to 44 years,pop_f_40-44,acs2012-2016
+AF2AE039,Female: 45 to 49 years,pop_f_45-49,acs2012-2016
+AF2AE040,Female: 50 to 54 years,pop_f_50-54,acs2012-2016
+AF2AE041,Female: 55 to 59 years,pop_f_55-59,acs2012-2016
+AF2AE042,Female: 60 and 61 years,pop_f_60-61,acs2012-2016
+AF2AE043,Female: 62 to 64 years,pop_f_62-64,acs2012-2016
+AF2AE044,Female: 65 and 66 years,pop_f_65-66,acs2012-2016
+AF2AE045,Female: 67 to 69 years,pop_f_67-69,acs2012-2016
+AF2AE046,Female: 70 to 74 years,pop_f_70-74,acs2012-2016
+AF2AE047,Female: 75 to 79 years,pop_f_75-79,acs2012-2016
+AF2AE048,Female: 80 to 84 years,pop_f_80-84,acs2012-2016
+AF2AE049,Female: 85 years and over,pop_f_gt85,acs2012-2016
+AF2UE001,Total,race_tot,acs2012-2016
+AF2UE002,Not Hispanic or Latino,race_nh,acs2012-2016
+AF2UE003,Not Hispanic or Latino: White alone,race_nh_white,acs2012-2016
+AF2UE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2012-2016
+AF2UE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2012-2016
+AF2UE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2012-2016
+AF2UE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2012-2016
+AF2UE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2012-2016
+AF2UE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2012-2016
+AF2UE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2012-2016
+AF2UE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2012-2016
+AF2UE012,Hispanic or Latino,race_h,acs2012-2016
+AF2UE013,Hispanic or Latino: White alone,race_h_white,acs2012-2016
+AF2UE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2012-2016
+AF2UE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2012-2016
+AF2UE016,Hispanic or Latino: Asian alone,race_h_asian,acs2012-2016
+AF2UE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2012-2016
+AF2UE018,Hispanic or Latino: Some other race alone,race_h_other,acs2012-2016
+AF2UE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2012-2016
+AF2UE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2012-2016
+AF2UE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2012-2016
+AF4OE001,Total,education_tot,acs2012-2016
+AF4OE002,No schooling completed ,education_none,acs2012-2016
+AF4OE003,Nursery school,education_nursery,acs2012-2016
+AF4OE004,Kindergarten,education_gradekindergarten,acs2012-2016
+AF4OE005,1st grade,education_grade1,acs2012-2016
+AF4OE006,2nd grade,education_grade2,acs2012-2016
+AF4OE007,3rd grade,education_grade3,acs2012-2016
+AF4OE008,4th grade,education_grade4,acs2012-2016
+AF4OE009,5th grade,education_grade5,acs2012-2016
+AF4OE010,6th grade,education_grade6,acs2012-2016
+AF4OE011,7th grade,education_grade7,acs2012-2016
+AF4OE012,8th grade,education_grade8,acs2012-2016
+AF4OE013,9th grade,education_grade9,acs2012-2016
+AF4OE014,10th grade,education_grade10,acs2012-2016
+AF4OE015,11th grade,education_grade11,acs2012-2016
+AF4OE016,"12th grade, no diploma",education_grade12,acs2012-2016
+AF4OE017,Regular high school diploma,education_highschool,acs2012-2016
+AF4OE018,GED or alternative credential,education_ged,acs2012-2016
+AF4OE019,"Some college, less than 1 year",education_collegelt1,acs2012-2016
+AF4OE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2012-2016
+AF4OE021,Associate's degree,education_associates,acs2012-2016
+AF4OE022,Bachelor's degree,education_bachelors,acs2012-2016
+AF4OE023,Master's degree,education_masters,acs2012-2016
+AF4OE024,Professional school degree,education_professional,acs2012-2016
+AF4OE025,Doctorate degree,education_doctorate,acs2012-2016
+AF49E001,Median household income in the past 12 months (in 2016 inflation-adjusted dollars),income,acs2012-2016
+AF8RE001,Total,housing_tot,acs2012-2016
+AF8RE002,Owner occupied,housing_own,acs2012-2016
+AF8RE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2012-2016
+AF8RE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2012-2016
+AF8RE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2012-2016
+AF8RE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2012-2016
+AF8RE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2012-2016
+AF8RE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2012-2016
+AF8RE009,Renter occupied,housing_rent,acs2012-2016
+AF8RE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2012-2016
+AF8RE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2012-2016
+AF8RE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2012-2016
+AF8RE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2012-2016
+AF8RE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2012-2016
+AF8RE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2012-2016
+AGC0E001,Total,nativity_tot,acs2012-2016
+AGC0E002,Native,nativity_native,acs2012-2016
+AGC0E003,Foreign-Born,nativity_foreign,acs2012-2016
+AGL1E001,Gini Index,gini,acs2012-2016
+ADKLE001,Total,pop_tot,acs2011-2015
+ADKLE002,Male,pop_m,acs2011-2015
+ADKLE003,Male: Under 5 years,pop_m_lt5,acs2011-2015
+ADKLE004,Male: 5 to 9 years,pop_m_5-9,acs2011-2015
+ADKLE005,Male: 10 to 14 years,pop_m_10-14,acs2011-2015
+ADKLE006,Male: 15 to 17 years,pop_m_15-17,acs2011-2015
+ADKLE007,Male: 18 and 19 years,pop_m_18-19,acs2011-2015
+ADKLE008,Male: 20 years,pop_m_20,acs2011-2015
+ADKLE009,Male: 21 years,pop_m_21,acs2011-2015
+ADKLE010,Male: 22 to 24 years,pop_m_22-24,acs2011-2015
+ADKLE011,Male: 25 to 29 years,pop_m_25-29,acs2011-2015
+ADKLE012,Male: 30 to 34 years,pop_m_30-34,acs2011-2015
+ADKLE013,Male: 35 to 39 years,pop_m_35-39,acs2011-2015
+ADKLE014,Male: 40 to 44 years,pop_m_40-44,acs2011-2015
+ADKLE015,Male: 45 to 49 years,pop_m_45-49,acs2011-2015
+ADKLE016,Male: 50 to 54 years,pop_m_50-54,acs2011-2015
+ADKLE017,Male: 55 to 59 years,pop_m_55-59,acs2011-2015
+ADKLE018,Male: 60 and 61 years,pop_m_60-61,acs2011-2015
+ADKLE019,Male: 62 to 64 years,pop_m_62-64,acs2011-2015
+ADKLE020,Male: 65 and 66 years,pop_m_65-66,acs2011-2015
+ADKLE021,Male: 67 to 69 years,pop_m_67-69,acs2011-2015
+ADKLE022,Male: 70 to 74 years,pop_m_70-74,acs2011-2015
+ADKLE023,Male: 75 to 79 years,pop_m_75-79,acs2011-2015
+ADKLE024,Male: 80 to 84 years,pop_m_80-84,acs2011-2015
+ADKLE025,Male: 85 years and over,pop_m_gt85,acs2011-2015
+ADKLE026,Female,pop_f,acs2011-2015
+ADKLE027,Female: Under 5 years,pop_f_lt5,acs2011-2015
+ADKLE028,Female: 5 to 9 years,pop_f_5-9,acs2011-2015
+ADKLE029,Female: 10 to 14 years,pop_f_10-14,acs2011-2015
+ADKLE030,Female: 15 to 17 years,pop_f_15-17,acs2011-2015
+ADKLE031,Female: 18 and 19 years,pop_f_18-19,acs2011-2015
+ADKLE032,Female: 20 years,pop_f_20,acs2011-2015
+ADKLE033,Female: 21 years,pop_f_21,acs2011-2015
+ADKLE034,Female: 22 to 24 years,pop_f_22-24,acs2011-2015
+ADKLE035,Female: 25 to 29 years,pop_f_25-29,acs2011-2015
+ADKLE036,Female: 30 to 34 years,pop_f_30-34,acs2011-2015
+ADKLE037,Female: 35 to 39 years,pop_f_35-39,acs2011-2015
+ADKLE038,Female: 40 to 44 years,pop_f_40-44,acs2011-2015
+ADKLE039,Female: 45 to 49 years,pop_f_45-49,acs2011-2015
+ADKLE040,Female: 50 to 54 years,pop_f_50-54,acs2011-2015
+ADKLE041,Female: 55 to 59 years,pop_f_55-59,acs2011-2015
+ADKLE042,Female: 60 and 61 years,pop_f_60-61,acs2011-2015
+ADKLE043,Female: 62 to 64 years,pop_f_62-64,acs2011-2015
+ADKLE044,Female: 65 and 66 years,pop_f_65-66,acs2011-2015
+ADKLE045,Female: 67 to 69 years,pop_f_67-69,acs2011-2015
+ADKLE046,Female: 70 to 74 years,pop_f_70-74,acs2011-2015
+ADKLE047,Female: 75 to 79 years,pop_f_75-79,acs2011-2015
+ADKLE048,Female: 80 to 84 years,pop_f_80-84,acs2011-2015
+ADKLE049,Female: 85 years and over,pop_f_gt85,acs2011-2015
+ADK5E001,Total,race_tot,acs2011-2015
+ADK5E002,Not Hispanic or Latino,race_nh,acs2011-2015
+ADK5E003,Not Hispanic or Latino: White alone,race_nh_white,acs2011-2015
+ADK5E004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2011-2015
+ADK5E005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2011-2015
+ADK5E006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2011-2015
+ADK5E007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2011-2015
+ADK5E008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2011-2015
+ADK5E009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2011-2015
+ADK5E010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2011-2015
+ADK5E011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2011-2015
+ADK5E012,Hispanic or Latino,race_h,acs2011-2015
+ADK5E013,Hispanic or Latino: White alone,race_h_white,acs2011-2015
+ADK5E014,Hispanic or Latino: Black or African American alone,race_h_black,acs2011-2015
+ADK5E015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2011-2015
+ADK5E016,Hispanic or Latino: Asian alone,race_h_asian,acs2011-2015
+ADK5E017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2011-2015
+ADK5E018,Hispanic or Latino: Some other race alone,race_h_other,acs2011-2015
+ADK5E019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2011-2015
+ADK5E020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2011-2015
+ADK5E021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2011-2015
+ADMZE001,Total,education_tot,acs2011-2015
+ADMZE002,No schooling completed ,education_none,acs2011-2015
+ADMZE003,Nursery school,education_nursery,acs2011-2015
+ADMZE004,Kindergarten,education_gradekindergarten,acs2011-2015
+ADMZE005,1st grade,education_grade1,acs2011-2015
+ADMZE006,2nd grade,education_grade2,acs2011-2015
+ADMZE007,3rd grade,education_grade3,acs2011-2015
+ADMZE008,4th grade,education_grade4,acs2011-2015
+ADMZE009,5th grade,education_grade5,acs2011-2015
+ADMZE010,6th grade,education_grade6,acs2011-2015
+ADMZE011,7th grade,education_grade7,acs2011-2015
+ADMZE012,8th grade,education_grade8,acs2011-2015
+ADMZE013,9th grade,education_grade9,acs2011-2015
+ADMZE014,10th grade,education_grade10,acs2011-2015
+ADMZE015,11th grade,education_grade11,acs2011-2015
+ADMZE016,"12th grade, no diploma",education_grade12,acs2011-2015
+ADMZE017,Regular high school diploma,education_highschool,acs2011-2015
+ADMZE018,GED or alternative credential,education_ged,acs2011-2015
+ADMZE019,"Some college, less than 1 year",education_collegelt1,acs2011-2015
+ADMZE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2011-2015
+ADMZE021,Associate's degree,education_associates,acs2011-2015
+ADMZE022,Bachelor's degree,education_bachelors,acs2011-2015
+ADMZE023,Master's degree,education_masters,acs2011-2015
+ADMZE024,Professional school degree,education_professional,acs2011-2015
+ADMZE025,Doctorate degree,education_doctorate,acs2011-2015
+ADNKE001,Median household income in the past 12 months (in 2015 inflation-adjusted dollars),income,acs2011-2015
+ADQ2E001,Total,housing_tot,acs2011-2015
+ADQ2E002,Owner occupied,housing_own,acs2011-2015
+ADQ2E003,Owner occupied: No vehicle available,housing_own_novehicle,acs2011-2015
+ADQ2E004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2011-2015
+ADQ2E005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2011-2015
+ADQ2E006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2011-2015
+ADQ2E007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2011-2015
+ADQ2E008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2011-2015
+ADQ2E009,Renter occupied,housing_rent,acs2011-2015
+ADQ2E010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2011-2015
+ADQ2E011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2011-2015
+ADQ2E012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2011-2015
+ADQ2E013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2011-2015
+ADQ2E014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2011-2015
+ADQ2E015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2011-2015
+ADVBE001,Total,nativity_tot,acs2011-2015
+ADVBE002,Native,nativity_native,acs2011-2015
+ADVBE003,Foreign-Born,nativity_foreign,acs2011-2015
+AD4BE001,Gini Index,gini,acs2011-2015
+ABAQE001,Total,pop_tot,acs2010-2014
+ABAQE002,Male,pop_m,acs2010-2014
+ABAQE003,Male: Under 5 years,pop_m_lt5,acs2010-2014
+ABAQE004,Male: 5 to 9 years,pop_m_5-9,acs2010-2014
+ABAQE005,Male: 10 to 14 years,pop_m_10-14,acs2010-2014
+ABAQE006,Male: 15 to 17 years,pop_m_15-17,acs2010-2014
+ABAQE007,Male: 18 and 19 years,pop_m_18-19,acs2010-2014
+ABAQE008,Male: 20 years,pop_m_20,acs2010-2014
+ABAQE009,Male: 21 years,pop_m_21,acs2010-2014
+ABAQE010,Male: 22 to 24 years,pop_m_22-24,acs2010-2014
+ABAQE011,Male: 25 to 29 years,pop_m_25-29,acs2010-2014
+ABAQE012,Male: 30 to 34 years,pop_m_30-34,acs2010-2014
+ABAQE013,Male: 35 to 39 years,pop_m_35-39,acs2010-2014
+ABAQE014,Male: 40 to 44 years,pop_m_40-44,acs2010-2014
+ABAQE015,Male: 45 to 49 years,pop_m_45-49,acs2010-2014
+ABAQE016,Male: 50 to 54 years,pop_m_50-54,acs2010-2014
+ABAQE017,Male: 55 to 59 years,pop_m_55-59,acs2010-2014
+ABAQE018,Male: 60 and 61 years,pop_m_60-61,acs2010-2014
+ABAQE019,Male: 62 to 64 years,pop_m_62-64,acs2010-2014
+ABAQE020,Male: 65 and 66 years,pop_m_65-66,acs2010-2014
+ABAQE021,Male: 67 to 69 years,pop_m_67-69,acs2010-2014
+ABAQE022,Male: 70 to 74 years,pop_m_70-74,acs2010-2014
+ABAQE023,Male: 75 to 79 years,pop_m_75-79,acs2010-2014
+ABAQE024,Male: 80 to 84 years,pop_m_80-84,acs2010-2014
+ABAQE025,Male: 85 years and over,pop_m_gt85,acs2010-2014
+ABAQE026,Female,pop_f,acs2010-2014
+ABAQE027,Female: Under 5 years,pop_f_lt5,acs2010-2014
+ABAQE028,Female: 5 to 9 years,pop_f_5-9,acs2010-2014
+ABAQE029,Female: 10 to 14 years,pop_f_10-14,acs2010-2014
+ABAQE030,Female: 15 to 17 years,pop_f_15-17,acs2010-2014
+ABAQE031,Female: 18 and 19 years,pop_f_18-19,acs2010-2014
+ABAQE032,Female: 20 years,pop_f_20,acs2010-2014
+ABAQE033,Female: 21 years,pop_f_21,acs2010-2014
+ABAQE034,Female: 22 to 24 years,pop_f_22-24,acs2010-2014
+ABAQE035,Female: 25 to 29 years,pop_f_25-29,acs2010-2014
+ABAQE036,Female: 30 to 34 years,pop_f_30-34,acs2010-2014
+ABAQE037,Female: 35 to 39 years,pop_f_35-39,acs2010-2014
+ABAQE038,Female: 40 to 44 years,pop_f_40-44,acs2010-2014
+ABAQE039,Female: 45 to 49 years,pop_f_45-49,acs2010-2014
+ABAQE040,Female: 50 to 54 years,pop_f_50-54,acs2010-2014
+ABAQE041,Female: 55 to 59 years,pop_f_55-59,acs2010-2014
+ABAQE042,Female: 60 and 61 years,pop_f_60-61,acs2010-2014
+ABAQE043,Female: 62 to 64 years,pop_f_62-64,acs2010-2014
+ABAQE044,Female: 65 and 66 years,pop_f_65-66,acs2010-2014
+ABAQE045,Female: 67 to 69 years,pop_f_67-69,acs2010-2014
+ABAQE046,Female: 70 to 74 years,pop_f_70-74,acs2010-2014
+ABAQE047,Female: 75 to 79 years,pop_f_75-79,acs2010-2014
+ABAQE048,Female: 80 to 84 years,pop_f_80-84,acs2010-2014
+ABAQE049,Female: 85 years and over,pop_f_gt85,acs2010-2014
+ABBAE001,Total,race_tot,acs2010-2014
+ABBAE002,Not Hispanic or Latino,race_nh,acs2010-2014
+ABBAE003,Not Hispanic or Latino: White alone,race_nh_white,acs2010-2014
+ABBAE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2010-2014
+ABBAE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2010-2014
+ABBAE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2010-2014
+ABBAE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2010-2014
+ABBAE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2010-2014
+ABBAE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2010-2014
+ABBAE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2010-2014
+ABBAE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2010-2014
+ABBAE012,Hispanic or Latino,race_h,acs2010-2014
+ABBAE013,Hispanic or Latino: White alone,race_h_white,acs2010-2014
+ABBAE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2010-2014
+ABBAE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2010-2014
+ABBAE016,Hispanic or Latino: Asian alone,race_h_asian,acs2010-2014
+ABBAE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2010-2014
+ABBAE018,Hispanic or Latino: Some other race alone,race_h_other,acs2010-2014
+ABBAE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2010-2014
+ABBAE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2010-2014
+ABBAE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2010-2014
+ABC4E001,Total,education_tot,acs2010-2014
+ABC4E002,No schooling completed ,education_none,acs2010-2014
+ABC4E003,Nursery school,education_nursery,acs2010-2014
+ABC4E004,Kindergarten,education_gradekindergarten,acs2010-2014
+ABC4E005,1st grade,education_grade1,acs2010-2014
+ABC4E006,2nd grade,education_grade2,acs2010-2014
+ABC4E007,3rd grade,education_grade3,acs2010-2014
+ABC4E008,4th grade,education_grade4,acs2010-2014
+ABC4E009,5th grade,education_grade5,acs2010-2014
+ABC4E010,6th grade,education_grade6,acs2010-2014
+ABC4E011,7th grade,education_grade7,acs2010-2014
+ABC4E012,8th grade,education_grade8,acs2010-2014
+ABC4E013,9th grade,education_grade9,acs2010-2014
+ABC4E014,10th grade,education_grade10,acs2010-2014
+ABC4E015,11th grade,education_grade11,acs2010-2014
+ABC4E016,"12th grade, no diploma",education_grade12,acs2010-2014
+ABC4E017,Regular high school diploma,education_highschool,acs2010-2014
+ABC4E018,GED or alternative credential,education_ged,acs2010-2014
+ABC4E019,"Some college, less than 1 year",education_collegelt1,acs2010-2014
+ABC4E020,"Some college, 1 or more years, no degree",education_collegegt1,acs2010-2014
+ABC4E021,Associate's degree,education_associates,acs2010-2014
+ABC4E022,Bachelor's degree,education_bachelors,acs2010-2014
+ABC4E023,Master's degree,education_masters,acs2010-2014
+ABC4E024,Professional school degree,education_professional,acs2010-2014
+ABC4E025,Doctorate degree,education_doctorate,acs2010-2014
+ABDPE001,Median household income in the past 12 months (in 2014 inflation-adjusted dollars),income,acs2010-2014
+ABHZE001,Total,housing_tot,acs2010-2014
+ABHZE002,Owner occupied,housing_own,acs2010-2014
+ABHZE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2010-2014
+ABHZE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2010-2014
+ABHZE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2010-2014
+ABHZE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2010-2014
+ABHZE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2010-2014
+ABHZE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2010-2014
+ABHZE009,Renter occupied,housing_rent,acs2010-2014
+ABHZE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2010-2014
+ABHZE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2010-2014
+ABHZE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2010-2014
+ABHZE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2010-2014
+ABHZE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2010-2014
+ABHZE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2010-2014
+ABL5E001,Total,nativity_tot,acs2010-2014
+ABL5E002,Native,nativity_native,acs2010-2014
+ABL5E003,Foreign-Born,nativity_foreign,acs2010-2014
+ABU0E001,Gini Index,gini,acs2010-2014
+UEEE001,Total,pop_tot,acs2009-2013
+UEEE002,Male,pop_m,acs2009-2013
+UEEE003,Male: Under 5 years,pop_m_lt5,acs2009-2013
+UEEE004,Male: 5 to 9 years,pop_m_5-9,acs2009-2013
+UEEE005,Male: 10 to 14 years,pop_m_10-14,acs2009-2013
+UEEE006,Male: 15 to 17 years,pop_m_15-17,acs2009-2013
+UEEE007,Male: 18 and 19 years,pop_m_18-19,acs2009-2013
+UEEE008,Male: 20 years,pop_m_20,acs2009-2013
+UEEE009,Male: 21 years,pop_m_21,acs2009-2013
+UEEE010,Male: 22 to 24 years,pop_m_22-24,acs2009-2013
+UEEE011,Male: 25 to 29 years,pop_m_25-29,acs2009-2013
+UEEE012,Male: 30 to 34 years,pop_m_30-34,acs2009-2013
+UEEE013,Male: 35 to 39 years,pop_m_35-39,acs2009-2013
+UEEE014,Male: 40 to 44 years,pop_m_40-44,acs2009-2013
+UEEE015,Male: 45 to 49 years,pop_m_45-49,acs2009-2013
+UEEE016,Male: 50 to 54 years,pop_m_50-54,acs2009-2013
+UEEE017,Male: 55 to 59 years,pop_m_55-59,acs2009-2013
+UEEE018,Male: 60 and 61 years,pop_m_60-61,acs2009-2013
+UEEE019,Male: 62 to 64 years,pop_m_62-64,acs2009-2013
+UEEE020,Male: 65 and 66 years,pop_m_65-66,acs2009-2013
+UEEE021,Male: 67 to 69 years,pop_m_67-69,acs2009-2013
+UEEE022,Male: 70 to 74 years,pop_m_70-74,acs2009-2013
+UEEE023,Male: 75 to 79 years,pop_m_75-79,acs2009-2013
+UEEE024,Male: 80 to 84 years,pop_m_80-84,acs2009-2013
+UEEE025,Male: 85 years and over,pop_m_gt85,acs2009-2013
+UEEE026,Female,pop_f,acs2009-2013
+UEEE027,Female: Under 5 years,pop_f_lt5,acs2009-2013
+UEEE028,Female: 5 to 9 years,pop_f_5-9,acs2009-2013
+UEEE029,Female: 10 to 14 years,pop_f_10-14,acs2009-2013
+UEEE030,Female: 15 to 17 years,pop_f_15-17,acs2009-2013
+UEEE031,Female: 18 and 19 years,pop_f_18-19,acs2009-2013
+UEEE032,Female: 20 years,pop_f_20,acs2009-2013
+UEEE033,Female: 21 years,pop_f_21,acs2009-2013
+UEEE034,Female: 22 to 24 years,pop_f_22-24,acs2009-2013
+UEEE035,Female: 25 to 29 years,pop_f_25-29,acs2009-2013
+UEEE036,Female: 30 to 34 years,pop_f_30-34,acs2009-2013
+UEEE037,Female: 35 to 39 years,pop_f_35-39,acs2009-2013
+UEEE038,Female: 40 to 44 years,pop_f_40-44,acs2009-2013
+UEEE039,Female: 45 to 49 years,pop_f_45-49,acs2009-2013
+UEEE040,Female: 50 to 54 years,pop_f_50-54,acs2009-2013
+UEEE041,Female: 55 to 59 years,pop_f_55-59,acs2009-2013
+UEEE042,Female: 60 and 61 years,pop_f_60-61,acs2009-2013
+UEEE043,Female: 62 to 64 years,pop_f_62-64,acs2009-2013
+UEEE044,Female: 65 and 66 years,pop_f_65-66,acs2009-2013
+UEEE045,Female: 67 to 69 years,pop_f_67-69,acs2009-2013
+UEEE046,Female: 70 to 74 years,pop_f_70-74,acs2009-2013
+UEEE047,Female: 75 to 79 years,pop_f_75-79,acs2009-2013
+UEEE048,Female: 80 to 84 years,pop_f_80-84,acs2009-2013
+UEEE049,Female: 85 years and over,pop_f_gt85,acs2009-2013
+UEYE001,Total,race_tot,acs2009-2013
+UEYE002,Not Hispanic or Latino,race_nh,acs2009-2013
+UEYE003,Not Hispanic or Latino: White alone,race_nh_white,acs2009-2013
+UEYE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2009-2013
+UEYE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2009-2013
+UEYE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2009-2013
+UEYE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2009-2013
+UEYE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2009-2013
+UEYE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2009-2013
+UEYE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2009-2013
+UEYE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2009-2013
+UEYE012,Hispanic or Latino,race_h,acs2009-2013
+UEYE013,Hispanic or Latino: White alone,race_h_white,acs2009-2013
+UEYE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2009-2013
+UEYE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2009-2013
+UEYE016,Hispanic or Latino: Asian alone,race_h_asian,acs2009-2013
+UEYE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2009-2013
+UEYE018,Hispanic or Latino: Some other race alone,race_h_other,acs2009-2013
+UEYE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2009-2013
+UEYE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2009-2013
+UEYE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2009-2013
+UGSE001,Total,education_tot,acs2009-2013
+UGSE002,No schooling completed ,education_none,acs2009-2013
+UGSE003,Nursery school,education_nursery,acs2009-2013
+UGSE004,Kindergarten,education_gradekindergarten,acs2009-2013
+UGSE005,1st grade,education_grade1,acs2009-2013
+UGSE006,2nd grade,education_grade2,acs2009-2013
+UGSE007,3rd grade,education_grade3,acs2009-2013
+UGSE008,4th grade,education_grade4,acs2009-2013
+UGSE009,5th grade,education_grade5,acs2009-2013
+UGSE010,6th grade,education_grade6,acs2009-2013
+UGSE011,7th grade,education_grade7,acs2009-2013
+UGSE012,8th grade,education_grade8,acs2009-2013
+UGSE013,9th grade,education_grade9,acs2009-2013
+UGSE014,10th grade,education_grade10,acs2009-2013
+UGSE015,11th grade,education_grade11,acs2009-2013
+UGSE016,"12th grade, no diploma",education_grade12,acs2009-2013
+UGSE017,Regular high school diploma,education_highschool,acs2009-2013
+UGSE018,GED or alternative credential,education_ged,acs2009-2013
+UGSE019,"Some college, less than 1 year",education_collegelt1,acs2009-2013
+UGSE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2009-2013
+UGSE021,Associate's degree,education_associates,acs2009-2013
+UGSE022,Bachelor's degree,education_bachelors,acs2009-2013
+UGSE023,Master's degree,education_masters,acs2009-2013
+UGSE024,Professional school degree,education_professional,acs2009-2013
+UGSE025,Doctorate degree,education_doctorate,acs2009-2013
+UHDE001,Median household income in the past 12 months (in 2013 inflation-adjusted dollars),income,acs2009-2013
+UILE001,Gini Index,gini,acs2009-2013
+ULRE001,Total,housing_tot,acs2009-2013
+ULRE002,Owner occupied,housing_own,acs2009-2013
+ULRE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2009-2013
+ULRE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2009-2013
+ULRE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2009-2013
+ULRE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2009-2013
+ULRE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2009-2013
+ULRE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2009-2013
+ULRE009,Renter occupied,housing_rent,acs2009-2013
+ULRE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2009-2013
+ULRE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2009-2013
+ULRE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2009-2013
+ULRE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2009-2013
+ULRE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2009-2013
+ULRE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2009-2013
+UP2E001,Total,nativity_tot,acs2009-2013
+UP2E002,Native,nativity_native,acs2009-2013
+UP2E003,Foreign-Born,nativity_foreign,acs2009-2013
+QSEE001,Total,pop_tot,acs2008-2012
+QSEE002,Male,pop_m,acs2008-2012
+QSEE003,Male: Under 5 years,pop_m_lt5,acs2008-2012
+QSEE004,Male: 5 to 9 years,pop_m_5-9,acs2008-2012
+QSEE005,Male: 10 to 14 years,pop_m_10-14,acs2008-2012
+QSEE006,Male: 15 to 17 years,pop_m_15-17,acs2008-2012
+QSEE007,Male: 18 and 19 years,pop_m_18-19,acs2008-2012
+QSEE008,Male: 20 years,pop_m_20,acs2008-2012
+QSEE009,Male: 21 years,pop_m_21,acs2008-2012
+QSEE010,Male: 22 to 24 years,pop_m_22-24,acs2008-2012
+QSEE011,Male: 25 to 29 years,pop_m_25-29,acs2008-2012
+QSEE012,Male: 30 to 34 years,pop_m_30-34,acs2008-2012
+QSEE013,Male: 35 to 39 years,pop_m_35-39,acs2008-2012
+QSEE014,Male: 40 to 44 years,pop_m_40-44,acs2008-2012
+QSEE015,Male: 45 to 49 years,pop_m_45-49,acs2008-2012
+QSEE016,Male: 50 to 54 years,pop_m_50-54,acs2008-2012
+QSEE017,Male: 55 to 59 years,pop_m_55-59,acs2008-2012
+QSEE018,Male: 60 and 61 years,pop_m_60-61,acs2008-2012
+QSEE019,Male: 62 to 64 years,pop_m_62-64,acs2008-2012
+QSEE020,Male: 65 and 66 years,pop_m_65-66,acs2008-2012
+QSEE021,Male: 67 to 69 years,pop_m_67-69,acs2008-2012
+QSEE022,Male: 70 to 74 years,pop_m_70-74,acs2008-2012
+QSEE023,Male: 75 to 79 years,pop_m_75-79,acs2008-2012
+QSEE024,Male: 80 to 84 years,pop_m_80-84,acs2008-2012
+QSEE025,Male: 85 years and over,pop_m_gt85,acs2008-2012
+QSEE026,Female,pop_f,acs2008-2012
+QSEE027,Female: Under 5 years,pop_f_lt5,acs2008-2012
+QSEE028,Female: 5 to 9 years,pop_f_5-9,acs2008-2012
+QSEE029,Female: 10 to 14 years,pop_f_10-14,acs2008-2012
+QSEE030,Female: 15 to 17 years,pop_f_15-17,acs2008-2012
+QSEE031,Female: 18 and 19 years,pop_f_18-19,acs2008-2012
+QSEE032,Female: 20 years,pop_f_20,acs2008-2012
+QSEE033,Female: 21 years,pop_f_21,acs2008-2012
+QSEE034,Female: 22 to 24 years,pop_f_22-24,acs2008-2012
+QSEE035,Female: 25 to 29 years,pop_f_25-29,acs2008-2012
+QSEE036,Female: 30 to 34 years,pop_f_30-34,acs2008-2012
+QSEE037,Female: 35 to 39 years,pop_f_35-39,acs2008-2012
+QSEE038,Female: 40 to 44 years,pop_f_40-44,acs2008-2012
+QSEE039,Female: 45 to 49 years,pop_f_45-49,acs2008-2012
+QSEE040,Female: 50 to 54 years,pop_f_50-54,acs2008-2012
+QSEE041,Female: 55 to 59 years,pop_f_55-59,acs2008-2012
+QSEE042,Female: 60 and 61 years,pop_f_60-61,acs2008-2012
+QSEE043,Female: 62 to 64 years,pop_f_62-64,acs2008-2012
+QSEE044,Female: 65 and 66 years,pop_f_65-66,acs2008-2012
+QSEE045,Female: 67 to 69 years,pop_f_67-69,acs2008-2012
+QSEE046,Female: 70 to 74 years,pop_f_70-74,acs2008-2012
+QSEE047,Female: 75 to 79 years,pop_f_75-79,acs2008-2012
+QSEE048,Female: 80 to 84 years,pop_f_80-84,acs2008-2012
+QSEE049,Female: 85 years and over,pop_f_gt85,acs2008-2012
+QSYE001,Total,race_tot,acs2008-2012
+QSYE002,Not Hispanic or Latino,race_nh,acs2008-2012
+QSYE003,Not Hispanic or Latino: White alone,race_nh_white,acs2008-2012
+QSYE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2008-2012
+QSYE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2008-2012
+QSYE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2008-2012
+QSYE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2008-2012
+QSYE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2008-2012
+QSYE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2008-2012
+QSYE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2008-2012
+QSYE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2008-2012
+QSYE012,Hispanic or Latino,race_h,acs2008-2012
+QSYE013,Hispanic or Latino: White alone,race_h_white,acs2008-2012
+QSYE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2008-2012
+QSYE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2008-2012
+QSYE016,Hispanic or Latino: Asian alone,race_h_asian,acs2008-2012
+QSYE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2008-2012
+QSYE018,Hispanic or Latino: Some other race alone,race_h_other,acs2008-2012
+QSYE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2008-2012
+QSYE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2008-2012
+QSYE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2008-2012
+QUSE001,Total,education_tot,acs2008-2012
+QUSE002,No schooling completed ,education_none,acs2008-2012
+QUSE003,Nursery school,education_nursery,acs2008-2012
+QUSE004,Kindergarten,education_gradekindergarten,acs2008-2012
+QUSE005,1st grade,education_grade1,acs2008-2012
+QUSE006,2nd grade,education_grade2,acs2008-2012
+QUSE007,3rd grade,education_grade3,acs2008-2012
+QUSE008,4th grade,education_grade4,acs2008-2012
+QUSE009,5th grade,education_grade5,acs2008-2012
+QUSE010,6th grade,education_grade6,acs2008-2012
+QUSE011,7th grade,education_grade7,acs2008-2012
+QUSE012,8th grade,education_grade8,acs2008-2012
+QUSE013,9th grade,education_grade9,acs2008-2012
+QUSE014,10th grade,education_grade10,acs2008-2012
+QUSE015,11th grade,education_grade11,acs2008-2012
+QUSE016,"12th grade, no diploma",education_grade12,acs2008-2012
+QUSE017,Regular high school diploma,education_highschool,acs2008-2012
+QUSE018,GED or alternative credential,education_ged,acs2008-2012
+QUSE019,"Some college, less than 1 year",education_collegelt1,acs2008-2012
+QUSE020,"Some college, 1 or more years, no degree",education_collegegt1,acs2008-2012
+QUSE021,Associate's degree,education_associates,acs2008-2012
+QUSE022,Bachelor's degree,education_bachelors,acs2008-2012
+QUSE023,Master's degree,education_masters,acs2008-2012
+QUSE024,Professional school degree,education_professional,acs2008-2012
+QUSE025,Doctorate degree,education_doctorate,acs2008-2012
+QU1E001,Median household income in the past 12 months (in 2012 inflation-adjusted dollars),income,acs2008-2012
+QZBE001,Total,housing_tot,acs2008-2012
+QZBE002,Owner occupied,housing_own,acs2008-2012
+QZBE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2008-2012
+QZBE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2008-2012
+QZBE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2008-2012
+QZBE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2008-2012
+QZBE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2008-2012
+QZBE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2008-2012
+QZBE009,Renter occupied,housing_rent,acs2008-2012
+QZBE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2008-2012
+QZBE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2008-2012
+QZBE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2008-2012
+QZBE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2008-2012
+QZBE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2008-2012
+QZBE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2008-2012
+Q3JE001,Total,nativity_tot,acs2008-2012
+Q3JE002,Native,nativity_native,acs2008-2012
+Q3JE003,Foreign-Born,nativity_foreign,acs2008-2012
+RCBE001,Gini Index,gini,acs2008-2012
+MNIE001,Total,pop_tot,acs2007-2011
+MNIE002,Male,pop_m,acs2007-2011
+MNIE003,Male: Under 5 years,pop_m_lt5,acs2007-2011
+MNIE004,Male: 5 to 9 years,pop_m_5-9,acs2007-2011
+MNIE005,Male: 10 to 14 years,pop_m_10-14,acs2007-2011
+MNIE006,Male: 15 to 17 years,pop_m_15-17,acs2007-2011
+MNIE007,Male: 18 and 19 years,pop_m_18-19,acs2007-2011
+MNIE008,Male: 20 years,pop_m_20,acs2007-2011
+MNIE009,Male: 21 years,pop_m_21,acs2007-2011
+MNIE010,Male: 22 to 24 years,pop_m_22-24,acs2007-2011
+MNIE011,Male: 25 to 29 years,pop_m_25-29,acs2007-2011
+MNIE012,Male: 30 to 34 years,pop_m_30-34,acs2007-2011
+MNIE013,Male: 35 to 39 years,pop_m_35-39,acs2007-2011
+MNIE014,Male: 40 to 44 years,pop_m_40-44,acs2007-2011
+MNIE015,Male: 45 to 49 years,pop_m_45-49,acs2007-2011
+MNIE016,Male: 50 to 54 years,pop_m_50-54,acs2007-2011
+MNIE017,Male: 55 to 59 years,pop_m_55-59,acs2007-2011
+MNIE018,Male: 60 and 61 years,pop_m_60-61,acs2007-2011
+MNIE019,Male: 62 to 64 years,pop_m_62-64,acs2007-2011
+MNIE020,Male: 65 and 66 years,pop_m_65-66,acs2007-2011
+MNIE021,Male: 67 to 69 years,pop_m_67-69,acs2007-2011
+MNIE022,Male: 70 to 74 years,pop_m_70-74,acs2007-2011
+MNIE023,Male: 75 to 79 years,pop_m_75-79,acs2007-2011
+MNIE024,Male: 80 to 84 years,pop_m_80-84,acs2007-2011
+MNIE025,Male: 85 years and over,pop_m_gt85,acs2007-2011
+MNIE026,Female,pop_f,acs2007-2011
+MNIE027,Female: Under 5 years,pop_f_lt5,acs2007-2011
+MNIE028,Female: 5 to 9 years,pop_f_5-9,acs2007-2011
+MNIE029,Female: 10 to 14 years,pop_f_10-14,acs2007-2011
+MNIE030,Female: 15 to 17 years,pop_f_15-17,acs2007-2011
+MNIE031,Female: 18 and 19 years,pop_f_18-19,acs2007-2011
+MNIE032,Female: 20 years,pop_f_20,acs2007-2011
+MNIE033,Female: 21 years,pop_f_21,acs2007-2011
+MNIE034,Female: 22 to 24 years,pop_f_22-24,acs2007-2011
+MNIE035,Female: 25 to 29 years,pop_f_25-29,acs2007-2011
+MNIE036,Female: 30 to 34 years,pop_f_30-34,acs2007-2011
+MNIE037,Female: 35 to 39 years,pop_f_35-39,acs2007-2011
+MNIE038,Female: 40 to 44 years,pop_f_40-44,acs2007-2011
+MNIE039,Female: 45 to 49 years,pop_f_45-49,acs2007-2011
+MNIE040,Female: 50 to 54 years,pop_f_50-54,acs2007-2011
+MNIE041,Female: 55 to 59 years,pop_f_55-59,acs2007-2011
+MNIE042,Female: 60 and 61 years,pop_f_60-61,acs2007-2011
+MNIE043,Female: 62 to 64 years,pop_f_62-64,acs2007-2011
+MNIE044,Female: 65 and 66 years,pop_f_65-66,acs2007-2011
+MNIE045,Female: 67 to 69 years,pop_f_67-69,acs2007-2011
+MNIE046,Female: 70 to 74 years,pop_f_70-74,acs2007-2011
+MNIE047,Female: 75 to 79 years,pop_f_75-79,acs2007-2011
+MNIE048,Female: 80 to 84 years,pop_f_80-84,acs2007-2011
+MNIE049,Female: 85 years and over,pop_f_gt85,acs2007-2011
+MN2E001,Total,race_tot,acs2007-2011
+MN2E002,Not Hispanic or Latino,race_nh,acs2007-2011
+MN2E003,Not Hispanic or Latino: White alone,race_nh_white,acs2007-2011
+MN2E004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2007-2011
+MN2E005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2007-2011
+MN2E006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2007-2011
+MN2E007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2007-2011
+MN2E008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2007-2011
+MN2E009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2007-2011
+MN2E010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2007-2011
+MN2E011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2007-2011
+MN2E012,Hispanic or Latino,race_h,acs2007-2011
+MN2E013,Hispanic or Latino: White alone,race_h_white,acs2007-2011
+MN2E014,Hispanic or Latino: Black or African American alone,race_h_black,acs2007-2011
+MN2E015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2007-2011
+MN2E016,Hispanic or Latino: Asian alone,race_h_asian,acs2007-2011
+MN2E017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2007-2011
+MN2E018,Hispanic or Latino: Some other race alone,race_h_other,acs2007-2011
+MN2E019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2007-2011
+MN2E020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2007-2011
+MN2E021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2007-2011
+MPSE001,Total,education_tot,acs2007-2011
+MPSE002,Male,education_m,acs2007-2011
+MPSE003,Male: No schooling completed ,education_m_none,acs2007-2011
+MPSE004,Male: Nursery to 4th grade,education_m_gradenursery-4,acs2007-2011
+MPSE005,Male: 5th and 6th grade,education_m_grade5-6,acs2007-2011
+MPSE006,Male: 7th and 8th grade,education_m_grade7-8,acs2007-2011
+MPSE007,Male: 9th grade,education_m_grade9,acs2007-2011
+MPSE008,Male: 10th grade,education_m_grade10,acs2007-2011
+MPSE009,Male: 11th grade,education_m_grade11,acs2007-2011
+MPSE010,"Male: 12th grade, no diploma",education_m_grade12,acs2007-2011
+MPSE011,"Male: High school graduate, GED, or alternative",education_m_highschool,acs2007-2011
+MPSE012,"Male: Some college, less than 1 year",education_m_collegelt1,acs2007-2011
+MPSE013,"Male: Some college, 1 or more years, no degree",education_m_collegegt1,acs2007-2011
+MPSE014,Male: Associate’s degree,education_m_associates,acs2007-2011
+MPSE015,Male: Bachelor's degree,education_m_bachelors,acs2007-2011
+MPSE016,Male: Master's degree,education_m_masters,acs2007-2011
+MPSE017,Male: Professional school degree,education_m_professional,acs2007-2011
+MPSE018,Male: Doctorate degree,education_m_doctorate,acs2007-2011
+MPSE019,Female,education_f,acs2007-2011
+MPSE020,Female: No schooling completed,education_f_none,acs2007-2011
+MPSE021,Female: Nursery to 4th grade,education_f_gradenursery-4,acs2007-2011
+MPSE022,Female: 5th and 6th grade,education_f_grade5-6,acs2007-2011
+MPSE023,Female: 7th and 8th grade,education_f_grade7-8,acs2007-2011
+MPSE024,Female: 9th grade,education_f_grade9,acs2007-2011
+MPSE025,Female: 10th grade,education_f_grade10,acs2007-2011
+MPSE026,Female: 11th grade,education_f_grade11,acs2007-2011
+MPSE027,"Female: 12th grade, no diploma",education_f_grade12,acs2007-2011
+MPSE028,"Female: High school graduate, GED, or alternative",education_f_highschool,acs2007-2011
+MPSE029,"Female: Some college, less than 1 year",education_f_collegelt1,acs2007-2011
+MPSE030,"Female: Some college, 1 or more years, no degree",education_f_collegegt1,acs2007-2011
+MPSE031,Female: Associate’s degree,education_f_associates,acs2007-2011
+MPSE032,Female: Bachelor's degree,education_f_bachelors,acs2007-2011
+MPSE033,Female: Master's degree,education_f_masters,acs2007-2011
+MPSE034,Female: Professional school degree,education_f_professional,acs2007-2011
+MPSE035,Female: Doctorate degree,education_f_doctorate,acs2007-2011
+MP1E001,Median household income in the past 12 months (in 2011 inflation-adjusted dollars),income,acs2007-2011
+MT7E001,Total,housing_tot,acs2007-2011
+MT7E002,Owner occupied,housing_own,acs2007-2011
+MT7E003,Owner occupied: No vehicle available,housing_own_novehicle,acs2007-2011
+MT7E004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2007-2011
+MT7E005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2007-2011
+MT7E006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2007-2011
+MT7E007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2007-2011
+MT7E008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2007-2011
+MT7E009,Renter occupied,housing_rent,acs2007-2011
+MT7E010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2007-2011
+MT7E011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2007-2011
+MT7E012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2007-2011
+MT7E013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2007-2011
+MT7E014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2007-2011
+MT7E015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2007-2011
+MYEE001,Total,nativity_tot,acs2007-2011
+MYEE002,Native,nativity_native,acs2007-2011
+MYEE003,Foreign-Born,nativity_foreign,acs2007-2011
+M6DE001,Gini Index,gini,acs2007-2011
+JLZE001,Total,pop_tot,acs2006-2010
+JLZE002,Male,pop_m,acs2006-2010
+JLZE003,Male: Under 5 years,pop_m_lt5,acs2006-2010
+JLZE004,Male: 5 to 9 years,pop_m_5-9,acs2006-2010
+JLZE005,Male: 10 to 14 years,pop_m_10-14,acs2006-2010
+JLZE006,Male: 15 to 17 years,pop_m_15-17,acs2006-2010
+JLZE007,Male: 18 and 19 years,pop_m_18-19,acs2006-2010
+JLZE008,Male: 20 years,pop_m_20,acs2006-2010
+JLZE009,Male: 21 years,pop_m_21,acs2006-2010
+JLZE010,Male: 22 to 24 years,pop_m_22-24,acs2006-2010
+JLZE011,Male: 25 to 29 years,pop_m_25-29,acs2006-2010
+JLZE012,Male: 30 to 34 years,pop_m_30-34,acs2006-2010
+JLZE013,Male: 35 to 39 years,pop_m_35-39,acs2006-2010
+JLZE014,Male: 40 to 44 years,pop_m_40-44,acs2006-2010
+JLZE015,Male: 45 to 49 years,pop_m_45-49,acs2006-2010
+JLZE016,Male: 50 to 54 years,pop_m_50-54,acs2006-2010
+JLZE017,Male: 55 to 59 years,pop_m_55-59,acs2006-2010
+JLZE018,Male: 60 and 61 years,pop_m_60-61,acs2006-2010
+JLZE019,Male: 62 to 64 years,pop_m_62-64,acs2006-2010
+JLZE020,Male: 65 and 66 years,pop_m_65-66,acs2006-2010
+JLZE021,Male: 67 to 69 years,pop_m_67-69,acs2006-2010
+JLZE022,Male: 70 to 74 years,pop_m_70-74,acs2006-2010
+JLZE023,Male: 75 to 79 years,pop_m_75-79,acs2006-2010
+JLZE024,Male: 80 to 84 years,pop_m_80-84,acs2006-2010
+JLZE025,Male: 85 years and over,pop_m_gt85,acs2006-2010
+JLZE026,Female,pop_f,acs2006-2010
+JLZE027,Female: Under 5 years,pop_f_lt5,acs2006-2010
+JLZE028,Female: 5 to 9 years,pop_f_5-9,acs2006-2010
+JLZE029,Female: 10 to 14 years,pop_f_10-14,acs2006-2010
+JLZE030,Female: 15 to 17 years,pop_f_15-17,acs2006-2010
+JLZE031,Female: 18 and 19 years,pop_f_18-19,acs2006-2010
+JLZE032,Female: 20 years,pop_f_20,acs2006-2010
+JLZE033,Female: 21 years,pop_f_21,acs2006-2010
+JLZE034,Female: 22 to 24 years,pop_f_22-24,acs2006-2010
+JLZE035,Female: 25 to 29 years,pop_f_25-29,acs2006-2010
+JLZE036,Female: 30 to 34 years,pop_f_30-34,acs2006-2010
+JLZE037,Female: 35 to 39 years,pop_f_35-39,acs2006-2010
+JLZE038,Female: 40 to 44 years,pop_f_40-44,acs2006-2010
+JLZE039,Female: 45 to 49 years,pop_f_45-49,acs2006-2010
+JLZE040,Female: 50 to 54 years,pop_f_50-54,acs2006-2010
+JLZE041,Female: 55 to 59 years,pop_f_55-59,acs2006-2010
+JLZE042,Female: 60 and 61 years,pop_f_60-61,acs2006-2010
+JLZE043,Female: 62 to 64 years,pop_f_62-64,acs2006-2010
+JLZE044,Female: 65 and 66 years,pop_f_65-66,acs2006-2010
+JLZE045,Female: 67 to 69 years,pop_f_67-69,acs2006-2010
+JLZE046,Female: 70 to 74 years,pop_f_70-74,acs2006-2010
+JLZE047,Female: 75 to 79 years,pop_f_75-79,acs2006-2010
+JLZE048,Female: 80 to 84 years,pop_f_80-84,acs2006-2010
+JLZE049,Female: 85 years and over,pop_f_gt85,acs2006-2010
+JMJE001,Total,race_tot,acs2006-2010
+JMJE002,Not Hispanic or Latino,race_nh,acs2006-2010
+JMJE003,Not Hispanic or Latino: White alone,race_nh_white,acs2006-2010
+JMJE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2006-2010
+JMJE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2006-2010
+JMJE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2006-2010
+JMJE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2006-2010
+JMJE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2006-2010
+JMJE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2006-2010
+JMJE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2006-2010
+JMJE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2006-2010
+JMJE012,Hispanic or Latino,race_h,acs2006-2010
+JMJE013,Hispanic or Latino: White alone,race_h_white,acs2006-2010
+JMJE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2006-2010
+JMJE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2006-2010
+JMJE016,Hispanic or Latino: Asian alone,race_h_asian,acs2006-2010
+JMJE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2006-2010
+JMJE018,Hispanic or Latino: Some other race alone,race_h_other,acs2006-2010
+JMJE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2006-2010
+JMJE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2006-2010
+JMJE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2006-2010
+JN9E001,Total,education_tot,acs2006-2010
+JN9E002,Male,education_m,acs2006-2010
+JN9E003,Male: No schooling completed ,education_m_none,acs2006-2010
+JN9E004,Male: Nursery to 4th grade,education_m_gradenursery-4,acs2006-2010
+JN9E005,Male: 5th and 6th grade,education_m_grade5-6,acs2006-2010
+JN9E006,Male: 7th and 8th grade,education_m_grade7-8,acs2006-2010
+JN9E007,Male: 9th grade,education_m_grade9,acs2006-2010
+JN9E008,Male: 10th grade,education_m_grade10,acs2006-2010
+JN9E009,Male: 11th grade,education_m_grade11,acs2006-2010
+JN9E010,"Male: 12th grade, no diploma",education_m_grade12,acs2006-2010
+JN9E011,"Male: High school graduate, GED, or alternative",education_m_highschool,acs2006-2010
+JN9E012,"Male: Some college, less than 1 year",education_m_collegelt1,acs2006-2010
+JN9E013,"Male: Some college, 1 or more years, no degree",education_m_collegegt1,acs2006-2010
+JN9E014,Male: Associate’s degree,education_m_associates,acs2006-2010
+JN9E015,Male: Bachelor's degree,education_m_bachelors,acs2006-2010
+JN9E016,Male: Master's degree,education_m_masters,acs2006-2010
+JN9E017,Male: Professional school degree,education_m_professional,acs2006-2010
+JN9E018,Male: Doctorate degree,education_m_doctorate,acs2006-2010
+JN9E019,Female,education_f,acs2006-2010
+JN9E020,Female: No schooling completed,education_f_none,acs2006-2010
+JN9E021,Female: Nursery to 4th grade,education_f_gradenursery-4,acs2006-2010
+JN9E022,Female: 5th and 6th grade,education_f_grade5-6,acs2006-2010
+JN9E023,Female: 7th and 8th grade,education_f_grade7-8,acs2006-2010
+JN9E024,Female: 9th grade,education_f_grade9,acs2006-2010
+JN9E025,Female: 10th grade,education_f_grade10,acs2006-2010
+JN9E026,Female: 11th grade,education_f_grade11,acs2006-2010
+JN9E027,"Female: 12th grade, no diploma",education_f_grade12,acs2006-2010
+JN9E028,"Female: High school graduate, GED, or alternative",education_f_highschool,acs2006-2010
+JN9E029,"Female: Some college, less than 1 year",education_f_collegelt1,acs2006-2010
+JN9E030,"Female: Some college, 1 or more years, no degree",education_f_collegegt1,acs2006-2010
+JN9E031,Female: Associate’s degree,education_f_associates,acs2006-2010
+JN9E032,Female: Bachelor's degree,education_f_bachelors,acs2006-2010
+JN9E033,Female: Master's degree,education_f_masters,acs2006-2010
+JN9E034,Female: Professional school degree,education_f_professional,acs2006-2010
+JN9E035,Female: Doctorate degree,education_f_doctorate,acs2006-2010
+JOIE001,Median household income in the past 12 months (in 2010 inflation-adjusted dollars),income,acs2006-2010
+JSNE001,Total,housing_tot,acs2006-2010
+JSNE002,Owner occupied,housing_own,acs2006-2010
+JSNE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2006-2010
+JSNE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2006-2010
+JSNE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2006-2010
+JSNE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2006-2010
+JSNE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2006-2010
+JSNE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2006-2010
+JSNE009,Renter occupied,housing_rent,acs2006-2010
+JSNE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2006-2010
+JSNE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2006-2010
+JSNE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2006-2010
+JSNE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2006-2010
+JSNE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2006-2010
+JSNE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2006-2010
+JWUE001,Total,nativity_tot,acs2006-2010
+JWUE002,Native,nativity_native,acs2006-2010
+JWUE003,Foreign-Born,nativity_foreign,acs2006-2010
+J4TE001,Gini Index,gini,acs2006-2010
+RKYE001,Total,pop_tot,acs2005-2009
+RKYE002,Male,pop_m,acs2005-2009
+RKYE003,Male: Under 5 years,pop_m_lt5,acs2005-2009
+RKYE004,Male: 5 to 9 years,pop_m_5-9,acs2005-2009
+RKYE005,Male: 10 to 14 years,pop_m_10-14,acs2005-2009
+RKYE006,Male: 15 to 17 years,pop_m_15-17,acs2005-2009
+RKYE007,Male: 18 and 19 years,pop_m_18-19,acs2005-2009
+RKYE008,Male: 20 years,pop_m_20,acs2005-2009
+RKYE009,Male: 21 years,pop_m_21,acs2005-2009
+RKYE010,Male: 22 to 24 years,pop_m_22-24,acs2005-2009
+RKYE011,Male: 25 to 29 years,pop_m_25-29,acs2005-2009
+RKYE012,Male: 30 to 34 years,pop_m_30-34,acs2005-2009
+RKYE013,Male: 35 to 39 years,pop_m_35-39,acs2005-2009
+RKYE014,Male: 40 to 44 years,pop_m_40-44,acs2005-2009
+RKYE015,Male: 45 to 49 years,pop_m_45-49,acs2005-2009
+RKYE016,Male: 50 to 54 years,pop_m_50-54,acs2005-2009
+RKYE017,Male: 55 to 59 years,pop_m_55-59,acs2005-2009
+RKYE018,Male: 60 and 61 years,pop_m_60-61,acs2005-2009
+RKYE019,Male: 62 to 64 years,pop_m_62-64,acs2005-2009
+RKYE020,Male: 65 and 66 years,pop_m_65-66,acs2005-2009
+RKYE021,Male: 67 to 69 years,pop_m_67-69,acs2005-2009
+RKYE022,Male: 70 to 74 years,pop_m_70-74,acs2005-2009
+RKYE023,Male: 75 to 79 years,pop_m_75-79,acs2005-2009
+RKYE024,Male: 80 to 84 years,pop_m_80-84,acs2005-2009
+RKYE025,Male: 85 years and over,pop_m_gt85,acs2005-2009
+RKYE026,Female,pop_f,acs2005-2009
+RKYE027,Female: Under 5 years,pop_f_lt5,acs2005-2009
+RKYE028,Female: 5 to 9 years,pop_f_5-9,acs2005-2009
+RKYE029,Female: 10 to 14 years,pop_f_10-14,acs2005-2009
+RKYE030,Female: 15 to 17 years,pop_f_15-17,acs2005-2009
+RKYE031,Female: 18 and 19 years,pop_f_18-19,acs2005-2009
+RKYE032,Female: 20 years,pop_f_20,acs2005-2009
+RKYE033,Female: 21 years,pop_f_21,acs2005-2009
+RKYE034,Female: 22 to 24 years,pop_f_22-24,acs2005-2009
+RKYE035,Female: 25 to 29 years,pop_f_25-29,acs2005-2009
+RKYE036,Female: 30 to 34 years,pop_f_30-34,acs2005-2009
+RKYE037,Female: 35 to 39 years,pop_f_35-39,acs2005-2009
+RKYE038,Female: 40 to 44 years,pop_f_40-44,acs2005-2009
+RKYE039,Female: 45 to 49 years,pop_f_45-49,acs2005-2009
+RKYE040,Female: 50 to 54 years,pop_f_50-54,acs2005-2009
+RKYE041,Female: 55 to 59 years,pop_f_55-59,acs2005-2009
+RKYE042,Female: 60 and 61 years,pop_f_60-61,acs2005-2009
+RKYE043,Female: 62 to 64 years,pop_f_62-64,acs2005-2009
+RKYE044,Female: 65 and 66 years,pop_f_65-66,acs2005-2009
+RKYE045,Female: 67 to 69 years,pop_f_67-69,acs2005-2009
+RKYE046,Female: 70 to 74 years,pop_f_70-74,acs2005-2009
+RKYE047,Female: 75 to 79 years,pop_f_75-79,acs2005-2009
+RKYE048,Female: 80 to 84 years,pop_f_80-84,acs2005-2009
+RKYE049,Female: 85 years and over,pop_f_gt85,acs2005-2009
+RLIE001,Total,race_tot,acs2005-2009
+RLIE002,Not Hispanic or Latino,race_nh,acs2005-2009
+RLIE003,Not Hispanic or Latino: White alone,race_nh_white,acs2005-2009
+RLIE004,Not Hispanic or Latino: Black or African American alone,race_nh_black,acs2005-2009
+RLIE005,Not Hispanic or Latino: American Indian and Alaska Native alone,race_nh_nativeamer,acs2005-2009
+RLIE006,Not Hispanic or Latino: Asian alone,race_nh_asian,acs2005-2009
+RLIE007,Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_nh_pi,acs2005-2009
+RLIE008,Not Hispanic or Latino: Some other race alone,race_nh_other,acs2005-2009
+RLIE009,Not Hispanic or Latino: Two or more races,race_nh_othergt1,acs2005-2009
+RLIE010,Not Hispanic or Latino: Two or more races: Two races including Some other race,race_nh_othergt1a,acs2005-2009
+RLIE011,Not Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_nh_othergt1b,acs2005-2009
+RLIE012,Hispanic or Latino,race_h,acs2005-2009
+RLIE013,Hispanic or Latino: White alone,race_h_white,acs2005-2009
+RLIE014,Hispanic or Latino: Black or African American alone,race_h_black,acs2005-2009
+RLIE015,Hispanic or Latino: American Indian and Alaska Native alone,race_h_nativeamer,acs2005-2009
+RLIE016,Hispanic or Latino: Asian alone,race_h_asian,acs2005-2009
+RLIE017,Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone,race_h_pi,acs2005-2009
+RLIE018,Hispanic or Latino: Some other race alone,race_h_other,acs2005-2009
+RLIE019,Hispanic or Latino: Two or more races,race_h_othergt1,acs2005-2009
+RLIE020,Hispanic or Latino: Two or more races: Two races including Some other race,race_h_othergt1a,acs2005-2009
+RLIE021,Hispanic or Latino: Two or more races: Two races excluding Some other race and three or more races,race_h_othergt1b,acs2005-2009
+RM8E001,Total,education_tot,acs2005-2009
+RM8E002,Male,education_m,acs2005-2009
+RM8E003,Male: No schooling completed ,education_m_none,acs2005-2009
+RM8E004,Male: Nursery to 4th grade,education_m_gradenursery-4,acs2005-2009
+RM8E005,Male: 5th and 6th grade,education_m_grade5-6,acs2005-2009
+RM8E006,Male: 7th and 8th grade,education_m_grade7-8,acs2005-2009
+RM8E007,Male: 9th grade,education_m_grade9,acs2005-2009
+RM8E008,Male: 10th grade,education_m_grade10,acs2005-2009
+RM8E009,Male: 11th grade,education_m_grade11,acs2005-2009
+RM8E010,"Male: 12th grade, no diploma",education_m_grade12,acs2005-2009
+RM8E011,"Male: High school graduate, GED, or alternative",education_m_highschool,acs2005-2009
+RM8E012,"Male: Some college, less than 1 year",education_m_collegelt1,acs2005-2009
+RM8E013,"Male: Some college, 1 or more years, no degree",education_m_collegegt1,acs2005-2009
+RM8E014,Male: Associate’s degree,education_m_associates,acs2005-2009
+RM8E015,Male: Bachelor's degree,education_m_bachelors,acs2005-2009
+RM8E016,Male: Master's degree,education_m_masters,acs2005-2009
+RM8E017,Male: Professional school degree,education_m_professional,acs2005-2009
+RM8E018,Male: Doctorate degree,education_m_doctorate,acs2005-2009
+RM8E019,Female,education_f,acs2005-2009
+RM8E020,Female: No schooling completed,education_f_none,acs2005-2009
+RM8E021,Female: Nursery to 4th grade,education_f_gradenursery-4,acs2005-2009
+RM8E022,Female: 5th and 6th grade,education_f_grade5-6,acs2005-2009
+RM8E023,Female: 7th and 8th grade,education_f_grade7-8,acs2005-2009
+RM8E024,Female: 9th grade,education_f_grade9,acs2005-2009
+RM8E025,Female: 10th grade,education_f_grade10,acs2005-2009
+RM8E026,Female: 11th grade,education_f_grade11,acs2005-2009
+RM8E027,"Female: 12th grade, no diploma",education_f_grade12,acs2005-2009
+RM8E028,"Female: High school graduate, GED, or alternative",education_f_highschool,acs2005-2009
+RM8E029,"Female: Some college, less than 1 year",education_f_collegelt1,acs2005-2009
+RM8E030,"Female: Some college, 1 or more years, no degree",education_f_collegegt1,acs2005-2009
+RM8E031,Female: Associate’s degree,education_f_associates,acs2005-2009
+RM8E032,Female: Bachelor's degree,education_f_bachelors,acs2005-2009
+RM8E033,Female: Master's degree,education_f_masters,acs2005-2009
+RM8E034,Female: Professional school degree,education_f_professional,acs2005-2009
+RM8E035,Female: Doctorate degree,education_f_doctorate,acs2005-2009
+RNHE001,Median household income in the past 12 months (in 2009 inflation-adjusted dollars),income,acs2005-2009
+RRCE001,Total,housing_tot,acs2005-2009
+RRCE002,Owner occupied,housing_own,acs2005-2009
+RRCE003,Owner occupied: No vehicle available,housing_own_novehicle,acs2005-2009
+RRCE004,Owner occupied: 1 vehicle available,housing_own_1vehicle,acs2005-2009
+RRCE005,Owner occupied: 2 vehicles available,housing_own_2vehicle,acs2005-2009
+RRCE006,Owner occupied: 3 vehicles available,housing_own_3vehicle,acs2005-2009
+RRCE007,Owner occupied: 4 vehicles available,housing_own_4vehicle,acs2005-2009
+RRCE008,Owner occupied: 5 or more vehicles available,housing_own_5vehicle,acs2005-2009
+RRCE009,Renter occupied,housing_rent,acs2005-2009
+RRCE010,Renter occupied: No vehicle available,housing_rent_novehicle,acs2005-2009
+RRCE011,Renter occupied: 1 vehicle available,housing_rent_1vehicle,acs2005-2009
+RRCE012,Renter occupied: 2 vehicles available,housing_rent_2vehicle,acs2005-2009
+RRCE013,Renter occupied: 3 vehicles available,housing_rent_3vehicle,acs2005-2009
+RRCE014,Renter occupied: 4 vehicles available,housing_rent_4vehicle,acs2005-2009
+RRCE015,Renter occupied: 5 or more vehicles available,housing_rent_5vehicle,acs2005-2009
+RVIE001,Total,nativity_tot,acs2005-2009
+RVIE002,Native,nativity_native,acs2005-2009
+RVIE003,Foreign-Born,nativity_foreign,acs2005-2009
+R3FE001,Gini Index,gini,acs2005-2009
