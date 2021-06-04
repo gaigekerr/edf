@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue May 25 22:02:09 2021
-
-@author: ghkerr
+Harmonize ~1 km NO2-attributable paediatric asthma fractions with ACS census
+data for states/territories in the U.S. Created on Tue May 25 22:02:09 2021
 """
-DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
-DIR_AF = DIR_ROOT+'af/'
-DIR_CENSUS = DIR_ROOT+'acs/'
-DIR_CROSS = DIR_ROOT
-DIR_GEO = DIR_ROOT+'tigerline/'
-DIR_OUT = DIR_ROOT+'harmonizedtables/'
+__author__ = "Gaige Hunter Kerr"
+__maintainer__ = "Kerr"
+__email__ = "gaigekerr@gwu.edu"
 
 import math
 import time
 from datetime import datetime
 import numpy as np   
 from scipy import stats
-# Create output text file for print statements (i.e., crosswalk checks)
-f = open(DIR_OUT+'harmonize_afacs_%s.txt'%(
-    datetime.now().strftime('%Y-%m-%d-%H%M')), 'a')
+
+DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
+DIR_AF = DIR_ROOT+'af/'
+DIR_CENSUS = DIR_ROOT+'acs/'
+DIR_CROSS = DIR_ROOT
+DIR_GEO = DIR_ROOT+'tigerline/'
+DIR_OUT = DIR_ROOT+'harmonizedtables/'
+# DIR_AF = '/Users/ghkerr/Desktop/'
+# DIR_CENSUS = '/Users/ghkerr/Downloads/'
+# DIR_CROSS = '/Users/ghkerr/GW/edf/'
+# DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
+# DIR_OUT = '/Users/ghkerr/Desktop/'
 
 def geo_idx(dd, dd_array):
     """Function searches for nearest decimal degree in an array of decimal 
@@ -134,7 +139,8 @@ def harmonize_afacs(vintage, statefips):
         Historical 5-year ACS vintages (note that we have 2005-2009 to 2015-
         2019). 
     statefips : str
-        State FIPS code ()
+        State FIPS code (https://www.nrcs.usda.gov/wps/portal/nrcs/detail/
+        ?cid=nrcs143_013696)
 
     Returns
     -------
@@ -148,12 +154,12 @@ def harmonize_afacs(vintage, statefips):
     # from NHGIS
     #----------------------
     acs2 = pd.read_csv(DIR_CENSUS+'acs%s/'%vintage+'acs%sb.csv'%vintage, 
-        sep=',', header=0, skiprows=[1], engine='python')      
+        sep=',', header=0, engine='python')      
     statename = acs2.loc[acs2['STATEA']==int(statefips)]['STATE'].values[0]
     print('HANDLING %s FOR %s:'%(statename.upper(), vintage[-4:]), file=f)
     print('----------------------------------------', file=f)
     acs1 = pd.read_csv(DIR_CENSUS+'acs%s/'%vintage+'acs%sa.csv'%vintage, 
-        sep=',', header=0, skiprows=[1], engine='python')     
+        sep=',', header=0,  engine='python')     
     # Merge; adapted from https://stackoverflow.com/questions/19125091/
     # pandas-merge-how-to-avoid-duplicating-columns
     acs = acs1.merge(acs2, left_index=True, right_index=True,
@@ -251,6 +257,40 @@ def harmonize_afacs(vintage, statefips):
         #                       codes use either 3 or 4 digits.
         geoid_2_gisjoin = 'G'+geoid[:2]+'0'+geoid[2:5]+'0'+geoid[5:]
         acs_tract = acs.loc[acs['GISJOIN']==geoid_2_gisjoin]
+        nestedtract = 0.
+        # There are a small number of tracts that don't have data in ACS
+        # (for example, see GISJOIN = G0100070010100; GEOID = 01007010100 for 
+        # vintage 2005-2009). However, they *appear* to have a number of census 
+        # tracts associated with them. Using the example from above, 
+        # the following tracks assocated with this GISJOIN code: G0100070010001, 
+        # G0100070010002, G0100070010003, G0100070010004
+        if acs_tract.shape[0]==0:
+            gisjoin_temp = geoid_2_gisjoin[:-4]
+            acs_tract = acs.loc[acs['GISJOIN'].str.startswith(gisjoin_temp)]
+            nestedtract = 1.
+        print(acs_tract.shape)        
+        # Rename columns to unifed names 
+        for var in list(crosswalk['code_acs']):
+            var_unified = crosswalk.loc[crosswalk['code_acs']==
+                var]['code_edf'].values[0]
+            acs_tract = acs_tract.rename(columns={var:var_unified})
+        # If census tracts shapes associated with >1 ACS entry, sum over 
+        # all columns besides Gini and income
+        if acs_tract.shape[0]>1: 
+            ginitemp = np.nanmean(acs_tract['gini'])
+            incometemp = np.nanmean(acs_tract['income'])
+            yeartemp = acs_tract['YEAR'].values[0]
+            statetemp = acs_tract['STATE'].values[0]
+            stateatemp = acs_tract['STATEA'].values[0]
+            countyatemp = acs_tract['COUNTYA'].values[0]
+            tractatemp = acs_tract['TRACTA'].values[0]
+            acs_tract = pd.DataFrame(acs_tract.mean(axis=0)).T
+            acs_tract['GISJOIN'] = geoid_2_gisjoin
+            acs_tract['YEAR'] = yeartemp
+            acs_tract['STATE'] = statetemp
+            acs_tract['STATEA'] = stateatemp
+            acs_tract['COUNTYA'] = countyatemp
+            acs_tract['TRACTA'] = tractatemp
         # Centroid of tract 
         lat_tract = tract.centroid.y
         lng_tract = tract.centroid.x
@@ -295,15 +335,22 @@ def harmonize_afacs(vintage, statefips):
         dicttemp = {'GEOID':geoid, 
             'AF':np.nanmean(af_inside),
             'INTERPFLAG':np.nanmean(interpflag),
+            'NESTEDTRACTFLAG':nestedtract,
             'LAT_CENTROID':lat_tract,
             'LNG_CENTROID':lng_tract}
-        for var in tokeep+list(crosswalk['code_acs']):
-            if var in list(crosswalk['code_acs']):
-                var_unified = crosswalk.loc[crosswalk['code_acs']==
-                    var]['code_edf'].values[0]
-                dicttemp[var_unified] = acs_tract[var].values[0]                    
-            else: 
-                dicttemp[var] = acs_tract[var].values[0]        
+        # There are some census tracts records that simply don't have an ACS 
+        # entry associated with them (even after correcting for the nesting 
+        # issue above). For example, GEOID=02158000100/GISJOIN=G0201580000100 
+        # in Alaska has no ACS entry in the 2006-2010 vintage. Set these tracts
+        # to NaN and flag
+        if acs_tract.shape[0]==0:
+            for var in tokeep+list(crosswalk['code_edf']):
+                dicttemp[var] = np.nan
+            dicttemp['MISSINGTRACTFLAG']=1.
+        else: 
+            for var in tokeep+list(crosswalk['code_edf']):
+                dicttemp[var] = acs_tract[var].values[0]                
+            dicttemp['MISSINGTRACTFLAG']=0.    
         df.append(dicttemp)   
         del dicttemp
     df = pd.DataFrame(df)
@@ -375,8 +422,11 @@ fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12',
     '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
     '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', 
     '48', '49', '50', '51', '53', '54', '55', '56', '72']    
-# for vintage in vintages: 
-    # for statefips in fips: 
-        # harmonize_afacs(vintage, statefips)
-harmonize_afacs('2011-2015', '11')
-f.close()        
+for vintage in vintages: 
+    # Create output text file for print statements (i.e., crosswalk checks)
+    # for each vintage
+    f = open(DIR_OUT+'harmonize_afacs%s_%s.txt'%(vintage,
+        datetime.now().strftime('%Y-%m-%d-%H%M')), 'a')    
+    for statefips in fips: 
+        harmonize_afacs(vintage, statefips)
+    f.close()
