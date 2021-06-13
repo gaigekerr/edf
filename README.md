@@ -1,16 +1,16 @@
 This file provides detailed documentation for the data and methodology used for the EDF project to develop a Mapbox-based visualization of NO<sub>2</sub>-pediatric asthma attributable fraction for the full extent of the United States (#1052-000000-10400-100-00) and the repository contents. 
 
-# Data sources and methodology
+# Data source
 
 ## NO<sub>2</sub>
 Surface-level NO<sub>2</sub> data at 1 km x 1 km resolution from [figshare](https://figshare.com/articles/dataset/Global_surface_NO2_concentrations_1990-2020/12968114/4) was trimmed to include the United States and Puerto Rico with the following command using the gdal library: 
 ```
 gdalwarp -ts 14184 6248 -te -179.1479159 17.8022 -60.0023159 71.3936168 -t_srs metafile.wkt -wo SOURCE_EXTRA=10 -r average -co TILED=YES -overwrite -co compress=LZW YYYY_final_1km.tif YYYY_final_1km_usa.tif
-```. 
+```
 Note that the well-known text `metadata.wkt` file has the following contents: 
 ```
 GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]
-```.
+```
 These trimmed files are stored `/GWSPH/groups/anenberggrp/ghkerr/data/edf/no2/`.
 
 ## Census 
@@ -34,7 +34,7 @@ FIPS-MSA crosswalk (downloaded 7 June 2021): note The table below matches QCEW c
 SITE: https://www.bls.gov/cew/classifications/areas/county-msa-csa-crosswalk.htm
 FILE: https://www.bls.gov/cew/classifications/areas/qcew-county-msa-csa-crosswalk-csv.csv
 
-
+## Pediatric asthma incidence
 Asthma burden/risk: http://ghdx.healthdata.org/gbd-results-tool
 Age-specific asthma incidence rates for 2019 with trends since 1990 downloaded on 7 June 2021 for 
 Location: 50 US states, District of Columbia, Puerto Rico, and overall US
