@@ -14,27 +14,80 @@ from datetime import datetime
 import numpy as np   
 from scipy import stats
 
-DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
-DIR_AF = DIR_ROOT+'af/'
-DIR_CENSUS = DIR_ROOT+'acs/'
-DIR_CROSS = DIR_ROOT
-DIR_GEO = DIR_ROOT+'tigerline/'
-DIR_OUT = DIR_ROOT+'harmonizedtables/'
-# DIR_AF = '/Users/ghkerr/Desktop/'
-# DIR_CENSUS = '/Users/ghkerr/Downloads/'
-# DIR_CROSS = '/Users/ghkerr/GW/edf/'
-# DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
-# DIR_OUT = '/Users/ghkerr/Desktop/'
+# DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
+# DIR_AF = DIR_ROOT+'af/'
+# DIR_CENSUS = DIR_ROOT+'acs/'
+# DIR_CROSS = DIR_ROOT
+# DIR_NO2 = 
+# DIR_GEO = DIR_ROOT+'tigerline/'
+# DIR_OUT = DIR_ROOT+'harmonizedtables/'
+DIR_AF = '/Users/ghkerr/GW/edf/data/af/'
+DIR_CENSUS = '/Users/ghkerr/Downloads/'
+DIR_CROSS = '/Users/ghkerr/GW/edf/data/crosswalks/'
+DIR_NO2 = '/Users/ghkerr/GW/edf/data/no2/'
+DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
+DIR_OUT = '/Users/ghkerr/Desktop/'
+
+def pixel2coord(col, row, a, b, c, d, e, f):
+    """Returns global coordinates to pixel center using base-0 raster 
+    index. Adapted from https://gis.stackexchange.com/questions/53617/
+    how-to-find-lat-lon-values-for-every-pixel-in-a-geotiff-file"""
+    xp = a* col + b * row + a * 0.5 + b * 0.5 + c
+    yp = d* col + e * row + d * 0.5 + e * 0.5 + f
+    return(xp, yp)
+
+def open_no2pop_tif(fname, fill): 
+    """Open TIF dataset for the United States containing 
+    and extract coordinate information for the specified domain. 
+    
+    Parameters
+    ----------
+    fname : str
+        Path to and name of TIF file
+    fill : float
+        Missing value
+
+    Returns
+    -------
+    lng : numpy.ndarray
+        Longitude array for Larkin dataset, units of degrees, [lng,]
+    lat : numpy.ndarray
+        Latitude array for Larkin dataset, units of degrees, [lat,]    
+    larkin : numpy.ndarray
+        Larkin surface-level NO2, units of ppbv, [lat, lng]    
+    """
+    from osgeo import gdal
+    import numpy as np
+    ds = gdal.Open('%s.tif'%fname)
+    band = ds.GetRasterBand(1)
+    no2 = band.ReadAsArray()
+    c, a, b, f, d, e = ds.GetGeoTransform()
+    col = ds.RasterXSize
+    row = ds.RasterYSize
+    # Fetch latitudes
+    lat = []
+    for ri in range(row):
+        coord = pixel2coord(0, ri, a, b, c, d, e, f) # Can substitute 
+        # whatever for 0 and it should yield the name answer. 
+        lat.append(coord[1])
+    lat = np.array(lat)
+    # Fetch longitudes
+    lng = []
+    for ci in range(col):
+        coord = pixel2coord(ci, 0, a, b, c, d, e, f)
+        lng.append(coord[0])
+    lng = np.array(lng)
+    # Convert from uint8 to float
+    no2 = no2.astype(np.float)
+    # Replace fill value with NaN
+    no2[no2==fill]=np.nan
+    return lng, lat, no2
 
 def geo_idx(dd, dd_array):
     """Function searches for nearest decimal degree in an array of decimal 
     degrees and returns the index. np.argmin returns the indices of minimum 
     value along an axis. So subtract dd from all values in dd_array, take 
-    absolute value and find index of minimum. n.b. Function edited on 
-    5 Dec 2018 to calculate the resolution using the mode. Before this it 
-    used the simple difference which could be erroraneous because of 
-    longitudes in (-180-180) coordinates (the "jump" from -180 to 180 yielded 
-    a large resolution).
+    absolute value and find index of minimum. 
     
     Parameters
     ----------
@@ -50,12 +103,6 @@ def geo_idx(dd, dd_array):
         dd
     """
     geo_idx = (np.abs(dd_array - dd)).argmin()
-    # if distance from closest cell to intended value is 2x the value of the
-    # spatial resolution, raise error 
-    res = np.abs(stats.mode(np.diff(dd_array))[0][0])
-    if np.abs(dd_array[geo_idx] - dd) > (2 * res):
-        print('Closet index far from intended value!', file=f)
-        return 
     return geo_idx
 
 def harvesine(lon1, lat1, lon2, lat2):
@@ -150,8 +197,7 @@ def harmonize_afacs(vintage, statefips):
     import pandas as pd
     import shapefile
     from shapely.geometry import shape, Point
-    # # # # Open 2019 American Community Survey: 5-Year Data (2015-2019) 
-    # from NHGIS
+    # # # # Open American Community Survey: 5-Year Data from NHGIS
     #----------------------
     acs2 = pd.read_csv(DIR_CENSUS+'acs%s/'%vintage+'acs%sb.csv'%vintage, 
         sep=',', header=0, engine='python')      
@@ -210,6 +256,14 @@ def harmonize_afacs(vintage, statefips):
     af = af.variables['AF'][:].data
     af[af==fill_value] = np.nan
     print('# # # # Attributable fraction data loaded!', file=f)
+    
+    # # # # Read NO2
+    #----------------------
+    no2file = DIR_NO2+'%s_final_1km_usa'%vintage[-4:]
+    # Note that the latitude and longitude coordinates should match the 
+    # attributable fraction dataset
+    lng_no2, lat_no2, no2 = open_no2pop_tif(no2file, -999.)
+    print('# # # # NO2 data loaded!', file=f)
     # Put to sleep for a hot sec so it doesn't screw up the progress bar
     time.sleep(2)
     
@@ -218,6 +272,7 @@ def harmonize_afacs(vintage, statefips):
     #----------------------
     df = []
     for tract in np.arange(0, len(tracts), 1):
+        print(tract)
         record = records[tract]  
         # Extract GEOID of record
         if vintage=='2005-2009':
@@ -268,7 +323,6 @@ def harmonize_afacs(vintage, statefips):
             gisjoin_temp = geoid_2_gisjoin[:-4]
             acs_tract = acs.loc[acs['GISJOIN'].str.startswith(gisjoin_temp)]
             nestedtract = 1.
-        print(acs_tract.shape)        
         # Rename columns to unifed names 
         for var in list(crosswalk['code_acs']):
             var_unified = crosswalk.loc[crosswalk['code_acs']==
@@ -302,9 +356,11 @@ def harmonize_afacs(vintage, statefips):
         lat_subset = lat_af[lower:upper]
         lng_subset = lng_af[left:right]
         af_subset = af[lower:upper, left:right]
-        # List will be filled with point(s) from attributable fractions grid 
-        # inside tract
+        no2_subset = no2[lower:upper, left:right]
+        # List will be filled with point(s) from attributable fractions and
+        # NO2 grid inside tract
         af_inside = []
+        no2_inside = []
         interpflag = []
         # Fetch coordinates within tracts (if they exist)
         for i, ilat in enumerate(lat_subset):
@@ -313,6 +369,7 @@ def harmonize_afacs(vintage, statefips):
                 if tract.contains(point) is True:
                     # Fill lists with indices in grid within polygon
                     af_inside.append(af_subset[i,j])
+                    no2_inside.append(no2_subset[i,j])
                     interpflag.append(0.)
         # Otherwise, interpolate using inverse distance weighting 
         # https://rafatieppo.github.io/post/2018_07_27_idw2pyr/
@@ -331,9 +388,12 @@ def harmonize_afacs(vintage, statefips):
             y = lat_subset[lat_idx]
             z = af_subset[lat_idx, lng_idx]
             af_inside.append(idwr(x,y,z,[lng_tract], [lat_tract])[0][-1])
+            z = no2_subset[lat_idx, lng_idx]
+            no2_inside.append(idwr(x,y,z,[lng_tract], [lat_tract])[0][-1])
             interpflag.append(1.)
         dicttemp = {'GEOID':geoid, 
             'AF':np.nanmean(af_inside),
+            'NO2':np.nanmean(no2_inside),
             'INTERPFLAG':np.nanmean(interpflag),
             'NESTEDTRACTFLAG':nestedtract,
             'LAT_CENTROID':lat_tract,
@@ -367,13 +427,16 @@ def harmonize_afacs(vintage, statefips):
         df['race_nh']-df['race_h']-df['race_h_othergt1a']-
         df['race_h_othergt1b']-df['race_nh_othergt1a']-
         df['race_nh_othergt1b'])
+    # Deal with really small differences (e.g., -2e-12)
+    race = race.round(decimals=1)
     if (np.mean(race)==0.) & (np.max(race)==0.) & (np.min(race)==0.):
         print('racial categories sum to 0!', file=f)
     else: 
         print('racial categories DO NOT sum to 0!', file=f)
     # Housing/vehicle ownership
     housing = (df.filter(like='housing_').sum(axis=1)-(2*df['housing_tot'])-
-        df['housing_own']-df['housing_rent'])    
+        df['housing_own']-df['housing_rent'])
+    housing = housing.round(decimals=1)
     if (np.mean(housing)==0.) & (np.max(housing)==0.) & (np.min(housing)==0.):
         print('housing categories sum to 0!', file=f)
     else: 
@@ -382,9 +445,11 @@ def harmonize_afacs(vintage, statefips):
     if int(vintage[-4:]) > 2011:
         education = (df.filter(like='education_').sum(axis=1)-
             (2*df['education_tot']))
+        education = education.round(decimals=1)
     else: 
         education = (df.filter(like='education_').sum(axis=1)-
-            (2*df['education_tot'])-df['education_m']-df['education_f'])        
+            (2*df['education_tot'])-df['education_m']-df['education_f']) 
+        education = education.round(decimals=1)        
     if (np.mean(education)==0.) & (np.max(education)==0.) & \
         (np.min(education)==0.):
         print('education categories sum to 0!', file=f)
@@ -392,6 +457,7 @@ def harmonize_afacs(vintage, statefips):
         print('education categories DO NOT sum to 0!', file=f)
     # Nativity 
     nativity = df['nativity_tot']-df['nativity_foreign']-df['nativity_native']
+    nativity = nativity.round(decimals=1)
     if (np.mean(nativity)==0.) & (np.max(nativity)==0.) & \
         (np.min(nativity)==0.):
         print('nativity categories sum to 0!', file=f)
@@ -400,6 +466,7 @@ def harmonize_afacs(vintage, statefips):
     # Age
     pop = (df.filter(like='pop_').sum(axis=1)-(2*df['pop_tot'])-
         df['pop_m']-df['pop_f'])
+    pop = pop.round(decimals=1)
     if (np.mean(pop)==0.) & (np.max(pop)==0.) & (np.min(pop)==0.):
         print('population/age categories sum to 0!', file=f)
     else: 
