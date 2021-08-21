@@ -29,21 +29,21 @@ import time
 from datetime import datetime
 import numpy as np   
 
-# DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
-# DIR_GBD = DIR_ROOT+'gbd/'
-# DIR_CENSUS = DIR_ROOT+'acs/'
-# DIR_TROPOMI = '/GWSPH/groups/anenberggrp/ghkerr/data/tropomi/'
-# DIR_CROSS = DIR_ROOT
-# DIR_NO2 = DIR_ROOT+'no2/'
-# DIR_GEO = DIR_ROOT+'tigerline/'
-# DIR_OUT = DIR_ROOT+'harmonizedtables/'
-DIR_TROPOMI = '/Users/ghkerr/GW/data/tropomi/'
-DIR_GBD = '/Users/ghkerr/GW/data/gbd/'
-DIR_CENSUS = '/Users/ghkerr/GW/data/demographics/'
-DIR_CROSS = '/Users/ghkerr/GW/data/demographics/'
-DIR_NO2 = '/Users/ghkerr/GW/data/anenberg_mohegh_no2/no2/'
-DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
-DIR_OUT = '/Users/ghkerr/Desktop/'
+DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
+DIR_GBD = DIR_ROOT+'gbd/'
+DIR_CENSUS = DIR_ROOT+'acs/'
+DIR_TROPOMI = '/GWSPH/groups/anenberggrp/ghkerr/data/tropomi/'
+DIR_CROSS = DIR_ROOT
+DIR_NO2 = DIR_ROOT+'no2/'
+DIR_GEO = DIR_ROOT+'tigerline/'
+DIR_OUT = DIR_ROOT+'harmonizedtables/'
+# DIR_TROPOMI = '/Users/ghkerr/GW/data/tropomi/'
+# DIR_GBD = '/Users/ghkerr/GW/data/gbd/'
+# DIR_CENSUS = '/Users/ghkerr/GW/data/demographics/'
+# DIR_CROSS = '/Users/ghkerr/GW/data/demographics/'
+# DIR_NO2 = '/Users/ghkerr/GW/data/anenberg_mohegh_no2/no2/'
+# DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
+# DIR_OUT = '/Users/ghkerr/Desktop/'
 
 def pixel2coord(col, row, a, b, c, d, e, f):
     """Returns global coordinates to pixel center using base-0 raster 
@@ -463,14 +463,20 @@ def harmonize_afacs(vintage, statefips):
         # log-transformed, and there are files for 1000 draws and for a 
         # summary only (mean, median, 95% UI bounds). The TMREL used for our 
         # PAFs is a uniform distribution between 4.545 and 6.190 ppb.
-        exposureclosest_index = betagbd['exposure'].sub(no2_inside
-            ).abs().idxmin()
-        # Closest exposure to tract-averaged NO2
-        ec = betagbd.iloc[exposureclosest_index]
-        afgbdmean = 1-np.exp(-ec['mean'])
-        afgbdmed = 1-np.exp(-ec['median'])
-        afgbdupper = 1-np.exp(-ec['upper'])
-        afgbdlower  = 1-np.exp(-ec['lower'])
+        if np.isnan(no2_inside)!=True:
+            exposureclosest_index = betagbd['exposure'].sub(no2_inside
+                ).abs().idxmin()
+            # Closest exposure to tract-averaged NO2
+            ec = betagbd.iloc[exposureclosest_index]
+            afgbdmean = 1-np.exp(-ec['mean'])
+            afgbdmed = 1-np.exp(-ec['median'])
+            afgbdupper = 1-np.exp(-ec['upper'])
+            afgbdlower  = 1-np.exp(-ec['lower'])
+        else: 
+            afgbdmean = np.nan
+            afgbdmed = np.nan
+            afgbdupper = np.nan
+            afgbdlower  = np.nan
         dicttemp = {'GEOID':geoid, 
             'NO2':no2_inside,
             'AF':af,
@@ -486,7 +492,6 @@ def harmonize_afacs(vintage, statefips):
             'LNG_CENTROID':lng_tract}
         if vintage=='2015-2019':
             dicttemp['TROPOMINO2']=np.nanmean(tropomi_inside)
-            
         # There are some census tracts records that simply don't have an ACS 
         # entry associated with them (even after correcting for the nesting 
         # issue above). For example, GEOID=02158000100/GISJOIN=G0201580000100 
@@ -570,7 +575,7 @@ def harmonize_afacs(vintage, statefips):
     print('# # # # Output file written!\n', file=f)
     return 
 
-vintages = ['2005-2009', '2006-2010', '2007-2011', '2008-2012', 
+vintages = ['2006-2010', '2007-2011', '2008-2012', 
     '2009-2013', '2010-2014', '2011-2015', '2012-2016', '2013-2017', 
     '2014-2018', '2015-2019']    
 fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12', 
