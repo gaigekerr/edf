@@ -1,8 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Harmonize ~1 km NO2-attributable paediatric asthma fractions with ACS census
-data for states/territories in the U.S. Created on Tue May 25 22:02:09 2021
+Harmonize 1 x 1 km NO2 dataset from Anenberg, Mohegh, et al. (2021) with 
+census tract geometries and calculate pediatric PAF for states/territories in 
+the U.S. and Puerto Rico. 
+
+The version number, whose descriptions/differences are denoted below, are 
+indicated in the output harmonized tables' filenames.
+
+v1 - original version
+v2 - Calculate PAF using tract-averaged NO2 rather than using a preformed 
+     gridded PAF dataset and averaging grid cell PAFs values over tracts.
+   - Change the grid for which NO2 is subsampled to the grid of 
+     NO2; in the earlier version we had been indexing with the grid of PAF. 
+     These two grids have the same dimensions, so no error was thrown, but 
+     the latitude coordinates differ slightly. This resulted in slightly off
+     NO2 concentrations. 
+   - For 2015-2019 vintage, calculate tract-averaged TROPOMI NO2 from 2019
+
+Created on 25 May 2021
 """
 __author__ = "Gaige Hunter Kerr"
 __maintainer__ = "Kerr"
@@ -12,19 +28,20 @@ import math
 import time
 from datetime import datetime
 import numpy as np   
-from scipy import stats
 
 # DIR_ROOT = '/GWSPH/groups/anenberggrp/ghkerr/data/edf/'
-# DIR_AF = DIR_ROOT+'af/'
+# DIR_GBD = DIR_ROOT+'gbd/'
 # DIR_CENSUS = DIR_ROOT+'acs/'
+# DIR_TROPOMI = '/GWSPH/groups/anenberggrp/ghkerr/data/tropomi/'
 # DIR_CROSS = DIR_ROOT
-# DIR_NO2 = 
+# DIR_NO2 = DIR_ROOT+'no2/'
 # DIR_GEO = DIR_ROOT+'tigerline/'
 # DIR_OUT = DIR_ROOT+'harmonizedtables/'
-DIR_AF = '/Users/ghkerr/GW/edf/data/af/'
-DIR_CENSUS = '/Users/ghkerr/Downloads/'
-DIR_CROSS = '/Users/ghkerr/GW/edf/data/crosswalks/'
-DIR_NO2 = '/Users/ghkerr/GW/edf/data/no2/'
+DIR_TROPOMI = '/Users/ghkerr/GW/data/tropomi/'
+DIR_GBD = '/Users/ghkerr/GW/data/gbd/'
+DIR_CENSUS = '/Users/ghkerr/GW/data/demographics/'
+DIR_CROSS = '/Users/ghkerr/GW/data/demographics/'
+DIR_NO2 = '/Users/ghkerr/GW/data/anenberg_mohegh_no2/no2/'
 DIR_GEO = '/Users/ghkerr/GW/data/geography/tigerline/'
 DIR_OUT = '/Users/ghkerr/Desktop/'
 
@@ -197,6 +214,9 @@ def harmonize_afacs(vintage, statefips):
     import pandas as pd
     import shapefile
     from shapely.geometry import shape, Point
+    # For subsetting maps for NO2 harmonization 
+    searchrad = 0.75
+    
     # # # # Open American Community Survey: 5-Year Data from NHGIS
     #----------------------
     acs2 = pd.read_csv(DIR_CENSUS+'acs%s/'%vintage+'acs%sb.csv'%vintage, 
@@ -229,6 +249,16 @@ def harmonize_afacs(vintage, statefips):
     crosswalk = crosswalk.loc[crosswalk['vintage']==('acs'+vintage)]
     print('# # # # Crosswalk file loaded!', file=f)
     
+    # # # # Open GBD estimates of NO2-attributable pediatric asthma RR and 
+    # calculate RR from Khreis et al. (2017) for PAF calculations
+    #----------------------
+    beta = np.log(1.26)/10.
+    betaupper = np.log(1.37)/10.
+    betalower = np.log(1.10)/10.
+    betagbd = pd.read_csv(DIR_GBD+'no2_rr_draws_summary.csv', sep=',',
+        engine='python')
+    print('# # # # GBD/Khreis RR calculated!', file=f)    
+    
     # # # # Open TIGER/Line shapefiles; note that for ACS estimate vintages
     # post 2009, the 2019 TIGER/Line shapefiles are used. For 2009, TIGER/Line
     # shapefiles from 2009 are used
@@ -244,22 +274,10 @@ def harmonize_afacs(vintage, statefips):
     records = r.records()
     print('# # # # TIGER/Line shapefiles loaded!', file=f)
     
-    # # # # Read attributable fraction estimates
-    #----------------------
-    # Note that the AF dataset loaded corresponds to the final year of the 
-    # 5-year ACS estimate
-    af = nc.Dataset(DIR_AF+'af_anenbergmoheghno2_usa_%s.nc'%vintage[-4:])
-    afyear = af.title[35:39] # Kludgey!
-    lat_af = af.variables['latitude'][:].data
-    lng_af = af.variables['longitude'][:].data
-    fill_value = af.variables['AF'][:].fill_value
-    af = af.variables['AF'][:].data
-    af[af==fill_value] = np.nan
-    print('# # # # Attributable fraction data loaded!', file=f)
-    
     # # # # Read NO2
     #----------------------
-    no2file = DIR_NO2+'%s_final_1km_usa'%vintage[-4:]
+    no2year = vintage[-4:]
+    no2file = DIR_NO2+'%s_final_1km_usa'%no2year
     # Note that the latitude and longitude coordinates should match the 
     # attributable fraction dataset
     lng_no2, lat_no2, no2 = open_no2pop_tif(no2file, -999.)
@@ -267,12 +285,24 @@ def harmonize_afacs(vintage, statefips):
     # Put to sleep for a hot sec so it doesn't screw up the progress bar
     time.sleep(2)
     
+    
+    # # # # Read TROPOMI tropospheric column NO2 for 2015-2019 vintage
+    #----------------------
+    if vintage == '2015-2019':
+        tropomi = nc.Dataset(DIR_TROPOMI+
+            'Tropomi_NO2_griddedon0.01grid_2019_QA75.ncf', 'r')
+        tropomi = tropomi.variables['NO2'][:].data
+        lnglat_tropomi = nc.Dataset(DIR_TROPOMI+'LatLonGrid.ncf', 'r')
+        lng_tropomi = lnglat_tropomi.variables['LON'][:].data
+        lat_tropomi = lnglat_tropomi.variables['LAT'][:].data
+        print('# # # # TROPOMI NO2 loaded!', file=f)
+        time.sleep(2)
+    
     # # # # Loop through tracts and find attributable fractions in tract
     # and demographic information
     #----------------------
     df = []
     for tract in np.arange(0, len(tracts), 1):
-        print(tract)
         record = records[tract]  
         # Extract GEOID of record
         if vintage=='2005-2009':
@@ -349,31 +379,36 @@ def harmonize_afacs(vintage, statefips):
         lat_tract = tract.centroid.y
         lng_tract = tract.centroid.x
         # Subset latitude, longitude, and attributable fraction maps  
-        upper = geo_idx(lat_tract-0.75, lat_af)
-        lower = geo_idx(lat_tract+0.75, lat_af)
-        left = geo_idx(lng_tract-0.75, lng_af)
-        right = geo_idx(lng_tract+0.75, lng_af)
-        lat_subset = lat_af[lower:upper]
-        lng_subset = lng_af[left:right]
-        af_subset = af[lower:upper, left:right]
+        upper = geo_idx(lat_tract-searchrad, lat_no2)
+        lower = geo_idx(lat_tract+searchrad, lat_no2)
+        left = geo_idx(lng_tract-searchrad, lng_no2)
+        right = geo_idx(lng_tract+searchrad, lng_no2)
+        lat_subset = lat_no2[lower:upper]
+        lng_subset = lng_no2[left:right]
         no2_subset = no2[lower:upper, left:right]
+        if vintage == '2015-2019':
+            uppert = geo_idx(lat_tract-searchrad, lat_tropomi)
+            lowert = geo_idx(lat_tract+searchrad, lat_tropomi)
+            leftt = geo_idx(lng_tract-searchrad, lng_tropomi)
+            rightt = geo_idx(lng_tract+searchrad, lng_tropomi)
+            lat_tropomi_subset = lat_tropomi[uppert:lowert]
+            lng_tropomi_subset = lng_tropomi[leftt:rightt]            
+            tropomi_subset = tropomi[uppert:lowert, leftt:rightt]
+            tropomi_inside = []
         # List will be filled with point(s) from attributable fractions and
         # NO2 grid inside tract
-        af_inside = []
         no2_inside = []
         interpflag = []
-        # Fetch coordinates within tracts (if they exist)
+        # # # # Fetch coordinates within tracts (if they exist) for NO2 dataset
         for i, ilat in enumerate(lat_subset):
             for j, jlng in enumerate(lng_subset): 
                 point = Point(jlng, ilat)
                 if tract.contains(point) is True:
-                    # Fill lists with indices in grid within polygon
-                    af_inside.append(af_subset[i,j])
                     no2_inside.append(no2_subset[i,j])
                     interpflag.append(0.)
         # Otherwise, interpolate using inverse distance weighting 
         # https://rafatieppo.github.io/post/2018_07_27_idw2pyr/
-        if len(af_inside)==0:
+        if len(no2_inside)==0:
             idx_latnear = geo_idx(lat_tract, lat_subset)
             idx_lngnear = geo_idx(lng_tract, lng_subset)
             # Indices for 8 nearby points
@@ -386,18 +421,72 @@ def harmonize_afacs(vintage, statefips):
             # Known coordinates and attributable fractions
             x = lng_subset[lng_idx]
             y = lat_subset[lat_idx]
-            z = af_subset[lat_idx, lng_idx]
-            af_inside.append(idwr(x,y,z,[lng_tract], [lat_tract])[0][-1])
             z = no2_subset[lat_idx, lng_idx]
             no2_inside.append(idwr(x,y,z,[lng_tract], [lat_tract])[0][-1])
             interpflag.append(1.)
+        # # # # Fetch coordinates within tracts for TROPOMI dataset
+        if vintage == '2015-2019':            
+            for i, ilat in enumerate(lat_tropomi_subset):
+                for j, jlng in enumerate(lng_tropomi_subset): 
+                    point = Point(jlng, ilat)
+                    if tract.contains(point) is True:
+                        tropomi_inside.append(tropomi_subset[i,j])
+            if len(tropomi_inside)==0:
+                idx_latnear = geo_idx(lat_tract, lat_tropomi_subset)
+                idx_lngnear = geo_idx(lng_tract, lng_tropomi_subset)
+                lng_idx = [idx_lngnear-1, idx_lngnear, idx_lngnear+1, 
+                    idx_lngnear-1, idx_lngnear+1, idx_lngnear-1, idx_lngnear, 
+                    idx_lngnear+1]
+                lat_idx = [idx_latnear+1, idx_latnear+1, idx_latnear+1, 
+                    idx_latnear, idx_latnear, idx_latnear-1, idx_latnear-1, 
+                    idx_latnear-1]
+                x = lng_tropomi_subset[lng_idx]
+                y = lat_tropomi_subset[lat_idx]
+                z = tropomi_subset[lat_idx, lng_idx]
+                tropomi_inside.append(idwr(x,y,z,[lng_tract],
+                    [lat_tract])[0][-1])
+        # Mean NO2 within tract
+        no2_inside = np.nanmean(no2_inside)
+        # # # # Calculate attributable fraction based on tract-averaged NO2. 
+        # The first method is using the concentration-response factor of 1.26 
+        # (1.10 - 1.37) per 10 ppb is used in Achakulwisut et al. (2019) and 
+        # taken from Khreis et al. (2017). Note that this "log-linear" 
+        # relationship comes from epidemiological studies that log-transform 
+        # concentration before regressing with incidence of health outcome 
+        # (where log is the natural logarithm). Additional details can be 
+        # found in Anenberg et al. (2010)
+        af = (1-np.exp(-beta*no2_inside))
+        afupper = (1-np.exp(-betaupper*no2_inside))
+        aflower = (1-np.exp(-betalower*no2_inside))        
+        # The second method is using the GBD RRs. These RR predictions are for 
+        # a range of exposures between 0 and 100 ppb. These predictions are 
+        # log-transformed, and there are files for 1000 draws and for a 
+        # summary only (mean, median, 95% UI bounds). The TMREL used for our 
+        # PAFs is a uniform distribution between 4.545 and 6.190 ppb.
+        exposureclosest_index = betagbd['exposure'].sub(no2_inside
+            ).abs().idxmin()
+        # Closest exposure to tract-averaged NO2
+        ec = betagbd.iloc[exposureclosest_index]
+        afgbdmean = 1-np.exp(-ec['mean'])
+        afgbdmed = 1-np.exp(-ec['median'])
+        afgbdupper = 1-np.exp(-ec['upper'])
+        afgbdlower  = 1-np.exp(-ec['lower'])
         dicttemp = {'GEOID':geoid, 
-            'AF':np.nanmean(af_inside),
-            'NO2':np.nanmean(no2_inside),
+            'NO2':no2_inside,
+            'AF':af,
+            'AFUPPER':afupper,
+            'AFLOWER':aflower,
+            'AFMEAN_GBD':afgbdmean,
+            'AFMEDIAN_GBD':afgbdmed,
+            'AFUPPER_GBD':afgbdupper,            
+            'AFLOWER_GBD':afgbdlower,            
             'INTERPFLAG':np.nanmean(interpflag),
             'NESTEDTRACTFLAG':nestedtract,
             'LAT_CENTROID':lat_tract,
             'LNG_CENTROID':lng_tract}
+        if vintage=='2015-2019':
+            dicttemp['TROPOMINO2']=np.nanmean(tropomi_inside)
+            
         # There are some census tracts records that simply don't have an ACS 
         # entry associated with them (even after correcting for the nesting 
         # issue above). For example, GEOID=02158000100/GISJOIN=G0201580000100 
@@ -476,7 +565,7 @@ def harmonize_afacs(vintage, statefips):
     # ACS vintage, and version  
     #----------------------
     df = df.replace('NaN', '', regex=True)
-    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v1.csv'%(afyear, vintage, 
+    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v2.csv'%(no2year, vintage, 
         statefips), sep = ',')
     print('# # # # Output file written!\n', file=f)
     return 
@@ -488,10 +577,9 @@ fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12',
     '13', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24',
     '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
     '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', 
-    '48', '49', '50', '51', '53', '54', '55', '56', '72']    
+    '48', '49', '50', '51', '53', '54', '55', '56', '72']
 for vintage in vintages: 
     # Create output text file for print statements (i.e., crosswalk checks)
-    # for each vintage
     f = open(DIR_OUT+'harmonize_afacs%s_%s.txt'%(vintage,
         datetime.now().strftime('%Y-%m-%d-%H%M')), 'a')    
     for statefips in fips: 
