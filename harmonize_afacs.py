@@ -425,26 +425,27 @@ def harmonize_afacs(vintage, statefips):
             no2_inside.append(idwr(x,y,z,[lng_tract], [lat_tract])[0][-1])
             interpflag.append(1.)
         # # # # Fetch coordinates within tracts for TROPOMI dataset
-        if vintage == '2015-2019':            
+        if vintage == '2015-2019':
             for i, ilat in enumerate(lat_tropomi_subset):
                 for j, jlng in enumerate(lng_tropomi_subset): 
                     point = Point(jlng, ilat)
                     if tract.contains(point) is True:
                         tropomi_inside.append(tropomi_subset[i,j])
             if len(tropomi_inside)==0:
-                idx_latnear = geo_idx(lat_tract, lat_tropomi_subset)
-                idx_lngnear = geo_idx(lng_tract, lng_tropomi_subset)
-                lng_idx = [idx_lngnear-1, idx_lngnear, idx_lngnear+1, 
-                    idx_lngnear-1, idx_lngnear+1, idx_lngnear-1, idx_lngnear, 
-                    idx_lngnear+1]
-                lat_idx = [idx_latnear+1, idx_latnear+1, idx_latnear+1, 
-                    idx_latnear, idx_latnear, idx_latnear-1, idx_latnear-1, 
-                    idx_latnear-1]
-                x = lng_tropomi_subset[lng_idx]
-                y = lat_tropomi_subset[lat_idx]
-                z = tropomi_subset[lat_idx, lng_idx]
-                tropomi_inside.append(idwr(x,y,z,[lng_tract],
-                    [lat_tract])[0][-1])
+                if (statefips!='02') and (statefips!='15') and (statefips!='72'): 
+                    idx_latnear = geo_idx(lat_tract, lat_tropomi_subset)
+                    idx_lngnear = geo_idx(lng_tract, lng_tropomi_subset)
+                    lng_idx = [idx_lngnear-1, idx_lngnear, idx_lngnear+1, 
+                        idx_lngnear-1, idx_lngnear+1, idx_lngnear-1, idx_lngnear, 
+                        idx_lngnear+1]
+                    lat_idx = [idx_latnear+1, idx_latnear+1, idx_latnear+1, 
+                        idx_latnear, idx_latnear, idx_latnear-1, idx_latnear-1, 
+                        idx_latnear-1]
+                    x = lng_tropomi_subset[lng_idx]
+                    y = lat_tropomi_subset[lat_idx]
+                    z = tropomi_subset[lat_idx, lng_idx]
+                    tropomi_inside.append(idwr(x,y,z,[lng_tract],
+                        [lat_tract])[0][-1])
         # Mean NO2 within tract
         no2_inside = np.nanmean(no2_inside)
         # # # # Calculate attributable fraction based on tract-averaged NO2. 
@@ -578,6 +579,7 @@ def harmonize_afacs(vintage, statefips):
 vintages = ['2006-2010', '2007-2011', '2008-2012', 
     '2009-2013', '2010-2014', '2011-2015', '2012-2016', '2013-2017', 
     '2014-2018', '2015-2019']    
+vintages = ['2015-2019']
 fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12', 
     '13', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24',
     '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
