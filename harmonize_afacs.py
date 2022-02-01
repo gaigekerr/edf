@@ -20,6 +20,8 @@ v2 - Calculate PAF using tract-averaged NO2 rather than using a preformed
 v3 - Add PM2.5 and its components to tract-level averaging computation. 
    - Fix summation over tracts that have > 1 ACS entry associated with them. 
    - Fix IDW regression function to handle missing values.
+v4 - Add TROPOMI NO2 over Hawaii and Puerto Rico 
+   - Calculate PAFs when WHO and EPA targets are met (sensitivity simulation)
 
 Original version created on 25 May 2021
 """
@@ -521,15 +523,40 @@ def harmonize_afacs(vintage, statefips, formpm=False):
     time.sleep(2)
     
     # # # # Read TROPOMI tropospheric column NO2 for 2015-2019 vintage
+    # note that if 
     #----------------------
     if vintage == '2015-2019':
-        tropomi = nc.Dataset(DIR_TROPOMI+
-            'Tropomi_NO2_griddedon0.01grid_2019_QA75.ncf', 'r')
-        tropomi = tropomi.variables['NO2'][:].data
-        lnglat_tropomi = nc.Dataset(DIR_TROPOMI+'LatLonGrid.ncf', 'r')
-        lng_tropomi = lnglat_tropomi.variables['LON'][:].data
-        lat_tropomi = lnglat_tropomi.variables['LAT'][:].data
-        print('# # # # TROPOMI NO2 loaded!', file=f)
+        # Hawaii
+        if statefips=='15':
+            tropomi = nc.Dataset(DIR_TROPOMI+
+                'Tropomi_NO2_griddedon0.01x0.01grid_Hawaii_2019_QA0.75.ncf', 
+                'r')
+            tropomi = tropomi.variables['NO2'][:].data
+            lnglat_tropomi = nc.Dataset(DIR_TROPOMI+'LatLonGrid_Hawaii.ncf', 
+                'r')
+            lng_tropomi = lnglat_tropomi.variables['LON'][:].data
+            lat_tropomi = lnglat_tropomi.variables['LAT'][:].data
+            print('# # # # TROPOMI NO2 loaded!', file=f)         
+        # Puerto Rico
+        elif statefips=='72':
+            tropomi = nc.Dataset(DIR_TROPOMI+
+                'Tropomi_NO2_griddedon0.01x0.01grid_PuertoRico_2019_QA0.75.ncf', 
+                'r')
+            tropomi = tropomi.variables['NO2'][:].data
+            lnglat_tropomi = nc.Dataset(DIR_TROPOMI+'LatLonGrid_PuertoRico.ncf', 
+                'r')
+            lng_tropomi = lnglat_tropomi.variables['LON'][:].data
+            lat_tropomi = lnglat_tropomi.variables['LAT'][:].data
+            print('# # # # TROPOMI NO2 loaded!', file=f)
+        # All other states
+        else: 
+            tropomi = nc.Dataset(DIR_TROPOMI+
+                'Tropomi_NO2_griddedon0.01grid_2019_QA75.ncf', 'r')
+            tropomi = tropomi.variables['NO2'][:].data
+            lnglat_tropomi = nc.Dataset(DIR_TROPOMI+'LatLonGrid.ncf', 'r')
+            lng_tropomi = lnglat_tropomi.variables['LON'][:].data
+            lat_tropomi = lnglat_tropomi.variables['LAT'][:].data
+            print('# # # # TROPOMI NO2 loaded!', file=f)
         time.sleep(2)
     
     # # # # Loop through tracts and find attributable fractions in tract
@@ -684,6 +711,25 @@ def harmonize_afacs(vintage, statefips, formpm=False):
         # # # # NO2 health impact assessment
         no2_inside = np.nanmean(no2_inside)
         if np.isnan(no2_inside)!=True:
+            # For sensitivity simulations: if NO2 > attainment thresholds, 
+            # force to comply with threshold. 
+            # WHO Recommendation NO2
+            # Interim target 40 ug/m3 --> 21.276595 ppbv
+            # Interim target 30 ug/m3 --> 15.95744680 ppbv
+            # Interim target 20 ug/m3 --> 10.63829787 ppbv
+            # AQG level	10 ug/m3 --> 5.319148936 ppbv
+            no2_insidewho40 = no2_inside
+            no2_insidewho30 = no2_inside
+            no2_insidewho20 = no2_inside
+            no2_insidewho10 = no2_inside
+            if no2_insidewho40 > 21.276595:
+                no2_insidewho40 = 21.276595
+            if no2_insidewho30 > 15.95744680:
+                no2_insidewho30 = 15.95744680
+            if no2_insidewho20 > 10.63829787:
+                no2_insidewho20 = 10.63829787
+            if no2_insidewho10 > 5.319148936:
+                no2_insidewho10 = 5.319148936                
             # Calculate attributable fraction based on tract-averaged NO2. 
             # The first method is using the concentration-response factor of 
             # 1.26 (1.10 - 1.37) per 10 ppb is used in Achakulwisut et al. 
@@ -694,7 +740,20 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             # details can be found in Anenberg et al. (2010)
             af = (1-np.exp(-beta*no2_inside))
             afupper = (1-np.exp(-betaupper*no2_inside))
-            aflower = (1-np.exp(-betalower*no2_inside))    
+            aflower = (1-np.exp(-betalower*no2_inside))
+            afwho40 = (1-np.exp(-beta*no2_insidewho40))
+            afupperwho40 = (1-np.exp(-betaupper*no2_insidewho40))
+            aflowerwho40 = (1-np.exp(-betalower*no2_insidewho40))
+            afwho30 = (1-np.exp(-beta*no2_insidewho30))
+            afupperwho30 = (1-np.exp(-betaupper*no2_insidewho30))
+            aflowerwho30 = (1-np.exp(-betalower*no2_insidewho30))
+            afwho20 = (1-np.exp(-beta*no2_insidewho20))
+            afupperwho20 = (1-np.exp(-betaupper*no2_insidewho20))
+            aflowerwho20 = (1-np.exp(-betalower*no2_insidewho20))
+            afwho10 = (1-np.exp(-beta*no2_insidewho10))
+            afupperwho10 = (1-np.exp(-betaupper*no2_insidewho10))
+            aflowerwho10 = (1-np.exp(-betalower*no2_insidewho10))            
+            
             # The second method is using the GBD RRs. These RR predictions are for 
             # a range of exposures between 0 and 100 ppb. These predictions are 
             # log-transformed, and there are files for 1000 draws and for a 
@@ -708,7 +767,38 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             afgbdmed = 1-np.exp(-ec['median'])
             afgbdupper = 1-np.exp(-ec['upper'])
             afgbdlower  = 1-np.exp(-ec['lower'])
+            exposureclosest_index = betagbd['exposure'].sub(no2_insidewho40
+                ).abs().idxmin()
+            afgbdmeanwho40 = 1-np.exp(-ec['mean'])
+            afgbdmedwho40 = 1-np.exp(-ec['median'])
+            afgbdupperwho40 = 1-np.exp(-ec['upper'])
+            afgbdlowerwho40  = 1-np.exp(-ec['lower'])
+            exposureclosest_index = betagbd['exposure'].sub(no2_insidewho30
+                ).abs().idxmin()
+            ec = betagbd.iloc[exposureclosest_index]
+            afgbdmeanwho30 = 1-np.exp(-ec['mean'])
+            afgbdmedwho30 = 1-np.exp(-ec['median'])
+            afgbdupperwho30 = 1-np.exp(-ec['upper'])
+            afgbdlowerwho30  = 1-np.exp(-ec['lower'])
+            exposureclosest_index = betagbd['exposure'].sub(no2_insidewho20
+                ).abs().idxmin()
+            ec = betagbd.iloc[exposureclosest_index]
+            afgbdmeanwho20 = 1-np.exp(-ec['mean'])
+            afgbdmedwho20 = 1-np.exp(-ec['median'])
+            afgbdupperwho20 = 1-np.exp(-ec['upper'])
+            afgbdlowerwho20  = 1-np.exp(-ec['lower'])    
+            exposureclosest_index = betagbd['exposure'].sub(no2_insidewho10
+                ).abs().idxmin()
+            ec = betagbd.iloc[exposureclosest_index]
+            afgbdmeanwho10 = 1-np.exp(-ec['mean'])
+            afgbdmedwho10 = 1-np.exp(-ec['median'])
+            afgbdupperwho10 = 1-np.exp(-ec['upper'])
+            afgbdlowerwho10  = 1-np.exp(-ec['lower'])            
         else: 
+            no2_insidewho40 = np.nan
+            no2_insidewho30 = np.nan
+            no2_insidewho20 = np.nan
+            no2_insidewho10 = np.nan
             af = np.nan
             afupper = np.nan
             aflower = np.nan
@@ -716,15 +806,75 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             afgbdmed = np.nan
             afgbdupper = np.nan
             afgbdlower  = np.nan
+            afwho40 = np.nan
+            afupperwho40 = np.nan
+            aflowerwho40 = np.nan
+            afgbdmeanwho40 = np.nan
+            afgbdmedwho40 = np.nan
+            afgbdupperwho40 = np.nan
+            afgbdlowerwho40  = np.nan
+            afwho30 = np.nan
+            afupperwho30 = np.nan
+            aflowerwho30 = np.nan
+            afgbdmeanwho30 = np.nan
+            afgbdmedwho30 = np.nan
+            afgbdupperwho30 = np.nan
+            afgbdlowerwho30  = np.nan
+            afwho20 = np.nan
+            afupperwho20 = np.nan
+            aflowerwho20 = np.nan
+            afgbdmeanwho20 = np.nan
+            afgbdmedwho20 = np.nan
+            afgbdupperwho20 = np.nan
+            afgbdlowerwho20  = np.nan
+            afwho10 = np.nan
+            afupperwho10 = np.nan
+            aflowerwho10 = np.nan
+            afgbdmeanwho10 = np.nan
+            afgbdmedwho10 = np.nan
+            afgbdupperwho10 = np.nan
+            afgbdlowerwho10  = np.nan            
         dicttemp = {'GEOID':geoid, 
             'NO2':no2_inside,
+            'NO2WHO40':no2_insidewho40,
+            'NO2WHO30':no2_insidewho30,
+            'NO2WHO20':no2_insidewho20,
+            'NO2WHO10':no2_insidewho10, 
             'AFPA':af,
             'AFPAUPPER':afupper,
             'AFPALOWER':aflower,
+            'AFPAWHO40':afwho40,
+            'AFPAUPPERWHO40':afupperwho40,
+            'AFPALOWERWHO40':aflowerwho40,
+            'AFPAWHO30':afwho30,
+            'AFPAUPPERWHO30':afupperwho30,
+            'AFPALOWERWHO30':aflowerwho30,
+            'AFPAWHO20':afwho20,
+            'AFPAUPPERWHO20':afupperwho20,
+            'AFPALOWERWHO20':aflowerwho20,
+            'AFPAWHO10':afwho10,
+            'AFPAUPPERWHO10':afupperwho10,
+            'AFPALOWERWHO10':aflowerwho10,
             'AFPAMEAN_GBD':afgbdmean,
             'AFPAMEDIAN_GBD':afgbdmed,
             'AFPAUPPER_GBD':afgbdupper,            
-            'AFPALOWER_GBD':afgbdlower,            
+            'AFPALOWER_GBD':afgbdlower,         
+            'AFPAMEAN_GBDWHO40':afgbdmeanwho40,
+            'AFPAMEDIAN_GBDWHO40':afgbdmedwho40,
+            'AFPAUPPER_GBDWHO40':afgbdupperwho40,            
+            'AFPALOWER_GBDWHO40':afgbdlowerwho40,         
+            'AFPAMEAN_GBDWHO30':afgbdmeanwho30,
+            'AFPAMEDIAN_GBDWHO30':afgbdmedwho30,
+            'AFPAUPPER_GBDWHO30':afgbdupperwho30,            
+            'AFPALOWER_GBDWHO30':afgbdlowerwho30,         
+            'AFPAMEAN_GBDWHO20':afgbdmeanwho20,
+            'AFPAMEDIAN_GBDWHO20':afgbdmedwho20,
+            'AFPAUPPER_GBDWHO20':afgbdupperwho20,            
+            'AFPALOWER_GBDWHO20':afgbdlowerwho20,         
+            'AFPAMEAN_GBDWHO10':afgbdmeanwho10,
+            'AFPAMEDIAN_GBDWHO10':afgbdmedwho10,
+            'AFPAUPPER_GBDWHO10':afgbdupperwho10,            
+            'AFPALOWER_GBDWHO10':afgbdlowerwho10,                     
             'INTERPFLAG':np.nanmean(interpflag),
             'NESTEDTRACTFLAG':nestedtract,
             'LAT_CENTROID':lat_tract,
@@ -801,8 +951,26 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             om_inside = np.nanmean(om_inside)
             so4_inside = np.nanmean(so4_inside) 
             soil_inside = np.nanmean(soil_inside) 
-            ss_inside = np.nanmean(ss_inside) 
+            ss_inside = np.nanmean(ss_inside)
             if np.isnan(pm_inside)!=True:
+                # For sensitivity simulations; 
+                # WHO/NAAQS Recommendation PM25
+                # Interim target 15 ug/m3
+                # NAAQS 12 ug/m3
+                # Interim target 10 ug/m3
+                # AQG levels 5 ug/m3
+                pm_insidewho15 = pm_inside
+                pm_insidenaaqs12 = pm_inside 
+                pm_insidewho10 = pm_inside
+                pm_insidewho5 = pm_inside       
+                if pm_insidewho15 > 15.:
+                    pm_insidewho15 = 15.
+                if pm_insidenaaqs12 > 12.:
+                    pm_insidenaaqs12 = 12.
+                if pm_insidewho10 > 10.:
+                    pm_insidewho10 = 10.
+                if pm_insidewho5 > 5.:
+                    pm_insidewho5 = 5.                
                 # Length of all GBD PM2.5-attributable RR is the same, so 
                 # this should work 
                 ci = rrpmst_25['exposure_spline'].sub(pm_inside
@@ -876,8 +1044,294 @@ def harmonize_afacs(vintage, statefips, formpm=False):
                 afpmcopd = (cirrpmcopd-1.)/cirrpmcopd
                 afpmlc = (cirrpmlc-1.)/cirrpmlc
                 afpmdm = (cirrpmdm-1.)/cirrpmdm
-                afpmlri = (cirrpmlri-1.)/cirrpmlri                
-            else: 
+                afpmlri = (cirrpmlri-1.)/cirrpmlri 
+                # WHO Interim 3
+                ciwho15 = rrpmst_25['exposure_spline'].sub(pm_insidewho15
+                    ).abs().idxmin()
+                cirrpmihd_25 = rrpmihd_25.iloc[ciwho15]['mean']
+                cirrpmihd_30 = rrpmihd_30.iloc[ciwho15]['mean']
+                cirrpmihd_35 = rrpmihd_35.iloc[ciwho15]['mean']
+                cirrpmihd_40 = rrpmihd_40.iloc[ciwho15]['mean']
+                cirrpmihd_45 = rrpmihd_45.iloc[ciwho15]['mean']
+                cirrpmihd_50 = rrpmihd_50.iloc[ciwho15]['mean']
+                cirrpmihd_55 = rrpmihd_55.iloc[ciwho15]['mean']
+                cirrpmihd_60 = rrpmihd_60.iloc[ciwho15]['mean']
+                cirrpmihd_65 = rrpmihd_65.iloc[ciwho15]['mean']
+                cirrpmihd_70 = rrpmihd_70.iloc[ciwho15]['mean']
+                cirrpmihd_75 = rrpmihd_75.iloc[ciwho15]['mean']
+                cirrpmihd_80 = rrpmihd_80.iloc[ciwho15]['mean']
+                cirrpmihd_85 = rrpmihd_85.iloc[ciwho15]['mean']
+                cirrpmihd_90 = rrpmihd_90.iloc[ciwho15]['mean']
+                cirrpmihd_95 = rrpmihd_95.iloc[ciwho15]['mean']
+                cirrpmst_25 = rrpmst_25.iloc[ciwho15]['mean']
+                cirrpmst_30 = rrpmst_30.iloc[ciwho15]['mean']
+                cirrpmst_35 = rrpmst_35.iloc[ciwho15]['mean']
+                cirrpmst_40 = rrpmst_40.iloc[ciwho15]['mean']
+                cirrpmst_45 = rrpmst_45.iloc[ciwho15]['mean']
+                cirrpmst_50 = rrpmst_50.iloc[ciwho15]['mean']
+                cirrpmst_55 = rrpmst_55.iloc[ciwho15]['mean']
+                cirrpmst_60 = rrpmst_60.iloc[ciwho15]['mean']
+                cirrpmst_65 = rrpmst_65.iloc[ciwho15]['mean']
+                cirrpmst_70 = rrpmst_70.iloc[ciwho15]['mean']
+                cirrpmst_75 = rrpmst_75.iloc[ciwho15]['mean']
+                cirrpmst_80 = rrpmst_80.iloc[ciwho15]['mean']
+                cirrpmst_85 = rrpmst_85.iloc[ciwho15]['mean']
+                cirrpmst_90 = rrpmst_90.iloc[ciwho15]['mean']
+                cirrpmst_95 = rrpmst_95.iloc[ciwho15]['mean']
+                cirrpmcopd = rrpmcopd.iloc[ciwho15]['mean']
+                cirrpmlc = rrpmlc.iloc[ciwho15]['mean']
+                cirrpmdm = rrpmdm.iloc[ciwho15]['mean']
+                cirrpmlri = rrpmlri.iloc[ciwho15]['mean']
+                afpmihd_25who15 = (cirrpmihd_25-1.)/cirrpmihd_25
+                afpmihd_30who15 = (cirrpmihd_30-1.)/cirrpmihd_30
+                afpmihd_35who15 = (cirrpmihd_35-1.)/cirrpmihd_35
+                afpmihd_40who15 = (cirrpmihd_40-1.)/cirrpmihd_40
+                afpmihd_45who15 = (cirrpmihd_45-1.)/cirrpmihd_45
+                afpmihd_50who15 = (cirrpmihd_50-1.)/cirrpmihd_50
+                afpmihd_55who15 = (cirrpmihd_55-1.)/cirrpmihd_55
+                afpmihd_60who15 = (cirrpmihd_60-1.)/cirrpmihd_60
+                afpmihd_65who15 = (cirrpmihd_65-1.)/cirrpmihd_65
+                afpmihd_70who15 = (cirrpmihd_70-1.)/cirrpmihd_70
+                afpmihd_75who15 = (cirrpmihd_75-1.)/cirrpmihd_75
+                afpmihd_80who15 = (cirrpmihd_80-1.)/cirrpmihd_80
+                afpmihd_85who15 = (cirrpmihd_85-1.)/cirrpmihd_85
+                afpmihd_90who15 = (cirrpmihd_90-1.)/cirrpmihd_90
+                afpmihd_95who15 = (cirrpmihd_95-1.)/cirrpmihd_95
+                afpmst_25who15 = (cirrpmst_25-1.)/cirrpmst_25
+                afpmst_30who15 = (cirrpmst_30-1.)/cirrpmst_30
+                afpmst_35who15 = (cirrpmst_35-1.)/cirrpmst_35
+                afpmst_40who15 = (cirrpmst_40-1.)/cirrpmst_40
+                afpmst_45who15 = (cirrpmst_45-1.)/cirrpmst_45
+                afpmst_50who15 = (cirrpmst_50-1.)/cirrpmst_50
+                afpmst_55who15 = (cirrpmst_55-1.)/cirrpmst_55
+                afpmst_60who15 = (cirrpmst_60-1.)/cirrpmst_60
+                afpmst_65who15 = (cirrpmst_65-1.)/cirrpmst_65
+                afpmst_70who15 = (cirrpmst_70-1.)/cirrpmst_70
+                afpmst_75who15 = (cirrpmst_75-1.)/cirrpmst_75
+                afpmst_80who15 = (cirrpmst_80-1.)/cirrpmst_80
+                afpmst_85who15 = (cirrpmst_85-1.)/cirrpmst_85
+                afpmst_90who15 = (cirrpmst_90-1.)/cirrpmst_90
+                afpmst_95who15 = (cirrpmst_95-1.)/cirrpmst_95
+                afpmcopdwho15 = (cirrpmcopd-1.)/cirrpmcopd
+                afpmlcwho15 = (cirrpmlc-1.)/cirrpmlc
+                afpmdmwho15 = (cirrpmdm-1.)/cirrpmdm
+                afpmlriwho15 = (cirrpmlri-1.)/cirrpmlri               
+                # EPA NAAQS
+                cinaaqs12 = rrpmst_25['exposure_spline'].sub(pm_insidenaaqs12
+                    ).abs().idxmin()
+                cirrpmihd_25 = rrpmihd_25.iloc[cinaaqs12]['mean']
+                cirrpmihd_30 = rrpmihd_30.iloc[cinaaqs12]['mean']
+                cirrpmihd_35 = rrpmihd_35.iloc[cinaaqs12]['mean']
+                cirrpmihd_40 = rrpmihd_40.iloc[cinaaqs12]['mean']
+                cirrpmihd_45 = rrpmihd_45.iloc[cinaaqs12]['mean']
+                cirrpmihd_50 = rrpmihd_50.iloc[cinaaqs12]['mean']
+                cirrpmihd_55 = rrpmihd_55.iloc[cinaaqs12]['mean']
+                cirrpmihd_60 = rrpmihd_60.iloc[cinaaqs12]['mean']
+                cirrpmihd_65 = rrpmihd_65.iloc[cinaaqs12]['mean']
+                cirrpmihd_70 = rrpmihd_70.iloc[cinaaqs12]['mean']
+                cirrpmihd_75 = rrpmihd_75.iloc[cinaaqs12]['mean']
+                cirrpmihd_80 = rrpmihd_80.iloc[cinaaqs12]['mean']
+                cirrpmihd_85 = rrpmihd_85.iloc[cinaaqs12]['mean']
+                cirrpmihd_90 = rrpmihd_90.iloc[cinaaqs12]['mean']
+                cirrpmihd_95 = rrpmihd_95.iloc[cinaaqs12]['mean']
+                cirrpmst_25 = rrpmst_25.iloc[cinaaqs12]['mean']
+                cirrpmst_30 = rrpmst_30.iloc[cinaaqs12]['mean']
+                cirrpmst_35 = rrpmst_35.iloc[cinaaqs12]['mean']
+                cirrpmst_40 = rrpmst_40.iloc[cinaaqs12]['mean']
+                cirrpmst_45 = rrpmst_45.iloc[cinaaqs12]['mean']
+                cirrpmst_50 = rrpmst_50.iloc[cinaaqs12]['mean']
+                cirrpmst_55 = rrpmst_55.iloc[cinaaqs12]['mean']
+                cirrpmst_60 = rrpmst_60.iloc[cinaaqs12]['mean']
+                cirrpmst_65 = rrpmst_65.iloc[cinaaqs12]['mean']
+                cirrpmst_70 = rrpmst_70.iloc[cinaaqs12]['mean']
+                cirrpmst_75 = rrpmst_75.iloc[cinaaqs12]['mean']
+                cirrpmst_80 = rrpmst_80.iloc[cinaaqs12]['mean']
+                cirrpmst_85 = rrpmst_85.iloc[cinaaqs12]['mean']
+                cirrpmst_90 = rrpmst_90.iloc[cinaaqs12]['mean']
+                cirrpmst_95 = rrpmst_95.iloc[cinaaqs12]['mean']
+                cirrpmcopd = rrpmcopd.iloc[cinaaqs12]['mean']
+                cirrpmlc = rrpmlc.iloc[cinaaqs12]['mean']
+                cirrpmdm = rrpmdm.iloc[cinaaqs12]['mean']
+                cirrpmlri = rrpmlri.iloc[cinaaqs12]['mean']
+                afpmihd_25naaqs12 = (cirrpmihd_25-1.)/cirrpmihd_25
+                afpmihd_30naaqs12 = (cirrpmihd_30-1.)/cirrpmihd_30
+                afpmihd_35naaqs12 = (cirrpmihd_35-1.)/cirrpmihd_35
+                afpmihd_40naaqs12 = (cirrpmihd_40-1.)/cirrpmihd_40
+                afpmihd_45naaqs12 = (cirrpmihd_45-1.)/cirrpmihd_45
+                afpmihd_50naaqs12 = (cirrpmihd_50-1.)/cirrpmihd_50
+                afpmihd_55naaqs12 = (cirrpmihd_55-1.)/cirrpmihd_55
+                afpmihd_60naaqs12 = (cirrpmihd_60-1.)/cirrpmihd_60
+                afpmihd_65naaqs12 = (cirrpmihd_65-1.)/cirrpmihd_65
+                afpmihd_70naaqs12 = (cirrpmihd_70-1.)/cirrpmihd_70
+                afpmihd_75naaqs12 = (cirrpmihd_75-1.)/cirrpmihd_75
+                afpmihd_80naaqs12 = (cirrpmihd_80-1.)/cirrpmihd_80
+                afpmihd_85naaqs12 = (cirrpmihd_85-1.)/cirrpmihd_85
+                afpmihd_90naaqs12 = (cirrpmihd_90-1.)/cirrpmihd_90
+                afpmihd_95naaqs12 = (cirrpmihd_95-1.)/cirrpmihd_95
+                afpmst_25naaqs12 = (cirrpmst_25-1.)/cirrpmst_25
+                afpmst_30naaqs12 = (cirrpmst_30-1.)/cirrpmst_30
+                afpmst_35naaqs12 = (cirrpmst_35-1.)/cirrpmst_35
+                afpmst_40naaqs12 = (cirrpmst_40-1.)/cirrpmst_40
+                afpmst_45naaqs12 = (cirrpmst_45-1.)/cirrpmst_45
+                afpmst_50naaqs12 = (cirrpmst_50-1.)/cirrpmst_50
+                afpmst_55naaqs12 = (cirrpmst_55-1.)/cirrpmst_55
+                afpmst_60naaqs12 = (cirrpmst_60-1.)/cirrpmst_60
+                afpmst_65naaqs12 = (cirrpmst_65-1.)/cirrpmst_65
+                afpmst_70naaqs12 = (cirrpmst_70-1.)/cirrpmst_70
+                afpmst_75naaqs12 = (cirrpmst_75-1.)/cirrpmst_75
+                afpmst_80naaqs12 = (cirrpmst_80-1.)/cirrpmst_80
+                afpmst_85naaqs12 = (cirrpmst_85-1.)/cirrpmst_85
+                afpmst_90naaqs12 = (cirrpmst_90-1.)/cirrpmst_90
+                afpmst_95naaqs12 = (cirrpmst_95-1.)/cirrpmst_95
+                afpmcopdnaaqs12 = (cirrpmcopd-1.)/cirrpmcopd
+                afpmlcnaaqs12 = (cirrpmlc-1.)/cirrpmlc
+                afpmdmnaaqs12 = (cirrpmdm-1.)/cirrpmdm
+                afpmlrinaaqs12 = (cirrpmlri-1.)/cirrpmlri
+                # WHO Interim 4                
+                ciwho10 = rrpmst_25['exposure_spline'].sub(pm_insidewho10
+                    ).abs().idxmin()
+                cirrpmihd_25 = rrpmihd_25.iloc[ciwho10]['mean']
+                cirrpmihd_30 = rrpmihd_30.iloc[ciwho10]['mean']
+                cirrpmihd_35 = rrpmihd_35.iloc[ciwho10]['mean']
+                cirrpmihd_40 = rrpmihd_40.iloc[ciwho10]['mean']
+                cirrpmihd_45 = rrpmihd_45.iloc[ciwho10]['mean']
+                cirrpmihd_50 = rrpmihd_50.iloc[ciwho10]['mean']
+                cirrpmihd_55 = rrpmihd_55.iloc[ciwho10]['mean']
+                cirrpmihd_60 = rrpmihd_60.iloc[ciwho10]['mean']
+                cirrpmihd_65 = rrpmihd_65.iloc[ciwho10]['mean']
+                cirrpmihd_70 = rrpmihd_70.iloc[ciwho10]['mean']
+                cirrpmihd_75 = rrpmihd_75.iloc[ciwho10]['mean']
+                cirrpmihd_80 = rrpmihd_80.iloc[ciwho10]['mean']
+                cirrpmihd_85 = rrpmihd_85.iloc[ciwho10]['mean']
+                cirrpmihd_90 = rrpmihd_90.iloc[ciwho10]['mean']
+                cirrpmihd_95 = rrpmihd_95.iloc[ciwho10]['mean']
+                cirrpmst_25 = rrpmst_25.iloc[ciwho10]['mean']
+                cirrpmst_30 = rrpmst_30.iloc[ciwho10]['mean']
+                cirrpmst_35 = rrpmst_35.iloc[ciwho10]['mean']
+                cirrpmst_40 = rrpmst_40.iloc[ciwho10]['mean']
+                cirrpmst_45 = rrpmst_45.iloc[ciwho10]['mean']
+                cirrpmst_50 = rrpmst_50.iloc[ciwho10]['mean']
+                cirrpmst_55 = rrpmst_55.iloc[ciwho10]['mean']
+                cirrpmst_60 = rrpmst_60.iloc[ciwho10]['mean']
+                cirrpmst_65 = rrpmst_65.iloc[ciwho10]['mean']
+                cirrpmst_70 = rrpmst_70.iloc[ciwho10]['mean']
+                cirrpmst_75 = rrpmst_75.iloc[ciwho10]['mean']
+                cirrpmst_80 = rrpmst_80.iloc[ciwho10]['mean']
+                cirrpmst_85 = rrpmst_85.iloc[ciwho10]['mean']
+                cirrpmst_90 = rrpmst_90.iloc[ciwho10]['mean']
+                cirrpmst_95 = rrpmst_95.iloc[ciwho10]['mean']
+                cirrpmcopd = rrpmcopd.iloc[ciwho10]['mean']
+                cirrpmlc = rrpmlc.iloc[ciwho10]['mean']
+                cirrpmdm = rrpmdm.iloc[ciwho10]['mean']
+                cirrpmlri = rrpmlri.iloc[ciwho10]['mean']
+                afpmihd_25who10 = (cirrpmihd_25-1.)/cirrpmihd_25
+                afpmihd_30who10 = (cirrpmihd_30-1.)/cirrpmihd_30
+                afpmihd_35who10 = (cirrpmihd_35-1.)/cirrpmihd_35
+                afpmihd_40who10 = (cirrpmihd_40-1.)/cirrpmihd_40
+                afpmihd_45who10 = (cirrpmihd_45-1.)/cirrpmihd_45
+                afpmihd_50who10 = (cirrpmihd_50-1.)/cirrpmihd_50
+                afpmihd_55who10 = (cirrpmihd_55-1.)/cirrpmihd_55
+                afpmihd_60who10 = (cirrpmihd_60-1.)/cirrpmihd_60
+                afpmihd_65who10 = (cirrpmihd_65-1.)/cirrpmihd_65
+                afpmihd_70who10 = (cirrpmihd_70-1.)/cirrpmihd_70
+                afpmihd_75who10 = (cirrpmihd_75-1.)/cirrpmihd_75
+                afpmihd_80who10 = (cirrpmihd_80-1.)/cirrpmihd_80
+                afpmihd_85who10 = (cirrpmihd_85-1.)/cirrpmihd_85
+                afpmihd_90who10 = (cirrpmihd_90-1.)/cirrpmihd_90
+                afpmihd_95who10 = (cirrpmihd_95-1.)/cirrpmihd_95
+                afpmst_25who10 = (cirrpmst_25-1.)/cirrpmst_25
+                afpmst_30who10 = (cirrpmst_30-1.)/cirrpmst_30
+                afpmst_35who10 = (cirrpmst_35-1.)/cirrpmst_35
+                afpmst_40who10 = (cirrpmst_40-1.)/cirrpmst_40
+                afpmst_45who10 = (cirrpmst_45-1.)/cirrpmst_45
+                afpmst_50who10 = (cirrpmst_50-1.)/cirrpmst_50
+                afpmst_55who10 = (cirrpmst_55-1.)/cirrpmst_55
+                afpmst_60who10 = (cirrpmst_60-1.)/cirrpmst_60
+                afpmst_65who10 = (cirrpmst_65-1.)/cirrpmst_65
+                afpmst_70who10 = (cirrpmst_70-1.)/cirrpmst_70
+                afpmst_75who10 = (cirrpmst_75-1.)/cirrpmst_75
+                afpmst_80who10 = (cirrpmst_80-1.)/cirrpmst_80
+                afpmst_85who10 = (cirrpmst_85-1.)/cirrpmst_85
+                afpmst_90who10 = (cirrpmst_90-1.)/cirrpmst_90
+                afpmst_95who10 = (cirrpmst_95-1.)/cirrpmst_95
+                afpmcopdwho10 = (cirrpmcopd-1.)/cirrpmcopd
+                afpmlcwho10 = (cirrpmlc-1.)/cirrpmlc
+                afpmdmwho10 = (cirrpmdm-1.)/cirrpmdm
+                afpmlriwho10 = (cirrpmlri-1.)/cirrpmlri
+                # WHO AQG
+                ciwho5 = rrpmst_25['exposure_spline'].sub(pm_insidewho5
+                    ).abs().idxmin()
+                cirrpmihd_25 = rrpmihd_25.iloc[ciwho5]['mean']
+                cirrpmihd_30 = rrpmihd_30.iloc[ciwho5]['mean']
+                cirrpmihd_35 = rrpmihd_35.iloc[ciwho5]['mean']
+                cirrpmihd_40 = rrpmihd_40.iloc[ciwho5]['mean']
+                cirrpmihd_45 = rrpmihd_45.iloc[ciwho5]['mean']
+                cirrpmihd_50 = rrpmihd_50.iloc[ciwho5]['mean']
+                cirrpmihd_55 = rrpmihd_55.iloc[ciwho5]['mean']
+                cirrpmihd_60 = rrpmihd_60.iloc[ciwho5]['mean']
+                cirrpmihd_65 = rrpmihd_65.iloc[ciwho5]['mean']
+                cirrpmihd_70 = rrpmihd_70.iloc[ciwho5]['mean']
+                cirrpmihd_75 = rrpmihd_75.iloc[ciwho5]['mean']
+                cirrpmihd_80 = rrpmihd_80.iloc[ciwho5]['mean']
+                cirrpmihd_85 = rrpmihd_85.iloc[ciwho5]['mean']
+                cirrpmihd_90 = rrpmihd_90.iloc[ciwho5]['mean']
+                cirrpmihd_95 = rrpmihd_95.iloc[ciwho5]['mean']
+                cirrpmst_25 = rrpmst_25.iloc[ciwho5]['mean']
+                cirrpmst_30 = rrpmst_30.iloc[ciwho5]['mean']
+                cirrpmst_35 = rrpmst_35.iloc[ciwho5]['mean']
+                cirrpmst_40 = rrpmst_40.iloc[ciwho5]['mean']
+                cirrpmst_45 = rrpmst_45.iloc[ciwho5]['mean']
+                cirrpmst_50 = rrpmst_50.iloc[ciwho5]['mean']
+                cirrpmst_55 = rrpmst_55.iloc[ciwho5]['mean']
+                cirrpmst_60 = rrpmst_60.iloc[ciwho5]['mean']
+                cirrpmst_65 = rrpmst_65.iloc[ciwho5]['mean']
+                cirrpmst_70 = rrpmst_70.iloc[ciwho5]['mean']
+                cirrpmst_75 = rrpmst_75.iloc[ciwho5]['mean']
+                cirrpmst_80 = rrpmst_80.iloc[ciwho5]['mean']
+                cirrpmst_85 = rrpmst_85.iloc[ciwho5]['mean']
+                cirrpmst_90 = rrpmst_90.iloc[ciwho5]['mean']
+                cirrpmst_95 = rrpmst_95.iloc[ciwho5]['mean']
+                cirrpmcopd = rrpmcopd.iloc[ciwho5]['mean']
+                cirrpmlc = rrpmlc.iloc[ciwho5]['mean']
+                cirrpmdm = rrpmdm.iloc[ciwho5]['mean']
+                cirrpmlri = rrpmlri.iloc[ciwho5]['mean']
+                afpmihd_25who5 = (cirrpmihd_25-1.)/cirrpmihd_25
+                afpmihd_30who5 = (cirrpmihd_30-1.)/cirrpmihd_30
+                afpmihd_35who5 = (cirrpmihd_35-1.)/cirrpmihd_35
+                afpmihd_40who5 = (cirrpmihd_40-1.)/cirrpmihd_40
+                afpmihd_45who5 = (cirrpmihd_45-1.)/cirrpmihd_45
+                afpmihd_50who5 = (cirrpmihd_50-1.)/cirrpmihd_50
+                afpmihd_55who5 = (cirrpmihd_55-1.)/cirrpmihd_55
+                afpmihd_60who5 = (cirrpmihd_60-1.)/cirrpmihd_60
+                afpmihd_65who5 = (cirrpmihd_65-1.)/cirrpmihd_65
+                afpmihd_70who5 = (cirrpmihd_70-1.)/cirrpmihd_70
+                afpmihd_75who5 = (cirrpmihd_75-1.)/cirrpmihd_75
+                afpmihd_80who5 = (cirrpmihd_80-1.)/cirrpmihd_80
+                afpmihd_85who5 = (cirrpmihd_85-1.)/cirrpmihd_85
+                afpmihd_90who5 = (cirrpmihd_90-1.)/cirrpmihd_90
+                afpmihd_95who5 = (cirrpmihd_95-1.)/cirrpmihd_95
+                afpmst_25who5 = (cirrpmst_25-1.)/cirrpmst_25
+                afpmst_30who5 = (cirrpmst_30-1.)/cirrpmst_30
+                afpmst_35who5 = (cirrpmst_35-1.)/cirrpmst_35
+                afpmst_40who5 = (cirrpmst_40-1.)/cirrpmst_40
+                afpmst_45who5 = (cirrpmst_45-1.)/cirrpmst_45
+                afpmst_50who5 = (cirrpmst_50-1.)/cirrpmst_50
+                afpmst_55who5 = (cirrpmst_55-1.)/cirrpmst_55
+                afpmst_60who5 = (cirrpmst_60-1.)/cirrpmst_60
+                afpmst_65who5 = (cirrpmst_65-1.)/cirrpmst_65
+                afpmst_70who5 = (cirrpmst_70-1.)/cirrpmst_70
+                afpmst_75who5 = (cirrpmst_75-1.)/cirrpmst_75
+                afpmst_80who5 = (cirrpmst_80-1.)/cirrpmst_80
+                afpmst_85who5 = (cirrpmst_85-1.)/cirrpmst_85
+                afpmst_90who5 = (cirrpmst_90-1.)/cirrpmst_90
+                afpmst_95who5 = (cirrpmst_95-1.)/cirrpmst_95
+                afpmcopdwho5 = (cirrpmcopd-1.)/cirrpmcopd
+                afpmlcwho5 = (cirrpmlc-1.)/cirrpmlc
+                afpmdmwho5 = (cirrpmdm-1.)/cirrpmdm
+                afpmlriwho5 = (cirrpmlri-1.)/cirrpmlri                
+            else:
+                pm_insidewho15, pm_insidenaaqs12 = np.nan, np.nan
+                pm_insidewho10, pm_insidewho5 = np.nan, np.nan
                 afpmihd_25, afpmihd_30, afpmihd_35 = np.nan, np.nan, np.nan
                 afpmihd_40, afpmihd_45, afpmihd_50 = np.nan, np.nan, np.nan
                 afpmihd_55, afpmihd_60, afpmihd_65 = np.nan, np.nan, np.nan
@@ -889,6 +1343,74 @@ def harmonize_afacs(vintage, statefips, formpm=False):
                 afpmst_70, afpmst_75, afpmst_80 = np.nan, np.nan, np.nan 
                 afpmst_85, afpmst_90, afpmst_95 = np.nan, np.nan, np.nan 
                 afpmcopd, afpmlc, afpmdm, afpmlri = np.nan, np.nan, np.nan, np.nan
+                afpmihd_25who15, afpmihd_30who15 = np.nan, np.nan
+                afpmihd_35who15, afpmihd_40who15 = np.nan, np.nan
+                afpmihd_45who15, afpmihd_50who15 = np.nan, np.nan
+                afpmihd_55who15, afpmihd_60who15 = np.nan, np.nan
+                afpmihd_65who15, afpmihd_70who15 = np.nan, np.nan
+                afpmihd_75who15, afpmihd_80who15 = np.nan, np.nan
+                afpmihd_85who15, afpmihd_90who15 = np.nan, np.nan
+                afpmihd_95who15, afpmst_25who15 = np.nan, np.nan
+                afpmst_30who15, afpmst_35who15 = np.nan, np.nan
+                afpmst_40who15, afpmst_45who15 = np.nan, np.nan
+                afpmst_50who15, afpmst_55who15 = np.nan, np.nan
+                afpmst_60who15, afpmst_65who15 = np.nan, np.nan
+                afpmst_70who15, afpmst_75who15 = np.nan, np.nan
+                afpmst_80who15, afpmst_85who15 = np.nan, np.nan
+                afpmst_90who15, afpmst_95who15 = np.nan, np.nan
+                afpmcopdwho15, afpmlcwho15 = np.nan, np.nan
+                afpmdmwho15, afpmlriwho15 = np.nan, np.nan
+                afpmihd_25naaqs12, afpmihd_30naaqs12 = np.nan, np.nan
+                afpmihd_35naaqs12, afpmihd_40naaqs12 = np.nan, np.nan
+                afpmihd_45naaqs12, afpmihd_50naaqs12 = np.nan, np.nan
+                afpmihd_55naaqs12, afpmihd_60naaqs12 = np.nan, np.nan
+                afpmihd_65naaqs12, afpmihd_70naaqs12 = np.nan, np.nan
+                afpmihd_75naaqs12, afpmihd_80naaqs12 = np.nan, np.nan
+                afpmihd_85naaqs12, afpmihd_90naaqs12 = np.nan, np.nan
+                afpmihd_95naaqs12, afpmst_25naaqs12 = np.nan, np.nan
+                afpmst_30naaqs12, afpmst_35naaqs12 = np.nan, np.nan
+                afpmst_40naaqs12, afpmst_45naaqs12 = np.nan, np.nan
+                afpmst_50naaqs12, afpmst_55naaqs12 = np.nan, np.nan
+                afpmst_60naaqs12, afpmst_65naaqs12 = np.nan, np.nan
+                afpmst_70naaqs12, afpmst_75naaqs12 = np.nan, np.nan
+                afpmst_80naaqs12, afpmst_85naaqs12 = np.nan, np.nan
+                afpmst_90naaqs12, afpmst_95naaqs12 = np.nan, np.nan
+                afpmcopdnaaqs12, afpmlcnaaqs12 = np.nan, np.nan
+                afpmdmnaaqs12, afpmlrinaaqs12 = np.nan, np.nan                
+                afpmihd_25who10, afpmihd_30who10 = np.nan, np.nan
+                afpmihd_35who10, afpmihd_40who10 = np.nan, np.nan
+                afpmihd_45who10, afpmihd_50who10 = np.nan, np.nan
+                afpmihd_55who10, afpmihd_60who10 = np.nan, np.nan
+                afpmihd_65who10, afpmihd_70who10 = np.nan, np.nan
+                afpmihd_75who10, afpmihd_80who10 = np.nan, np.nan
+                afpmihd_85who10, afpmihd_90who10 = np.nan, np.nan
+                afpmihd_95who10, afpmst_25who10 = np.nan, np.nan
+                afpmst_30who10, afpmst_35who10 = np.nan, np.nan
+                afpmst_40who10, afpmst_45who10 = np.nan, np.nan
+                afpmst_50who10, afpmst_55who10 = np.nan, np.nan
+                afpmst_60who10, afpmst_65who10 = np.nan, np.nan
+                afpmst_70who10, afpmst_75who10 = np.nan, np.nan
+                afpmst_80who10, afpmst_85who10 = np.nan, np.nan
+                afpmst_90who10, afpmst_95who10 = np.nan, np.nan
+                afpmcopdwho10, afpmlcwho10 = np.nan, np.nan
+                afpmdmwho10, afpmlriwho10 = np.nan, np.nan
+                afpmihd_25who5, afpmihd_30who5 = np.nan, np.nan
+                afpmihd_35who5, afpmihd_40who5 = np.nan, np.nan
+                afpmihd_45who5, afpmihd_50who5 = np.nan, np.nan
+                afpmihd_55who5, afpmihd_60who5 = np.nan, np.nan
+                afpmihd_65who5, afpmihd_70who5 = np.nan, np.nan
+                afpmihd_75who5, afpmihd_80who5 = np.nan, np.nan
+                afpmihd_85who5, afpmihd_90who5 = np.nan, np.nan
+                afpmihd_95who5, afpmst_25who5 = np.nan, np.nan
+                afpmst_30who5, afpmst_35who5 = np.nan, np.nan
+                afpmst_40who5, afpmst_45who5 = np.nan, np.nan
+                afpmst_50who5, afpmst_55who5 = np.nan, np.nan
+                afpmst_60who5, afpmst_65who5 = np.nan, np.nan
+                afpmst_70who5, afpmst_75who5 = np.nan, np.nan
+                afpmst_80who5, afpmst_85who5 = np.nan, np.nan
+                afpmst_90who5, afpmst_95who5 = np.nan, np.nan
+                afpmcopdwho5, afpmlcwho5 = np.nan, np.nan
+                afpmdmwho5, afpmlriwho5 = np.nan, np.nan                
             dicttemp['PM25'] = pm_inside
             dicttemp['PM25_BC'] = bc_inside
             dicttemp['PM25_NH4'] = nh4_inside
@@ -897,6 +1419,10 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             dicttemp['PM25_SO4'] = so4_inside
             dicttemp['PM25_SOIL'] = soil_inside
             dicttemp['PM25_SS'] = ss_inside
+            dicttemp['PM25WHO15'] = pm_insidewho15
+            dicttemp['PM25NAAQS12'] = pm_insidenaaqs12
+            dicttemp['PM25WHO10'] = pm_insidewho10
+            dicttemp['PM25WHO5'] = pm_insidewho5
             dicttemp['AFIHD_25'] = afpmihd_25
             dicttemp['AFIHD_30'] = afpmihd_30
             dicttemp['AFIHD_35'] = afpmihd_35
@@ -931,8 +1457,143 @@ def harmonize_afacs(vintage, statefips, formpm=False):
             dicttemp['AFLC'] = afpmlc
             dicttemp['AFDM'] = afpmdm
             dicttemp['AFLRI'] = afpmlri  
+            dicttemp['AFIHD_25WHO15'] = afpmihd_25who15
+            dicttemp['AFIHD_30WHO15'] = afpmihd_30who15
+            dicttemp['AFIHD_35WHO15'] = afpmihd_35who15
+            dicttemp['AFIHD_40WHO15'] = afpmihd_40who15
+            dicttemp['AFIHD_45WHO15'] = afpmihd_45who15
+            dicttemp['AFIHD_50WHO15'] = afpmihd_50who15
+            dicttemp['AFIHD_55WHO15'] = afpmihd_55who15
+            dicttemp['AFIHD_60WHO15'] = afpmihd_60who15
+            dicttemp['AFIHD_65WHO15'] = afpmihd_65who15
+            dicttemp['AFIHD_70WHO15'] = afpmihd_70who15
+            dicttemp['AFIHD_75WHO15'] = afpmihd_75who15
+            dicttemp['AFIHD_80WHO15'] = afpmihd_80who15
+            dicttemp['AFIHD_85WHO15'] = afpmihd_85who15
+            dicttemp['AFIHD_90WHO15'] = afpmihd_90who15
+            dicttemp['AFIHD_95WHO15'] = afpmihd_95who15
+            dicttemp['AFST_25WHO15'] = afpmst_25who15
+            dicttemp['AFST_30WHO15'] = afpmst_30who15
+            dicttemp['AFST_35WHO15'] = afpmst_35who15
+            dicttemp['AFST_40WHO15'] = afpmst_40who15
+            dicttemp['AFST_45WHO15'] = afpmst_45who15
+            dicttemp['AFST_50WHO15'] = afpmst_50who15
+            dicttemp['AFST_55WHO15'] = afpmst_55who15
+            dicttemp['AFST_60WHO15'] = afpmst_60who15
+            dicttemp['AFST_65WHO15'] = afpmst_65who15
+            dicttemp['AFST_70WHO15'] = afpmst_70who15
+            dicttemp['AFST_75WHO15'] = afpmst_75who15
+            dicttemp['AFST_80WHO15'] = afpmst_80who15
+            dicttemp['AFST_85WHO15'] = afpmst_85who15
+            dicttemp['AFST_90WHO15'] = afpmst_90who15
+            dicttemp['AFST_95WHO15'] = afpmst_95who15
+            dicttemp['AFCOPDWHO15'] = afpmcopdwho15
+            dicttemp['AFLCWHO15'] = afpmlcwho15
+            dicttemp['AFDMWHO15'] = afpmdmwho15
+            dicttemp['AFLRIWHO15'] = afpmlriwho15    
+            dicttemp['AFIHD_25NAAQS12'] = afpmihd_25naaqs12
+            dicttemp['AFIHD_30NAAQS12'] = afpmihd_30naaqs12
+            dicttemp['AFIHD_35NAAQS12'] = afpmihd_35naaqs12
+            dicttemp['AFIHD_40NAAQS12'] = afpmihd_40naaqs12
+            dicttemp['AFIHD_45NAAQS12'] = afpmihd_45naaqs12
+            dicttemp['AFIHD_50NAAQS12'] = afpmihd_50naaqs12
+            dicttemp['AFIHD_55NAAQS12'] = afpmihd_55naaqs12
+            dicttemp['AFIHD_60NAAQS12'] = afpmihd_60naaqs12
+            dicttemp['AFIHD_65NAAQS12'] = afpmihd_65naaqs12
+            dicttemp['AFIHD_70NAAQS12'] = afpmihd_70naaqs12
+            dicttemp['AFIHD_75NAAQS12'] = afpmihd_75naaqs12
+            dicttemp['AFIHD_80NAAQS12'] = afpmihd_80naaqs12
+            dicttemp['AFIHD_85NAAQS12'] = afpmihd_85naaqs12
+            dicttemp['AFIHD_90NAAQS12'] = afpmihd_90naaqs12
+            dicttemp['AFIHD_95NAAQS12'] = afpmihd_95naaqs12
+            dicttemp['AFST_25NAAQS12'] = afpmst_25naaqs12
+            dicttemp['AFST_30NAAQS12'] = afpmst_30naaqs12
+            dicttemp['AFST_35NAAQS12'] = afpmst_35naaqs12
+            dicttemp['AFST_40NAAQS12'] = afpmst_40naaqs12
+            dicttemp['AFST_45NAAQS12'] = afpmst_45naaqs12
+            dicttemp['AFST_50NAAQS12'] = afpmst_50naaqs12
+            dicttemp['AFST_55NAAQS12'] = afpmst_55naaqs12
+            dicttemp['AFST_60NAAQS12'] = afpmst_60naaqs12
+            dicttemp['AFST_65NAAQS12'] = afpmst_65naaqs12
+            dicttemp['AFST_70NAAQS12'] = afpmst_70naaqs12
+            dicttemp['AFST_75NAAQS12'] = afpmst_75naaqs12
+            dicttemp['AFST_80NAAQS12'] = afpmst_80naaqs12
+            dicttemp['AFST_85NAAQS12'] = afpmst_85naaqs12
+            dicttemp['AFST_90NAAQS12'] = afpmst_90naaqs12
+            dicttemp['AFST_95NAAQS12'] = afpmst_95naaqs12
+            dicttemp['AFCOPDNAAQS12'] = afpmcopdnaaqs12
+            dicttemp['AFLCNAAQS12'] = afpmlcnaaqs12
+            dicttemp['AFDMNAAQS12'] = afpmdmnaaqs12
+            dicttemp['AFLRINAAQS12'] = afpmlrinaaqs12
+            dicttemp['AFIHD_25WHO10'] = afpmihd_25who10
+            dicttemp['AFIHD_30WHO10'] = afpmihd_30who10
+            dicttemp['AFIHD_35WHO10'] = afpmihd_35who10
+            dicttemp['AFIHD_40WHO10'] = afpmihd_40who10
+            dicttemp['AFIHD_45WHO10'] = afpmihd_45who10
+            dicttemp['AFIHD_50WHO10'] = afpmihd_50who10
+            dicttemp['AFIHD_55WHO10'] = afpmihd_55who10
+            dicttemp['AFIHD_60WHO10'] = afpmihd_60who10
+            dicttemp['AFIHD_65WHO10'] = afpmihd_65who10
+            dicttemp['AFIHD_70WHO10'] = afpmihd_70who10
+            dicttemp['AFIHD_75WHO10'] = afpmihd_75who10
+            dicttemp['AFIHD_80WHO10'] = afpmihd_80who10
+            dicttemp['AFIHD_85WHO10'] = afpmihd_85who10
+            dicttemp['AFIHD_90WHO10'] = afpmihd_90who10
+            dicttemp['AFIHD_95WHO10'] = afpmihd_95who10
+            dicttemp['AFST_25WHO10'] = afpmst_25who10
+            dicttemp['AFST_30WHO10'] = afpmst_30who10
+            dicttemp['AFST_35WHO10'] = afpmst_35who10
+            dicttemp['AFST_40WHO10'] = afpmst_40who10
+            dicttemp['AFST_45WHO10'] = afpmst_45who10
+            dicttemp['AFST_50WHO10'] = afpmst_50who10
+            dicttemp['AFST_55WHO10'] = afpmst_55who10
+            dicttemp['AFST_60WHO10'] = afpmst_60who10
+            dicttemp['AFST_65WHO10'] = afpmst_65who10
+            dicttemp['AFST_70WHO10'] = afpmst_70who10
+            dicttemp['AFST_75WHO10'] = afpmst_75who10
+            dicttemp['AFST_80WHO10'] = afpmst_80who10
+            dicttemp['AFST_85WHO10'] = afpmst_85who10
+            dicttemp['AFST_90WHO10'] = afpmst_90who10
+            dicttemp['AFST_95WHO10'] = afpmst_95who10
+            dicttemp['AFCOPDWHO10'] = afpmcopdwho10
+            dicttemp['AFLCWHO10'] = afpmlcwho10
+            dicttemp['AFDMWHO10'] = afpmdmwho10
+            dicttemp['AFLRIWHO10'] = afpmlriwho10     
+            dicttemp['AFIHD_25WHO5'] = afpmihd_25who5
+            dicttemp['AFIHD_30WHO5'] = afpmihd_30who5
+            dicttemp['AFIHD_35WHO5'] = afpmihd_35who5
+            dicttemp['AFIHD_40WHO5'] = afpmihd_40who5
+            dicttemp['AFIHD_45WHO5'] = afpmihd_45who5
+            dicttemp['AFIHD_50WHO5'] = afpmihd_50who5
+            dicttemp['AFIHD_55WHO5'] = afpmihd_55who5
+            dicttemp['AFIHD_60WHO5'] = afpmihd_60who5
+            dicttemp['AFIHD_65WHO5'] = afpmihd_65who5
+            dicttemp['AFIHD_70WHO5'] = afpmihd_70who5
+            dicttemp['AFIHD_75WHO5'] = afpmihd_75who5
+            dicttemp['AFIHD_80WHO5'] = afpmihd_80who5
+            dicttemp['AFIHD_85WHO5'] = afpmihd_85who5
+            dicttemp['AFIHD_90WHO5'] = afpmihd_90who5
+            dicttemp['AFIHD_95WHO5'] = afpmihd_95who5
+            dicttemp['AFST_25WHO5'] = afpmst_25who5
+            dicttemp['AFST_30WHO5'] = afpmst_30who5
+            dicttemp['AFST_35WHO5'] = afpmst_35who5
+            dicttemp['AFST_40WHO5'] = afpmst_40who5
+            dicttemp['AFST_45WHO5'] = afpmst_45who5
+            dicttemp['AFST_50WHO5'] = afpmst_50who5
+            dicttemp['AFST_55WHO5'] = afpmst_55who5
+            dicttemp['AFST_60WHO5'] = afpmst_60who5
+            dicttemp['AFST_65WHO5'] = afpmst_65who5
+            dicttemp['AFST_70WHO5'] = afpmst_70who5
+            dicttemp['AFST_75WHO5'] = afpmst_75who5
+            dicttemp['AFST_80WHO5'] = afpmst_80who5
+            dicttemp['AFST_85WHO5'] = afpmst_85who5
+            dicttemp['AFST_90WHO5'] = afpmst_90who5
+            dicttemp['AFST_95WHO5'] = afpmst_95who5
+            dicttemp['AFCOPDWHO5'] = afpmcopdwho5
+            dicttemp['AFLCWHO5'] = afpmlcwho5
+            dicttemp['AFDMWHO5'] = afpmdmwho5
+            dicttemp['AFLRIWHO5'] = afpmlriwho5
             dicttemp['INTERPFLAG_PM25'] = np.nanmean(pminterpflag)
-            
         # # # # Fetch coordinates within tracts for TROPOMI dataset
         if vintage == '2015-2019':
             for i, ilat in enumerate(lat_tropomi_subset):
@@ -1035,14 +1696,13 @@ def harmonize_afacs(vintage, statefips, formpm=False):
     # ACS vintage, and version  
     #----------------------
     df = df.replace('NaN', '', regex=True)
-    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v3.csv'%(no2year, vintage, 
+    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v4.csv'%(no2year, vintage, 
         statefips), sep = ',')
     print('# # # # Output file written!\n', file=f)
     return 
 
-vintages = ['2006-2010', '2007-2011', '2008-2012', 
-    '2009-2013', '2010-2014', '2011-2015', '2012-2016', '2013-2017', 
-    '2014-2018', '2015-2019']    
+vintages = ['2015-2019', '2013-2017', '2006-2010', '2007-2011', '2008-2012', 
+    '2009-2013', '2010-2014', '2011-2015', '2012-2016', '2014-2018']  
 fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12', 
     '13', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24',
     '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
