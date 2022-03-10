@@ -393,6 +393,12 @@ def harmonize_afacs(vintage, statefips):
         # weighting. In this case, artificially force side to be ~1 km
         if searchrad < 0.05:
             searchrad = 0.05
+        # Humongous tracts (e.g., tracts in the north of Alaska) will have 
+        # a value for searchrad of ~15 deg (15 * 100 * 100 =  150000 points
+        # to check). These operations are very costly, so force any searchrad
+        # > 2 deg to 2 deg
+        if searchrad > 2:
+            searchrad = 2. 
         # Extract GEOID of record
         if vintage=='2005-2009':
             geoid = record['CTIDFP00']
@@ -574,6 +580,7 @@ def harmonize_afacs(vintage, statefips):
             afgbdlower  = 1-np.exp(-ec['lower'])
             exposureclosest_index = betagbd['exposure'].sub(no2_insidewho40
                 ).abs().idxmin()
+            ec = betagbd.iloc[exposureclosest_index]
             afgbdmeanwho40 = 1-np.exp(-ec['mean'])
             afgbdmedwho40 = 1-np.exp(-ec['median'])
             afgbdupperwho40 = 1-np.exp(-ec['upper'])
@@ -1153,18 +1160,29 @@ def harmonize_afacs(vintage, statefips):
         statefips), sep = ',')
     print('# # # # Output file written!\n', file=f)
     return 
+# vintages = ['2015-2019', '2006-2010', '2014-2018', '2013-2017', '2012-2016', 
+#     '2011-2015', '2010-2014', '2009-2013', '2008-2012', '2007-2011']
+vintages = ['2006-2010']
+vintages = ['2007-2011']
+vintages = ['2008-2012']
+vintages = ['2009-2013']
+vintages = ['2010-2014']
+vintages = ['2011-2015']
+vintages = ['2012-2016']
+vintages = ['2013-2017']
+vintages = ['2014-2018']
+vintages = ['2015-2019']
 
-vintages = ['2015-2019', '2006-2010', '2014-2018', '2013-2017', '2012-2016', 
-    '2011-2015', '2010-2014', '2009-2013', '2008-2012', '2007-2011']  
 fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12', 
     '13', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24',
     '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35',
     '36', '37', '38', '39', '40', '41', '42', '44', '45', '46', '47', 
     '48', '49', '50', '51', '53', '54', '55', '56', '72']
+
 for vintage in vintages: 
     # Create output text file for print statements (i.e., crosswalk checks)
     f = open(DIR_OUT+'harmonize_afacs%s_%s.txt'%(vintage,
         datetime.now().strftime('%Y-%m-%d-%H%M')), 'a')    
-    for statefips in fips: 
+    for statefips in fips:
         harmonize_afacs(vintage, statefips)
     f.close()
