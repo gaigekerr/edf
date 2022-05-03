@@ -1618,7 +1618,7 @@ def fig2(burdents):
         pos.x1 = pos.x1+0.05    
         ax.set_position(pos)
     plt.subplots_adjust(right=0.96, hspace=2.7, top=0.95)
-    plt.savefig(DIR_FIG+'fig2_popwtg.pdf', dpi=600)
+    plt.savefig(DIR_FIG+'figS7.pdf', dpi=600)
 
     # # # # For subgroup extremes
     fig = plt.figure(figsize=(12,7))
@@ -1963,291 +1963,262 @@ def fig2(burdents):
 
 def fig3(burdents):
     """
+    
+
+    Parameters
+    ----------
+    burdents : TYPE
+        DESCRIPTION.
 
     Returns
     -------
     None.
 
     """
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches
     import numpy as np
     import matplotlib.pyplot as plt
-    from scipy.stats import ks_2samp    
-    # Select burdens from beginning, midpoint, and final years of analysis
-    # (2010, 2015, 2019) 
-    burden10 = burdents.loc[burdents['YEAR']=='2006-2010'].copy(deep=True)
-    burden15 = burdents.loc[burdents['YEAR']=='2011-2015'].copy(deep=True)
-    burden19 = burdents.loc[burdents['YEAR']=='2015-2019'].copy(deep=True)
-    # Calculate racial characteristics
-    fracwhite10 = ((burden10[['race_nh_white','race_h_white']].sum(axis=1))/
-        burden10['race_tot'])
-    burden10['fracwhite10'] = fracwhite10
-    fracwhite15 = ((burden15[['race_nh_white','race_h_white']].sum(axis=1))/
-        burden15['race_tot'])
-    burden15['fracwhite15'] = fracwhite15
-    fracwhite19 = ((burden19[['race_nh_white','race_h_white']].sum(axis=1))/
-        burden19['race_tot'])
-    burden19['fracwhite19'] = fracwhite19
-    # Find tracts with largest NO2-, PM25-, or PM25- and NO2-attributable 
-    # health burdens
-    # For 2010
-    whereleast10 = burden10.loc[
-        (burden10.BURDENASTHMARATE<=np.nanpercentile(burden10.BURDENASTHMARATE,10)) & 
-        (burden10.BURDENPMALLRATE<=np.nanpercentile(burden10.BURDENPMALLRATE,10))]
-    wheremost10 = burden10.loc[
-        (burden10.BURDENASTHMARATE>=np.nanpercentile(burden10.BURDENASTHMARATE,90)) & 
-        (burden10.BURDENPMALLRATE>=np.nanpercentile(burden10.BURDENPMALLRATE,90))]
-    wheremostpm10 = burden10.loc[burden10.BURDENPMALLRATE>=
-        np.nanpercentile(burden10.BURDENPMALLRATE,90)]
-    wheremostasthma10 = burden10.loc[burden10.BURDENASTHMARATE>=
-        np.nanpercentile(burden10.BURDENASTHMARATE,90)]
-    whereleastpm10 = burden10.loc[burden10.BURDENPMALLRATE<=
-        np.nanpercentile(burden10.BURDENPMALLRATE,10)]
-    whereleastasthma10 = burden10.loc[burden10.BURDENASTHMARATE<=
-        np.nanpercentile(burden10.BURDENASTHMARATE,10)]
-    # For 2015
-    whereleast15 = burden15.loc[
-        (burden15.BURDENASTHMARATE<=np.nanpercentile(burden15.BURDENASTHMARATE,10)) & 
-        (burden15.BURDENPMALLRATE<=np.nanpercentile(burden15.BURDENPMALLRATE,10))]
-    wheremost15 = burden15.loc[
-        (burden15.BURDENASTHMARATE>=np.nanpercentile(burden15.BURDENASTHMARATE,90)) & 
-        (burden15.BURDENPMALLRATE>=np.nanpercentile(burden15.BURDENPMALLRATE,90))]
-    wheremostpm15 = burden15.loc[burden15.BURDENPMALLRATE>=
-        np.nanpercentile(burden15.BURDENPMALLRATE,90)]
-    wheremostasthma15 = burden15.loc[burden15.BURDENASTHMARATE>=
-        np.nanpercentile(burden15.BURDENASTHMARATE,90)]
-    whereleastpm15 = burden15.loc[burden15.BURDENPMALLRATE<=
-        np.nanpercentile(burden15.BURDENPMALLRATE,10)]
-    whereleastasthma15 = burden15.loc[burden15.BURDENASTHMARATE<=
-        np.nanpercentile(burden15.BURDENASTHMARATE,10)]
-    # For 2019 
-    whereleast19 = burden19.loc[
-        (burden19.BURDENASTHMARATE<=np.nanpercentile(burden19.BURDENASTHMARATE,10)) & 
-        (burden19.BURDENPMALLRATE<=np.nanpercentile(burden19.BURDENPMALLRATE,10))]
-    wheremost19 = burden19.loc[
-        (burden19.BURDENASTHMARATE>=np.nanpercentile(burden19.BURDENASTHMARATE,90)) & 
-        (burden19.BURDENPMALLRATE>=np.nanpercentile(burden19.BURDENPMALLRATE,90))]
-    wheremostpm19 = burden19.loc[burden19.BURDENPMALLRATE>=
-        np.nanpercentile(burden19.BURDENPMALLRATE,90)]
-    wheremostasthma19 = burden19.loc[burden19.BURDENASTHMARATE>=
-        np.nanpercentile(burden19.BURDENASTHMARATE,90)]
-    whereleastpm19 = burden19.loc[burden19.BURDENPMALLRATE<=
-        np.nanpercentile(burden19.BURDENPMALLRATE,10)]
-    whereleastasthma19 = burden19.loc[burden19.BURDENASTHMARATE<=
-        np.nanpercentile(burden19.BURDENASTHMARATE,10)]
-    colorsyear = [color1, color2, color3]
-    # Plotting
-    fig = plt.figure(figsize=(8,5))
-    ax1 = plt.subplot2grid((1,1), (0,0))
-    # Denote median percent white in years 
-    ax1.axhline(burden10.fracwhite10.median(), ls='-', color=colorsyear[0], 
-        zorder=0, lw=0.75)
-    ax1.axhline(burden15.fracwhite15.median(), ls='-', color=colorsyear[1], 
-        zorder=0, lw=0.75) 
-    ax1.axhline(burden19.fracwhite19.median(), ls='-', color=colorsyear[2], 
-        zorder=0, lw=0.75)
-    # Racial composition of tracts with the smallest PM2.5-
-    # attributable burdens
-    heights = [whereleastpm10.fracwhite10, whereleastpm15.fracwhite15, 
-        whereleastpm19.fracwhite19]
-    pos = [0,1,2]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance 
-    ks_1015 = ks_2samp(whereleastpm10.fracwhite10, whereleastpm15.fracwhite15)
-    ks_1519 = ks_2samp(whereleastpm15.fracwhite15, whereleastpm19.fracwhite19)
-    ks_1019 = ks_2samp(whereleastpm10.fracwhite10, whereleastpm19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
-    # Racial composition of tracts with the smallest NO2-attributable 
-    # burdens
-    heights = [whereleastasthma10.fracwhite10, 
-        whereleastasthma15.fracwhite15, whereleastasthma19.fracwhite19]
-    pos = [4,5,6]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance
-    ks_1015 = ks_2samp(whereleastasthma10.fracwhite10, 
-        whereleastasthma15.fracwhite15)
-    ks_1519 = ks_2samp(whereleastasthma15.fracwhite15, 
-        whereleastasthma19.fracwhite19)
-    ks_1019 = ks_2samp(whereleastasthma10.fracwhite10, 
-        whereleastasthma19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
-    # Racial composition of tracts with the smallest NO2- and PM2.5-
-    # attributable burdens
-    heights = [whereleast10.fracwhite10, whereleast15.fracwhite15, 
-        whereleast19.fracwhite19]
-    pos = [8,9,10]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance
-    ks_1015 = ks_2samp(whereleast10.fracwhite10, whereleast15.fracwhite15)
-    ks_1519 = ks_2samp(whereleast15.fracwhite15, whereleast19.fracwhite19)
-    ks_1019 = ks_2samp(whereleast10.fracwhite10, whereleast19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
-    # Racial composition of tracts with the largest PM2.5-attributable burdens    
-    heights = [wheremostpm10.fracwhite10, wheremostpm15.fracwhite15, 
-        wheremostpm19.fracwhite19]
-    pos = [13,14,15]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance
-    ks_1015 = ks_2samp(wheremostpm10.fracwhite10, wheremostpm15.fracwhite15)
-    ks_1519 = ks_2samp(wheremostpm15.fracwhite15, wheremostpm19.fracwhite19)
-    ks_1019 = ks_2samp(wheremostpm10.fracwhite10, wheremostpm19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
-    # Racial composition of tracts with the largest NO2-attributable burdens    
-    heights = [wheremostasthma10.fracwhite10, 
-        wheremostasthma15.fracwhite15, wheremostasthma19.fracwhite19]
-    pos = [17,18,19]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance
-    ks_1015 = ks_2samp(wheremostasthma10.fracwhite10, 
-        wheremostasthma15.fracwhite15)
-    ks_1519 = ks_2samp(wheremostasthma15.fracwhite15, 
-        wheremostasthma19.fracwhite19)
-    ks_1019 = ks_2samp(wheremostasthma10.fracwhite10, 
-        wheremostasthma19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.08, maxasterix=(3))
-    # Racial composition of tracts with the largest NO2- and PM2.5-attributable burdens    
-    heights = [wheremost10.fracwhite10, wheremost15.fracwhite15, 
-        wheremost19.fracwhite19]
-    pos = [21,22,23]
-    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
-        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
-        capprops=dict(color='None'), whiskerprops=dict(color='None'))
-    for patch, color in zip(box['boxes'], colorsyear):
-        patch.set_facecolor(color)
-        patch.set_edgecolor(color)
-    # Calculate significance
-    ks_1015 = ks_2samp(wheremost10.fracwhite10, wheremost15.fracwhite15)
-    ks_1519 = ks_2samp(wheremost15.fracwhite15, wheremost19.fracwhite19)
-    ks_1019 = ks_2samp(wheremost10.fracwhite10, wheremost19.fracwhite19)
-    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
-        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
-    barplot_annotate_brackets(0, 2, np.round(ks_1019.pvalue,2), pos, 
-        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
-    # Aesthetics
-    ax1.set_xlim([-0.75, 23.75])
-    ax1.set_xticks([1,5,9,14,18,22])
-    ax1.set_xticklabels([
-        'PM$_\mathregular{2.5}$-\nattributable',
-        'NO$_\mathregular{2}$-\nattributable',
-        'NO$_\mathregular{2}$- and PM$_{\mathregular{2.5}}$-\nattributable',
-        'PM$_\mathregular{2.5}$-\nattributable',
-        'NO$_\mathregular{2}$-\nattributable',    
-        'NO$_\mathregular{2}$- and PM$_{\mathregular{2.5}}$-\nattributable'])
-    ax1.tick_params(axis=u'x', which=u'both',length=0)
-    ax1.set_ylim([0,1])
-    ax1.set_yticks([0,0.2,0.4,0.6,0.8,1.])
-    ax1.set_yticklabels(['0','20','40','60','80','100'])
-    ax1.set_ylabel('Proportion of white population [%]', fontsize=14)
-    # Hide the right and top spines
-    ax1.spines['right'].set_visible(False)
-    ax1.spines['top'].set_visible(False)
-    # Create legend
-    ax1.text(5, 1.05,'L e a s t    b u r d e n e d', fontsize=18, ha='center')
-    ax1.text(18, 1.05,'M o s t    b u r d e n e d', fontsize=18, ha='center')
-    patch1 = mpatches.Patch(color=colorsyear[0], label='2010')
-    patch2 = mpatches.Patch(color=colorsyear[1], label='2015')
-    patch3 = mpatches.Patch(color=colorsyear[2], label='2019')
-    all_handles = (patch1, patch2, patch3)
-    leg = ax1.legend(handles=all_handles, frameon=False, ncol=1,
-        bbox_to_anchor=(0.2,0.25))
+    import matplotlib.patches as mpatches    
+    # For absolute concentrations/rates for racial subgroups
+    PM25_mostwhite, PM25_leastwhite = [], []
+    NO2_mostwhite, NO2_leastwhite = [], []
+    pd_mostwhite, pd_leastwhite = [], []
+    asthma_mostwhite, asthma_leastwhite = [], []
+    # For relative disparities
+    PM25_race_relative, NO2_race_relative = [], []
+    pd_race_relative, asthma_race_relative = [], []
+    # Same as above but for ethnic subgroups
+    PM25_mosthisp, PM25_leasthisp = [], []
+    NO2_mosthisp, NO2_leasthisp = [], []
+    pd_mosthisp, pd_leasthisp = [], []
+    asthma_mosthisp, asthma_leasthisp = [], []
+    PM25_ethnic_relative, NO2_ethnic_relative = [], []
+    pd_ethnic_relative, asthma_ethnic_relative = [], []
+    for year in np.arange(2010, 2020, 1):
+        yearst = '%d-%d'%(year-4, year)
+        burdenty = burdents.loc[burdents['YEAR']==yearst].copy(deep=True)
+        # Define ethnoracial groups
+        burdenty['fracwhite'] = ((burdenty[['race_nh_white','race_h_white'
+            ]].sum(axis=1))/burdenty['race_tot'])
+        burdenty['frachisp'] = (burdenty['race_h']/burdenty['race_tot'])    
+        # Define extreme ethnoracial subgroups
+        mostwhite = burdenty.iloc[np.where(burdenty.fracwhite >= 
+            np.nanpercentile(burdenty.fracwhite, 90))]
+        leastwhite = burdenty.iloc[np.where(burdenty.fracwhite <= 
+            np.nanpercentile(burdenty.fracwhite, 10))]
+        mosthisp = burdenty.iloc[np.where(burdenty.frachisp > 
+            np.nanpercentile(burdenty.frachisp, 90))]
+        leasthisp = burdenty.iloc[np.where(burdenty.frachisp < 
+            np.nanpercentile(burdenty.frachisp, 10))]
+        # Save off information for year 
+        PM25_mostwhite.append(mostwhite.PM25.mean())
+        PM25_leastwhite.append(leastwhite.PM25.mean())
+        NO2_mostwhite.append(mostwhite.NO2.mean())
+        NO2_leastwhite.append(leastwhite.NO2.mean())
+        pd_mostwhite.append(mostwhite.BURDENPMALLRATE.mean())
+        pd_leastwhite.append(leastwhite.BURDENPMALLRATE.mean())
+        asthma_mostwhite.append(mostwhite.BURDENASTHMARATE.mean())
+        asthma_leastwhite.append(leastwhite.BURDENASTHMARATE.mean())
+        PM25_mosthisp.append(mosthisp.PM25.mean())
+        PM25_leasthisp.append(leasthisp.PM25.mean())
+        NO2_mosthisp.append(mosthisp.NO2.mean())
+        NO2_leasthisp.append(leasthisp.NO2.mean())
+        pd_mosthisp.append(mosthisp.BURDENPMALLRATE.mean())
+        pd_leasthisp.append(leasthisp.BURDENPMALLRATE.mean())
+        asthma_mosthisp.append(mosthisp.BURDENASTHMARATE.mean())
+        asthma_leasthisp.append(leasthisp.BURDENASTHMARATE.mean())
+        # Relative disparities
+        PM25_race_relative.append(leastwhite.PM25.mean()/mostwhite.PM25.mean())
+        NO2_race_relative.append(leastwhite.NO2.mean()/mostwhite.NO2.mean())
+        pd_race_relative.append(leastwhite.BURDENPMALLRATE.mean()/
+            mostwhite.BURDENPMALLRATE.mean())
+        asthma_race_relative.append(leastwhite.BURDENASTHMARATE.mean()/
+            mostwhite.BURDENASTHMARATE.mean())
+        PM25_ethnic_relative.append(mosthisp.PM25.mean()/leasthisp.PM25.mean())
+        NO2_ethnic_relative.append(mosthisp.NO2.mean()/leasthisp.NO2.mean())
+        pd_ethnic_relative.append(mosthisp.BURDENPMALLRATE.mean()/
+            leasthisp.BURDENPMALLRATE.mean())
+        asthma_ethnic_relative.append(mosthisp.BURDENASTHMARATE.mean()/
+            leasthisp.BURDENASTHMARATE.mean())    
+    
+    
+    fig = plt.figure(figsize=(8,6))
+    ax1t = plt.subplot2grid((10,2),(0,0), rowspan=3)
+    ax1b = plt.subplot2grid((10,2),(3,0), rowspan=2) 
+    ax2t = plt.subplot2grid((10,2),(5,0), rowspan=3)
+    ax2b = plt.subplot2grid((10,2),(8,0), rowspan=2)
+    ax3t = plt.subplot2grid((10,2),(0,1), rowspan=3)
+    ax3b = plt.subplot2grid((10,2),(3,1), rowspan=2)
+    ax4t = plt.subplot2grid((10,2),(5,1), rowspan=3)
+    ax4b = plt.subplot2grid((10,2),(8,1), rowspan=2)
+    years = np.arange(2010,2020,1)
+    
+    
+    # Racial NO2-attributable pediatric asthma
+    for i, year in enumerate(years): 
+        ax1t.vlines(x=year, ymin=asthma_mostwhite[i], ymax=asthma_leastwhite[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax1t.scatter(years, asthma_mostwhite, color=color3, zorder=10, 
+        label='Most white')
+    ax1t.scatter(years, asthma_leastwhite, color=color2, zorder=10, 
+        label='Least white')
+    # Text for first and last years
+    ax1t.text(years[0], asthma_mostwhite[0]-30, '%d'%asthma_mostwhite[0], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax1t.text(years[0], asthma_leastwhite[0]+25, '%d'%asthma_leastwhite[0], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax1t.text(years[-1], asthma_mostwhite[-1]-30, '%d'%asthma_mostwhite[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax1t.text(years[-1], asthma_leastwhite[-1]+25, '%d'%asthma_leastwhite[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax1b.plot(years, asthma_race_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(asthma_race_relative):
+        if i==3:
+            ax1b.text(years[i], asthma_race_relative[i]*1.065, '%.2f'%txt, 
+                ha='center', fontsize=8, clip_on=False)    
+        else:
+            ax1b.text(years[i], asthma_race_relative[i]*1.05, '%.2f'%txt, 
+                ha='center', fontsize=8, clip_on=False)    
+    
+    
+    # Racial PM2.5-attributable premature mortality 
+    for i, year in enumerate(years): 
+        ax2t.vlines(x=year, ymin=pd_mostwhite[i], ymax=pd_leastwhite[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax2t.scatter(years, pd_mostwhite, color=color3, zorder=10,
+        label='Most white')
+    ax2t.scatter(years, pd_leastwhite, color=color2, zorder=10, 
+        label='Least white')
+    ax2t.text(years[0], pd_mostwhite[0]+1, '%d'%pd_mostwhite[0], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax2t.text(years[0], pd_leastwhite[0]-1.2, '%d'%pd_leastwhite[0], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax2t.text(years[-1], pd_mostwhite[-1]-1.2, '%d'%pd_mostwhite[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax2t.text(years[-1], pd_leastwhite[-1]+1, '%d'%pd_leastwhite[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax2b.plot(years, pd_race_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(pd_race_relative):
+        ax2b.text(years[i], pd_race_relative[i]*1.04, '%.2f'%txt, 
+            fontsize=8, ha='center', clip_on=False)
+    
+    
+    # Ethnic NO2-attributable pediatric asthma
+    for i, year in enumerate(years): 
+        ax3t.vlines(x=year, ymin=asthma_leasthisp[i], ymax=asthma_mosthisp[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax3t.scatter(years, asthma_leasthisp, color=color3, zorder=10, 
+        label='Least Hispanic')             
+    ax3t.scatter(years, asthma_mosthisp, color=color2, zorder=10, 
+        label='Most Hispanic')
+    ax3t.text(years[0], asthma_leasthisp[0]-30, '%d'%asthma_leasthisp[0], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax3t.text(years[0], asthma_mosthisp[0]+25, '%d'%asthma_mosthisp[0], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax3t.text(years[-1], asthma_leasthisp[-1]-30, '%d'%asthma_leasthisp[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax3t.text(years[-1], asthma_mosthisp[-1]+25, '%d'%asthma_mosthisp[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax3b.plot(years, asthma_ethnic_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(asthma_ethnic_relative):
+        if i==0:
+            ax3b.text(years[i]-0.1, asthma_ethnic_relative[i]*1.03, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)
+        elif i==2:
+            ax3b.text(years[i]+0.05, asthma_ethnic_relative[i]*1.023, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)
+        else: 
+            ax3b.text(years[i], asthma_ethnic_relative[i]*1.013, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)
+    
+    
+    # Ethnic PM2.5-attributable premature mortality 
+    for i, year in enumerate(years): 
+        ax4t.vlines(x=year, ymin=pd_leasthisp[i], ymax=pd_mosthisp[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax4t.scatter(years, pd_leasthisp, color=color3, zorder=10, 
+        label='Least Hispanic')
+    ax4t.scatter(years, pd_mosthisp, color=color2, zorder=10, 
+        label='Most Hispanic')
+    ax4t.text(years[0], pd_leasthisp[0]+1, '%d'%pd_leasthisp[0], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax4t.text(years[0], pd_mosthisp[0]-1.2, '%d'%pd_mosthisp[0], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax4t.text(years[-1], pd_leasthisp[-1]+1, '%d'%pd_leasthisp[-1], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax4t.text(years[-1], pd_mosthisp[-1]-1.2, '%d'%pd_mosthisp[-1], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax4b.plot(years, pd_ethnic_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(pd_ethnic_relative):
+        if i==0:
+            ax4b.text(years[i], pd_ethnic_relative[i]*1.1, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)
+        elif i==8:
+            ax4b.text(years[i], pd_ethnic_relative[i]*1.05, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)        
+        else: 
+            ax4b.text(years[i], pd_ethnic_relative[i]*1.07, '%.2f'%txt, fontsize=8, 
+                ha='center', clip_on=False)
+    # Aesthetics  
+    ax1t.set_title('(A) Racial disparities', fontsize=14, loc='left', y=1.07)
+    ax2t.set_title('(C)', fontsize=14, loc='left', y=1.07)
+    ax3t.set_title('(B) Ethnic disparities', fontsize=14, loc='left', y=1.07)
+    ax4t.set_title('(D)', fontsize=14, loc='left', y=1.07)
+    ax1t.set_ylabel('New asthma cases due\nto NO$_{\mathregular{2}}$ '+\
+        'per 100000')
+    ax1t.get_yaxis().set_label_coords(-0.15,0.5)
+    ax2t.set_ylabel('Premature deaths due\nto PM$_{\mathregular{2.5}}$ '+\
+        'per 100000') 
+    ax2t.get_yaxis().set_label_coords(-0.15,0.5)
+    # Axis limits
+    for ax in [ax1t, ax3t]:
+        ax.set_ylim([0, 500])
+        ax.set_yticks(np.linspace(0,500,6))
+        ax.set_yticklabels([])
+    ax1t.set_yticklabels([int(x) for x in np.linspace(0,500,6)])
+    for ax in [ax2t, ax4t]:
+        ax.set_ylim([12, 32])
+        ax.set_yticks(np.linspace(12,32,6))
+        ax.set_yticklabels([])
+    ax2t.set_yticklabels([int(x) for x in np.linspace(12,32,6)])
+    # Relative disparities plots 
+    ax1b.set_ylim([min(asthma_race_relative)*0.92, 
+        max(asthma_race_relative)*1.0])
+    ax2b.set_ylim([min(pd_race_relative)*0.92, 
+        max(pd_race_relative)*1.0])
+    ax3b.set_ylim([min(asthma_ethnic_relative)*0.98, 
+        max(asthma_ethnic_relative)*1.0])
+    ax4b.set_ylim([min(pd_ethnic_relative)*0.9, 
+        max(pd_ethnic_relative)*0.95])
+    plt.subplots_adjust(wspace=0.2, hspace=15.5, bottom=0.08, top=0.92, right=0.96)
+    ax2t.legend(ncol=2, frameon=False, bbox_to_anchor=(0.95, -1.))
+    ax4t.legend(ncol=2, frameon=False, bbox_to_anchor=(1.01, -1.))
+    for ax in [ax1t, ax2t, ax3t, ax4t]:
+        ax.set_xlim([2009.5,2019.5])
+        for spine in ['top', 'right', 'bottom']:
+            ax.spines[spine].set_visible(False)
+        ax.set_xticklabels([])
+        ax.tick_params(axis='x', which='both', bottom=False)
+    for ax in [ax1b, ax2b, ax3b, ax4b]:
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.set_xlim([2009.5,2019.5])
+        # Only draw spine between the y-ticks
+        ax.spines.bottom.set_bounds((2010, 2019))    
+        ax.set_xticks(years)
+        ax.set_xticklabels(['2010', '', '', '2013', '', '', '2016', '', '', 
+            '2019'])
+        ax.set_yticks([])
+        # Move relative disparities subplots up
+        box = ax.get_position()
+        box.y0 = box.y0 + 0.04
+        box.y1 = box.y1 + 0.04
+        ax.set_position(box)
     plt.savefig(DIR_FIG+'fig3.pdf', dpi=500)
-    # Calculate some pithy statistics
-    print('Median white population [%]')
-    print('2010 = %.2f'%(burden10.fracwhite10.median()*100.))
-    print('2015 = %.2f'%(burden15.fracwhite15.median()*100.))
-    print('2019 = %.2f'%(burden19.fracwhite19.median()*100.))
-    print('\n')
-    print('White population in tracts with smallest '+\
-        'PM2.5-attributable burdens [%]')
-    print('2010 = %.2f'%(whereleastpm10.fracwhite10.median()*100.))
-    print('2015 = %.2f'%(whereleastpm15.fracwhite15.median()*100.))
-    print('2019 = %.2f'%(whereleastpm19.fracwhite19.median()*100.)) 
-    print('White population in tracts with largest '+\
-        'PM2.5-attributable burdens [%]')
-    print('2010 = %.2f'%(wheremostpm10.fracwhite10.median()*100.))
-    print('2015 = %.2f'%(wheremostpm15.fracwhite15.median()*100.))
-    print('2019 = %.2f'%(wheremostpm19.fracwhite19.median()*100.))    
-    print('\n')
-    print('White population in tracts with smallest '+\
-        'NO2-attributable burdens [%]')
-    print('2010 = %.2f'%(whereleastasthma10.fracwhite10.median()*100.))
-    print('2015 = %.2f'%(whereleastasthma15.fracwhite15.median()*100.))
-    print('2019 = %.2f'%(whereleastasthma19.fracwhite19.median()*100.))
-    print('White population in tracts with largest '+\
-        'NO2-attributable burdens [%]')
-    print('2010 = %.2f'%(wheremostasthma10.fracwhite10.median()*100.))
-    print('2015 = %.2f'%(wheremostasthma15.fracwhite15.median()*100.))
-    print('2019 = %.2f'%(wheremostasthma19.fracwhite19.median()*100.))
-    print('\n')
-    print('White population in tracts with smallest '+\
-        'PM2.5- AND NO2-attributable burdens [%]')
-    print('2010 = %.2f'%(whereleast10.fracwhite10.median()*100.), 
-        '(%d tracts)'%whereleast10.shape[0])
-    print('2015 = %.2f'%(whereleast15.fracwhite15.median()*100.), 
-        '(%d tracts)'%whereleast15.shape[0])
-    print('2019 = %.2f'%(whereleast19.fracwhite19.median()*100.), 
-        '(%d tracts)'%whereleast19.shape[0]) 
-    print('White population in tracts with largest '+\
-        'PM2.5- AND NO2-attributable burdens [%]')
-    print('2010 = %.2f'%(wheremost10.fracwhite10.median()*100.), 
-        '(%d tracts)'%wheremost10.shape[0])
-    print('2015 = %.2f'%(wheremost15.fracwhite15.median()*100.), 
-        '(%d tracts)'%wheremost15.shape[0])
-    print('2019 = %.2f'%(wheremost19.fracwhite19.median()*100.), 
-        '(%d tracts)'%wheremost19.shape[0])
     return
 
 def table1(burdents):
@@ -2461,6 +2432,11 @@ def table1(burdents):
          np.round(burden19.BURDENPMALLWHO10.sum(), 2),
          np.round(((burden19.BURDENPMALLWHO10.sum()-
          burden19.BURDENPMALL.sum())/burden19.BURDENPMALL.sum())*100., 2)],
+        ["EPA NAAQS 8", 
+         np.nan,#np.round(burden19.PM25NAAQS8.mean(), 2), 
+         np.round(burden19.BURDENPMALLNAAQS8.sum(), 2),
+         np.round(((burden19.BURDENPMALLNAAQS8.sum()-
+         burden19.BURDENPMALL.sum())/burden19.BURDENPMALL.sum())*100., 2)],
         ["WHO AQG", 
          np.round(burden19.PM25WHO5.mean(), 2), 
          np.round(burden19.BURDENPMALLWHO5.sum(), 2),
@@ -2519,6 +2495,15 @@ def table1(burdents):
          np.round(((leastwhite.BURDENPMALLRATEWHO10.mean()-
          leastwhite.BURDENPMALLRATE.mean())/
          leastwhite.BURDENPMALLRATE.mean())*100., 2)],
+        ["EPA NAAQS 8", 
+         np.round(mostwhite.BURDENPMALLRATENAAQS8.mean(), 2), 
+         np.round(((mostwhite.BURDENPMALLRATENAAQS8.mean()-
+         mostwhite.BURDENPMALLRATE.mean())/
+         mostwhite.BURDENPMALLRATE.mean())*100., 2),
+         np.round(leastwhite.BURDENPMALLRATENAAQS8.mean(), 2), 
+         np.round(((leastwhite.BURDENPMALLRATENAAQS8.mean()-
+         leastwhite.BURDENPMALLRATE.mean())/
+         leastwhite.BURDENPMALLRATE.mean())*100., 2)],        
         ["WHO AQG", 
          np.round(mostwhite.BURDENPMALLRATEWHO5.mean(), 2), 
          np.round(((mostwhite.BURDENPMALLRATEWHO5.mean()-
@@ -2545,7 +2530,10 @@ def table1(burdents):
         'race_nh_black','race_h_black']].sum(axis=1).sum())         
     allmortblackwho10 = ((burden19['BURDENPMALLRATEWHO10']*burden19[[
         'race_nh_black','race_h_black']].sum(axis=1)).sum()/burden19[[
-        'race_nh_black','race_h_black']].sum(axis=1).sum())         
+        'race_nh_black','race_h_black']].sum(axis=1).sum())    
+    allmortblacknaaqs8 = ((burden19['BURDENPMALLRATENAAQS8']*burden19[[
+        'race_nh_black','race_h_black']].sum(axis=1)).sum()/burden19[[
+        'race_nh_black','race_h_black']].sum(axis=1).sum())                
     allmortblackwho5 = ((burden19['BURDENPMALLRATEWHO5']*burden19[[
         'race_nh_black','race_h_black']].sum(axis=1)).sum()/burden19[[
         'race_nh_black','race_h_black']].sum(axis=1).sum())                 
@@ -2559,6 +2547,9 @@ def table1(burdents):
         ['race_nh_white','race_h_white']].sum(axis=1)).sum()/burden19[
         ['race_nh_white','race_h_white']].sum(axis=1).sum()) 
     allmortwhitewho10 = ((burden19['BURDENPMALLRATEWHO10']*burden19[
+        ['race_nh_white','race_h_white']].sum(axis=1)).sum()/burden19[
+        ['race_nh_white','race_h_white']].sum(axis=1).sum()) 
+    allmortwhitenaaqs8 = ((burden19['BURDENPMALLRATENAAQS8']*burden19[
         ['race_nh_white','race_h_white']].sum(axis=1)).sum()/burden19[
         ['race_nh_white','race_h_white']].sum(axis=1).sum()) 
     allmortwhitewho5 = ((burden19['BURDENPMALLRATEWHO5']*burden19[
@@ -2590,6 +2581,11 @@ def table1(burdents):
          np.round(((allmortwhitewho10-allmortwhite)/allmortwhite)*100., 2),
          np.round(allmortblackwho10, 2),
          np.round(((allmortblackwho10-allmortblack)/allmortblack)*100., 2)],
+         ["EPA NAAQS 8", 
+         np.round(allmortwhitenaaqs8, 2), 
+         np.round(((allmortwhitenaaqs8-allmortwhite)/allmortwhite)*100., 2),
+         np.round(allmortblacknaaqs8, 2),
+         np.round(((allmortblacknaaqs8-allmortblack)/allmortblack)*100., 2)],         
          ["WHO AQG", 
          np.round(allmortwhitewho5, 2), 
          np.round(((allmortwhitewho5-allmortwhite)/allmortwhite)*100., 2),
@@ -2599,7 +2595,7 @@ def table1(burdents):
     )
     print(x6.get_string(title='Disparities in PM25-attributable mortality'+\
         ' rates per 100K (pop.-wtg. method)'))   
-    with open(DIR+'docs/IT_AQG_benefits.txt','w') as file:
+    with open(DIR+'docs/IT_AQG_benefits-NAAQS8.txt','w') as file:
         file.write(x1.get_string())
         file.write('\n')
         file.write(x2.get_string())
@@ -2612,277 +2608,8 @@ def table1(burdents):
         file.write('\n')    
         file.write(x6.get_string())
     return
-
-def figS1(burdents):
-    """Plot maps of tract-averaged NO2 and PM2.5 for the contiguous U.S., 
-    Hawaii, Alaska, and Puerto Rico for the first year of the measuring period,
-    a midpoint year, and the final year (2010, 2015, 2019). 
-
-    Parameters
-    ----------
-    burdents : pandas.core.frame.DataFrame
-        Tract-level NO2 and PM2.5 pollution concentrations and attributable
-        health burdens for all years in measuring period. 
-
-    Returns
-    -------
-    None.
-
-    """
-    import numpy as np
-    import cartopy.crs as ccrs
-    import cartopy.feature as cfeature
-    from shapely.geometry import Polygon
-    import matplotlib.pyplot as plt
-    from cartopy.io import shapereader
-    import matplotlib
-    from operator import itemgetter
-    # Subset harmonized dataset for years of interest
-    harm2010 = burdents.loc[(burdents.YEAR=='2006-2010')]
-    harm2015 = burdents.loc[(burdents.YEAR=='2011-2015')]
-    harm2019 = burdents.loc[(burdents.YEAR=='2015-2019')]
-    # Load shapefiles
-    shpfilename = shapereader.natural_earth('10m', 'cultural', 
-        'admin_0_countries')
-    reader = shapereader.Reader(shpfilename)
-    countries = reader.records()   
-    usa = [x.attributes['ADM0_A3'] for x in countries]
-    # usaidx = np.where(np.in1d(np.array(usaidx), ['PRI','USA'])==True)
-    # usa = list(reader.geometries())
-    # usa = np.array(usa, dtype=object)[usaidx[0]]
-    usa = np.where(np.array(usa)=='USA')[0][0]
-    usa = list(reader.geometries())[usa].geoms
-    lakes = shapereader.natural_earth('10m', 'physical', 'lakes')
-    lakes_reader = shapereader.Reader(lakes)
-    lakes = lakes_reader.records()   
-    lake_names = [x.attributes['name'] for x in lakes]
-    great_lakes = np.where((np.array(lake_names)=='Lake Superior') |
-        (np.array(lake_names)=='Lake Michigan') | 
-        (np.array(lake_names)=='Lake Huron') |
-        (np.array(lake_names)=='Lake Erie') |
-        (np.array(lake_names)=='Lake Ontario'))[0]
-    great_lakes = itemgetter(*great_lakes)(list(lakes_reader.geometries()))
-    shapename = 'admin_1_states_provinces_lakes_shp'
-    states_shp = shapereader.natural_earth(resolution='10m', category='cultural', 
-        name=shapename)
-    states_shp = shapereader.Reader(states_shp)
-    # Constants
-    proj = ccrs.PlateCarree(central_longitude=0.0)
-    # Initialize figure, subplots
-    fig = plt.figure(figsize=(12,4.25))
-    ax1 = plt.subplot2grid((2,3),(0,0), projection=proj)
-    ax2 = plt.subplot2grid((2,3),(0,1), projection=proj)
-    ax3 = plt.subplot2grid((2,3),(0,2), projection=proj)
-    ax4 = plt.subplot2grid((2,3),(1,0), projection=proj)
-    ax5 = plt.subplot2grid((2,3),(1,1), projection=proj)
-    ax6 = plt.subplot2grid((2,3),(1,2), projection=proj)
-    # Subplot titles
-    ax1.set_title('(A) 2010 NO$_{\mathregular{2}}$', loc='left')
-    ax2.set_title('(B) 2015 NO$_{\mathregular{2}}$', loc='left')
-    ax3.set_title('(C) 2019 NO$_{\mathregular{2}}$', loc='left')
-    ax4.set_title('(D) 2010 PM$_{\mathregular{2.5}}$', loc='left')
-    ax5.set_title('(E) 2015 PM$_{\mathregular{2.5}}$', loc='left')
-    ax6.set_title('(F) 2019 PM$_{\mathregular{2.5}}$', loc='left')
-    # Create discrete colormaps
-    cmappm = plt.get_cmap('magma_r', 8)
-    normpm = matplotlib.colors.Normalize(vmin=0, vmax=12)
-    cmapno2 = plt.get_cmap('magma_r', 8)
-    normno2 = matplotlib.colors.Normalize(vmin=0, vmax=24)
-    # Adjust subplot position 
-    plt.subplots_adjust(left=0.05)
-    # Plotting 
-    FIPS = ['01', '04', '05', '06', '08', '09', '10', '11', '12', '13', '16', 
-        '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27',
-        '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', 
-        '39', '40', '41', '42', '44', '45', '46', '47', '48', '49', '50',
-        '51', '53', '54', '55', '56']
-    # FIPS = ['04']
-    for FIPS_i in FIPS: 
-        print(FIPS_i)
-        # Tigerline shapefile for state
-        shp = shapereader.Reader(DIR_GEO+
-            'tract_2010/tl_2019_%s_tract/tl_2019_%s_tract.shp'%(FIPS_i, FIPS_i))
-        records = shp.records()
-        tracts = shp.geometries()
-        for record, tract in zip(records, tracts):
-            # Find GEOID of tract
-            gi = record.attributes['GEOID']
-            # Look up harmonized NO2 and PM25 data for tract
-            harm2010_tract = harm2010.loc[harm2010.index.isin([gi])]
-            harm2015_tract = harm2015.loc[harm2015.index.isin([gi])]
-            harm2019_tract = harm2019.loc[harm2019.index.isin([gi])]     
-            # Plot NO2 and PM25
-            if harm2010_tract.empty==True: 
-                ax1.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax4.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-            else: 
-                no2_harm2010_tract = harm2010_tract.NO2.values[0]
-                pm25_harm2010_tract = harm2010_tract.PM25.values[0]
-                ax1.add_geometries([tract], proj, facecolor=cmapno2(
-                    normno2(no2_harm2010_tract)), edgecolor=cmapno2(
-                    normno2(no2_harm2010_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax4.add_geometries([tract], proj, facecolor=cmappm(
-                    normpm(pm25_harm2010_tract)), edgecolor=cmappm(
-                    normpm(pm25_harm2010_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-            if harm2015_tract.empty==True:
-                ax2.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax5.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)                
-            else:             
-                no2_harm2015_tract = harm2015_tract.NO2.values[0]
-                pm25_harm2015_tract = harm2015_tract.PM25.values[0]
-                ax2.add_geometries([tract], proj, facecolor=cmapno2(
-                    normno2(no2_harm2015_tract)), edgecolor=cmapno2(
-                    normno2(no2_harm2015_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax5.add_geometries([tract], proj, facecolor=cmappm(
-                    normpm(pm25_harm2015_tract)), edgecolor=cmappm(
-                    normpm(pm25_harm2015_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-            if harm2019_tract.empty==True:             
-                ax3.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax6.add_geometries([tract], proj, facecolor='#f2f2f2', 
-                    edgecolor='none', alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)                
-            else: 
-                no2_harm2019_tract = harm2019_tract.NO2.values[0]  
-                pm25_harm2019_tract = harm2019_tract.PM25.values[0]                  
-                ax3.add_geometries([tract], proj, facecolor=cmapno2(
-                    normno2(no2_harm2019_tract)), edgecolor=cmapno2(
-                    normno2(no2_harm2019_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)
-                ax6.add_geometries([tract], proj, facecolor=cmappm(
-                    normpm(pm25_harm2019_tract)), edgecolor=cmappm(
-                    normpm(pm25_harm2019_tract)), alpha=1., linewidth=0.1, 
-                    rasterized=True, zorder=10)                    
-    # Add borders, set map extent, etc. 
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6]:
-        ax.set_extent([-125,-66.5, 24.5, 49.48], proj)
-        ax.add_geometries(usa, crs=proj, lw=0.25, facecolor='None', 
-            edgecolor='k', zorder=1)
-        ax.add_geometries(great_lakes, crs=proj, facecolor='w',
-            lw=0.25, edgecolor='k', alpha=1., zorder=12)
-        ax.add_feature(cfeature.NaturalEarthFeature('physical', 
-            'ocean', '10m', edgecolor='None', facecolor='w', alpha=1.), 
-            zorder=11)
-        ax.axis('off')
-        # Add state borders
-        for astate in states_shp.records():
-            if astate.attributes['name'] in ['Alaska', 'Hawaii', 
-                'PRI-00 (Puerto Rico aggregation)']:
-                pass
-            elif astate.attributes['sr_adm0_a3']=='USA':
-                geometry = astate.geometry.geoms
-                ax.add_geometries([geometry], crs=proj, facecolor='None',
-                    lw=0.25, edgecolor='k', zorder=100)    
-    # Find shapefiles of states of interest
-    states_all = list(states_shp.records())
-    states_all_name = []
-    for s in states_all:
-        states_all_name.append(s.attributes['name'])
-    states_all = np.array(states_all)    
-    alaska = states_all[np.where(np.array(states_all_name)=='Alaska')[0]][0]
-    hawaii = states_all[np.where(np.array(states_all_name)=='Hawaii')[0]][0]
-    puertorico = states_all[np.where(np.array(states_all_name)==
-        'PRI-00 (Puerto Rico aggregation)')[0]][0]
-    # Select harmonized dataset in states in inset maps
-    alaska2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
-        (burdents.STATE=='Alaska')]
-    alaska2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
-        (burdents.STATE=='Alaska')]
-    alaska2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
-        (burdents.STATE=='Alaska')]
-    alaska2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
-        (burdents.STATE=='Alaska')]
-    alaska2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
-        (burdents.STATE=='Alaska')]
-    hawaii2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
-        (burdents.STATE=='Hawaii')]
-    hawaii2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
-        (burdents.STATE=='Hawaii')]
-    hawaii2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
-        (burdents.STATE=='Hawaii')]
-    hawaii2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
-        (burdents.STATE=='Hawaii')]
-    hawaii2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
-        (burdents.STATE=='Hawaii')]
-    puertorico2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
-        (burdents.STATE=='Puerto Rico')]
-    puertorico2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
-        (burdents.STATE=='Puerto Rico')]
-    puertorico2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
-        (burdents.STATE=='Puerto Rico')]
-    puertorico2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
-        (burdents.STATE=='Puerto Rico')]
-    puertorico2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
-        (burdents.STATE=='Puerto Rico')]
-    # Add inset maps 
-    axes = [ax1, ax2, ax3, ax4, ax5, ax6]
-    harms = [[alaska2010, hawaii2010, puertorico2010],
-        [alaska2015, hawaii2015, puertorico2015],
-        [alaska2019, hawaii2019, puertorico2019],
-        [alaska2010, hawaii2010, puertorico2010],
-        [alaska2014, hawaii2014, puertorico2014],
-        [alaska2017, hawaii2017, puertorico2017]]
-    cmaps = [cmapno2, cmapno2, cmapno2, cmappm, cmappm, cmappm]
-    norms = [normno2, normno2, normno2, normpm, normpm, normpm]
-    varsa = ['NO2', 'NO2', 'NO2', 'PM25', 'PM25', 'PM25']
-    for i in np.arange(0, len(axes), 1):
-        ax = axes[i]
-        harm = harms[i]
-        cmap = cmaps[i]
-        norm = norms[i]
-        vara = varsa[i]
-        # Hawaii 
-        axes_extent = (ax.get_position().x0-0.01, ax.get_position().y0-0.01, 
-            (ax.get_position().x1-ax.get_position().x0)*0.31,
-            (ax.get_position().x1-ax.get_position().x0)*0.31)
-        add_insetmap(axes_extent, (-162, -154, 18.75, 23), '', hawaii.geometry, 
-            [0.], [0.], [0.], proj, fips='15', harmonized=harm[1], vara=vara, 
-            cmap=cmap, norm=norm)
-        # Alaska
-        axes_extent = (ax.get_position().x0-0.085, ax.get_position().y0-0.04, 
-            (ax.get_position().x1-ax.get_position().x0)*0.62,
-            (ax.get_position().x1-ax.get_position().x0)*0.62)
-        add_insetmap(axes_extent, (-179.99, -130, 49, 73), '', alaska.geometry, 
-            [0.], [0.], [0.], proj, fips='02', harmonized=harm[0], vara=vara, 
-            cmap=cmap, norm=norm)    
-        # Puerto Rico 
-        axes_extent = (ax.get_position().x0+0.045, ax.get_position().y0-0.02, 
-            (ax.get_position().x1-ax.get_position().x0)*0.27,
-            (ax.get_position().x1-ax.get_position().x0)*0.27)        
-        add_insetmap(axes_extent, (-68., -65., 17.5, 19.), '', puertorico.geometry, 
-            [0.], [0.], [0.], proj, fips='72', harmonized=harm[2], vara=vara, 
-            cmap=cmap, norm=norm)
-    # Add colorbars 
-    caxno2 = fig.add_axes([ax3.get_position().x1+0.01, 
-        ax3.get_position().y0, 0.01,
-        (ax3.get_position().y1-ax3.get_position().y0)])
-    mpl.colorbar.ColorbarBase(caxno2, cmap=cmapno2, norm=normno2, 
-        spacing='proportional', orientation='vertical', extend='max', 
-        label='[ppbv]', ticks=np.linspace(0,24,5))
-    caxpm = fig.add_axes([ax6.get_position().x1+0.01, 
-        ax6.get_position().y0, 0.01,
-        (ax6.get_position().y1-ax6.get_position().y0)])
-    mpl.colorbar.ColorbarBase(caxpm, cmap=cmappm, norm=normpm, 
-        spacing='proportional', orientation='vertical', extend='max', 
-        label='[$\mathregular{\mu}$g m$^{\mathregular{-3}}$]', 
-        ticks=np.linspace(0,12,5))
-    plt.savefig(DIR_FIG+'figS1.png', dpi=1000)
-    return 
     
-def figS2(): 
+def figS1(): 
     """
 
     Returns
@@ -3158,10 +2885,10 @@ def figS2():
     # Add legend
     ax5.legend(ncol=3, frameon=False, bbox_to_anchor=(0.4, -0.7), loc=8,
         fontsize=14)
-    plt.savefig(DIR_FIG+'figS2.png', dpi=500)
+    plt.savefig(DIR_FIG+'figS1.png', dpi=500)
     return
 
-def figS3(): 
+def figS2(): 
     """
     Returns
     -------
@@ -3354,10 +3081,10 @@ def figS3():
     for k, spine in ax7.spines.items(): 
         spine.set_zorder(30)
     plt.subplots_adjust(hspace=1., right=0.95)
-    plt.savefig(DIR_FIG+'figS3.png', dpi=500)
+    plt.savefig(DIR_FIG+'figS2.png', dpi=500)
     return
 
-def figS4():     
+def figS3():     
     import numpy as np
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
@@ -3588,471 +3315,568 @@ def figS4():
     axs.flatten()[18].set_title('(S) 2010', loc='left')
     axs.flatten()[19].set_title('(T) 2015', loc='left')
     axs.flatten()[20].set_title('(U) 2019', loc='left')
-    plt.savefig(DIR_FIG+'figS4.pdf', dpi=500)
+    plt.savefig(DIR_FIG+'figS3.pdf', dpi=500)
     return 
 
-def figS6(burdents):
+def figS4(burdents):
+    """Plot maps of tract-averaged NO2 and PM2.5 for the contiguous U.S., 
+    Hawaii, Alaska, and Puerto Rico for the first year of the measuring period,
+    a midpoint year, and the final year (2010, 2015, 2019). 
+
+    Parameters
+    ----------
+    burdents : pandas.core.frame.DataFrame
+        Tract-level NO2 and PM2.5 pollution concentrations and attributable
+        health burdens for all years in measuring period. 
+
+    Returns
+    -------
+    None.
+
+    """
     import numpy as np
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    from shapely.geometry import Polygon
     import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches    
-    # For absolute concentrations/rates for racial subgroups
-    PM25_mostwhite, PM25_leastwhite = [], []
-    NO2_mostwhite, NO2_leastwhite = [], []
-    pd_mostwhite, pd_leastwhite = [], []
-    asthma_mostwhite, asthma_leastwhite = [], []
-    # For relative disparities
-    PM25_race_relative, NO2_race_relative = [], []
-    pd_race_relative, asthma_race_relative = [], []
-    # Same as above but for ethnic subgroups
-    PM25_mosthisp, PM25_leasthisp = [], []
-    NO2_mosthisp, NO2_leasthisp = [], []
-    pd_mosthisp, pd_leasthisp = [], []
-    asthma_mosthisp, asthma_leasthisp = [], []
-    PM25_ethnic_relative, NO2_ethnic_relative = [], []
-    pd_ethnic_relative, asthma_ethnic_relative = [], []
-    for year in np.arange(2010, 2020, 1):
-        yearst = '%d-%d'%(year-4, year)
-        burdenty = burdents.loc[burdents['YEAR']==yearst].copy(deep=True)
-        # Define ethnoracial groups
-        burdenty['fracwhite'] = ((burdenty[['race_nh_white','race_h_white'
-            ]].sum(axis=1))/burdenty['race_tot'])
-        burdenty['frachisp'] = (burdenty['race_h']/burdenty['race_tot'])    
-        # Define extreme ethnoracial subgroups
-        mostwhite = burdenty.iloc[np.where(burdenty.fracwhite >= 
-            np.nanpercentile(burdenty.fracwhite, 90))]
-        leastwhite = burdenty.iloc[np.where(burdenty.fracwhite <= 
-            np.nanpercentile(burdenty.fracwhite, 10))]
-        mosthisp = burdenty.iloc[np.where(burdenty.frachisp > 
-            np.nanpercentile(burdenty.frachisp, 90))]
-        leasthisp = burdenty.iloc[np.where(burdenty.frachisp < 
-            np.nanpercentile(burdenty.frachisp, 10))]
-        # Save off information for year 
-        PM25_mostwhite.append(mostwhite.PM25.mean())
-        PM25_leastwhite.append(leastwhite.PM25.mean())
-        NO2_mostwhite.append(mostwhite.NO2.mean())
-        NO2_leastwhite.append(leastwhite.NO2.mean())
-        pd_mostwhite.append(mostwhite.BURDENPMALLRATE.mean())
-        pd_leastwhite.append(leastwhite.BURDENPMALLRATE.mean())
-        asthma_mostwhite.append(mostwhite.BURDENASTHMARATE.mean())
-        asthma_leastwhite.append(leastwhite.BURDENASTHMARATE.mean())
-        PM25_mosthisp.append(mosthisp.PM25.mean())
-        PM25_leasthisp.append(leasthisp.PM25.mean())
-        NO2_mosthisp.append(mosthisp.NO2.mean())
-        NO2_leasthisp.append(leasthisp.NO2.mean())
-        pd_mosthisp.append(mosthisp.BURDENPMALLRATE.mean())
-        pd_leasthisp.append(leasthisp.BURDENPMALLRATE.mean())
-        asthma_mosthisp.append(mosthisp.BURDENASTHMARATE.mean())
-        asthma_leasthisp.append(leasthisp.BURDENASTHMARATE.mean())
-        # Relative disparities
-        PM25_race_relative.append(leastwhite.PM25.mean()/mostwhite.PM25.mean())
-        NO2_race_relative.append(leastwhite.NO2.mean()/mostwhite.NO2.mean())
-        pd_race_relative.append(leastwhite.BURDENPMALLRATE.mean()/
-            mostwhite.BURDENPMALLRATE.mean())
-        asthma_race_relative.append(leastwhite.BURDENASTHMARATE.mean()/
-            mostwhite.BURDENASTHMARATE.mean())
-        PM25_ethnic_relative.append(mosthisp.PM25.mean()/leasthisp.PM25.mean())
-        NO2_ethnic_relative.append(mosthisp.NO2.mean()/leasthisp.NO2.mean())
-        pd_ethnic_relative.append(mosthisp.BURDENPMALLRATE.mean()/
-            leasthisp.BURDENPMALLRATE.mean())
-        asthma_ethnic_relative.append(mosthisp.BURDENASTHMARATE.mean()/
-            leasthisp.BURDENASTHMARATE.mean())    
-    fig = plt.figure(figsize=(8.5,11))    
-    ax1 = plt.subplot2grid((4,2),(0,0))
-    ax1t = ax1.twinx()
-    ax2 = plt.subplot2grid((4,2),(0,1))
-    ax2t = ax2.twinx()
-    ax3 = plt.subplot2grid((4,2),(1,0))
-    ax3t = ax3.twinx()
-    ax4 = plt.subplot2grid((4,2),(1,1))
-    ax4t = ax4.twinx()
-    ax5 = plt.subplot2grid((4,2),(2,0))
-    ax5t = ax5.twinx()
-    ax6 = plt.subplot2grid((4,2),(2,1))
-    ax6t = ax6.twinx()
-    ax7 = plt.subplot2grid((4,2),(3,0))
-    ax7t = ax7.twinx()
-    ax8 = plt.subplot2grid((4,2),(3,1))
-    ax8t = ax8.twinx()
-    years = np.arange(2010,2020,1)
-    # Racial PM2.5 disparities
-    ax1t.bar(years, PM25_race_relative, color='grey', zorder=0)
-    ax1.plot(years, PM25_mostwhite, lw=2, color=color3, zorder=10)
-    ax1.plot(years, PM25_leastwhite, lw=2, color=color2, zorder=10)
-    # Ethnic PM2.5 disparities
-    ax2t.bar(years, PM25_ethnic_relative, color='grey', zorder=0)
-    ax2.plot(years, PM25_leasthisp, lw=2, color=color3, zorder=10)
-    ax2.plot(years, PM25_mosthisp, lw=2, color=color2, zorder=10)
-    # Racial NO2 disparities
-    ax3t.bar(years, NO2_race_relative, color='grey', zorder=0)
-    ax3.plot(years, NO2_mostwhite, lw=2, color=color3, zorder=10)
-    ax3.plot(years, NO2_leastwhite, lw=2, color=color2, zorder=10)
-    # Ethnic NO2 disparities
-    ax4t.bar(years, NO2_ethnic_relative, color='grey', zorder=0)
-    ax4.plot(years, NO2_leasthisp, lw=2, color=color3, zorder=10)
-    ax4.plot(years, NO2_mosthisp, lw=2, color=color2, zorder=10)
-    # Racial premature death disparities
-    ax5t.bar(years, pd_race_relative, color='grey', zorder=0)
-    ax5.plot(years, pd_mostwhite, lw=2, color=color3, zorder=10)
-    ax5.plot(years, pd_leastwhite, lw=2, color=color2, zorder=10)
-    # Ethnic premature death disparities
-    ax6t.bar(years, pd_ethnic_relative, color='grey', zorder=0)
-    ax6.plot(years, pd_leasthisp, lw=2, color=color3, zorder=10)
-    ax6.plot(years, pd_mosthisp, lw=2, color=color2, zorder=10)
-    # Racial asthma disparities
-    ax7t.bar(years, asthma_race_relative, color='grey', zorder=0)
-    ax7.plot(years, asthma_mostwhite, lw=2, color=color3, zorder=10)
-    ax7.plot(years, asthma_leastwhite, lw=2, color=color2, zorder=10)
-    # Ethnic asthma disparities
-    ax8t.bar(years, asthma_ethnic_relative, color='grey', zorder=0)
-    ax8.plot(years, asthma_leasthisp, lw=2, color=color3, zorder=10)
-    ax8.plot(years, asthma_mosthisp, lw=2, color=color2, zorder=10)
-    # Aesthetics    
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8]:    
-        ax.set_xlim([2010,2019])
-        ax.set_xticks(np.arange(2010,2020,1))
-        ax.set_xticklabels([])
-    # PM25
-    for ax in [ax1, ax2]:
-        ax.set_ylim([0, 12])
-        ax.set_yticks(np.linspace(0, 12, 5))
-    for ax in [ax1t, ax2t]:
-        ax.set_ylim([0.9,1.3])
-    # NO2
-    for ax in [ax3, ax4]:
-        ax.set_ylim([0, 20])
-        ax.set_yticks(np.linspace(0, 20, 5))
-    for ax in [ax3t, ax4t]:
-        ax.set_ylim([1.0, 2.5])
-    # PM2.5-attributable mortality 
-    for ax in [ax5, ax6]:
-        ax.set_ylim([0, 28])
-        ax.set_yticks(np.linspace(0, 28, 5))
-    for ax in [ax5t, ax6t]:
-        ax.set_ylim([0.6, 1.2])
-        # ax.set_yticks(np.linspace(0.5, 1.1, 5))    
-    # NO2-attributable asthma
-    for ax in [ax7, ax8]:
-        ax.set_xticklabels(['2010', '', '', '2013', '', '', '2016', '', '', 
-            '2019'])
-        ax.set_ylim([0, 450])
-        ax.set_yticks(np.linspace(0, 500, 6))
-    for ax in [ax7t, ax8t]:
-        ax.set_ylim([1, 8])
-    # Change default zorder     
-    for ax, axt in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8], 
-        [ax1t, ax2t, ax3t, ax4t, ax5t, ax6t, ax7t, ax8t]):   
-        ax.set_zorder(axt.get_zorder()+1)
-        ax.patch.set_visible(False)
-    # Y-axis labels for primary axes
-    ax1.set_ylabel('PM$_{\mathregular{2.5}}$\n[$\mathregular{\mu}$g'+\
-        ' m$^{\mathregular{-3}}$]', loc='bottom', fontsize=14)
-    ax1.yaxis.set_label_coords(-0.18,0.0)
-    ax2.set_ylabel('')
-    ax2.set_yticklabels([])
-    ax3.set_ylabel('NO$_{\mathregular{2}}$\n[ppbv]', loc='bottom', fontsize=14)
-    ax3.yaxis.set_label_coords(-0.18,0.0)
-    ax4.set_ylabel('')
-    ax4.set_yticklabels([])    
-    ax5.set_ylabel('Premature deaths due \nto PM$_\mathregular{2.5}$ '+\
-        '[per 100000]', loc='bottom', fontsize=14)
-    ax5.yaxis.set_label_coords(-0.18,0.0)
-    ax6.set_ylabel('')
-    ax6.set_yticklabels([])    
-    ax7.set_ylabel('New asthma cases due \nto NO$_\mathregular{2}$ '+\
-        '[per 100000]', loc='bottom', fontsize=14)    
-    ax7.yaxis.set_label_coords(-0.18,0.0)
-    ax8.set_ylabel('')
-    ax8.set_yticklabels([])    
-    # Y-axis labels for secondary axes
-    ax1t.set_ylabel('')
-    ax1t.set_yticklabels([])
-    ax2t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax2t.yaxis.set_label_coords(1.25,0.5)
-    ax3t.set_ylabel('')
-    ax3t.set_yticklabels([])
-    ax4t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax4t.yaxis.set_label_coords(1.25,0.5)
-    ax5t.set_ylabel('')
-    ax5t.set_yticklabels([])
-    ax6t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax6t.yaxis.set_label_coords(1.25,0.5)
-    ax7t.set_ylabel('')
-    ax7t.set_yticklabels([])
-    ax8t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax8t.yaxis.set_label_coords(1.25,0.5)
-    # Generate legend 
-    patch2 = mpatches.Patch(color=color2, label='Least\nwhite')
-    patch1 = mpatches.Patch(color=color3, label='Most\nwhite')
-    all_handles = (patch2, patch1)
-    ax7.legend(handles=all_handles, loc=8, frameon=False, ncol=2,
-        bbox_to_anchor=(0.5, -0.5), fontsize=14)
-    patch1 = mpatches.Patch(color=color2, label='Most\nHispanic')
-    patch2 = mpatches.Patch(color=color3, label='Least\nHispanic')
-    all_handles = (patch1, patch2)
-    ax8.legend(handles=all_handles, loc=8, frameon=False, ncol=2,
-        bbox_to_anchor=(0.5, -0.5), fontsize=14)
-    # Subplot labels
-    ax1.set_title('(A) Racial disparities', fontsize=14, loc='left')
-    ax2.set_title('(B) Ethnic disparities', fontsize=14, loc='left')
-    ax3.set_title('(C)', fontsize=14, loc='left')
-    ax4.set_title('(D)', fontsize=14, loc='left')
-    ax5.set_title('(E)', fontsize=14, loc='left')
-    ax6.set_title('(F)', fontsize=14, loc='left')
-    ax7.set_title('(G)', fontsize=14, loc='left')
-    ax8.set_title('(H)', fontsize=14, loc='left')
-    plt.subplots_adjust(wspace=0.3, top=0.95, bottom=0.1, hspace=0.3)
-    plt.savefig(DIR_FIG+'figS6.png', dpi=600)
+    from cartopy.io import shapereader
+    import matplotlib
+    from operator import itemgetter
+    # Subset harmonized dataset for years of interest
+    harm2010 = burdents.loc[(burdents.YEAR=='2006-2010')]
+    harm2015 = burdents.loc[(burdents.YEAR=='2011-2015')]
+    harm2019 = burdents.loc[(burdents.YEAR=='2015-2019')]
+    # Load shapefiles
+    shpfilename = shapereader.natural_earth('10m', 'cultural', 
+        'admin_0_countries')
+    reader = shapereader.Reader(shpfilename)
+    countries = reader.records()   
+    usa = [x.attributes['ADM0_A3'] for x in countries]
+    # usaidx = np.where(np.in1d(np.array(usaidx), ['PRI','USA'])==True)
+    # usa = list(reader.geometries())
+    # usa = np.array(usa, dtype=object)[usaidx[0]]
+    usa = np.where(np.array(usa)=='USA')[0][0]
+    usa = list(reader.geometries())[usa].geoms
+    lakes = shapereader.natural_earth('10m', 'physical', 'lakes')
+    lakes_reader = shapereader.Reader(lakes)
+    lakes = lakes_reader.records()   
+    lake_names = [x.attributes['name'] for x in lakes]
+    great_lakes = np.where((np.array(lake_names)=='Lake Superior') |
+        (np.array(lake_names)=='Lake Michigan') | 
+        (np.array(lake_names)=='Lake Huron') |
+        (np.array(lake_names)=='Lake Erie') |
+        (np.array(lake_names)=='Lake Ontario'))[0]
+    great_lakes = itemgetter(*great_lakes)(list(lakes_reader.geometries()))
+    shapename = 'admin_1_states_provinces_lakes_shp'
+    states_shp = shapereader.natural_earth(resolution='10m', category='cultural', 
+        name=shapename)
+    states_shp = shapereader.Reader(states_shp)
+    # Constants
+    proj = ccrs.PlateCarree(central_longitude=0.0)
+    # Initialize figure, subplots
+    fig = plt.figure(figsize=(12,4.25))
+    ax1 = plt.subplot2grid((2,3),(0,0), projection=proj)
+    ax2 = plt.subplot2grid((2,3),(0,1), projection=proj)
+    ax3 = plt.subplot2grid((2,3),(0,2), projection=proj)
+    ax4 = plt.subplot2grid((2,3),(1,0), projection=proj)
+    ax5 = plt.subplot2grid((2,3),(1,1), projection=proj)
+    ax6 = plt.subplot2grid((2,3),(1,2), projection=proj)
+    # Subplot titles
+    ax1.set_title('(A) 2010 NO$_{\mathregular{2}}$', loc='left')
+    ax2.set_title('(B) 2015 NO$_{\mathregular{2}}$', loc='left')
+    ax3.set_title('(C) 2019 NO$_{\mathregular{2}}$', loc='left')
+    ax4.set_title('(D) 2010 PM$_{\mathregular{2.5}}$', loc='left')
+    ax5.set_title('(E) 2015 PM$_{\mathregular{2.5}}$', loc='left')
+    ax6.set_title('(F) 2019 PM$_{\mathregular{2.5}}$', loc='left')
+    # Create discrete colormaps
+    cmappm = plt.get_cmap('magma_r', 8)
+    normpm = matplotlib.colors.Normalize(vmin=0, vmax=12)
+    cmapno2 = plt.get_cmap('magma_r', 8)
+    normno2 = matplotlib.colors.Normalize(vmin=0, vmax=24)
+    # Adjust subplot position 
+    plt.subplots_adjust(left=0.05)
+    # Plotting 
+    FIPS = ['01', '04', '05', '06', '08', '09', '10', '11', '12', '13', '16', 
+        '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27',
+        '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', 
+        '39', '40', '41', '42', '44', '45', '46', '47', '48', '49', '50',
+        '51', '53', '54', '55', '56']
+    # FIPS = ['04']
+    for FIPS_i in FIPS: 
+        print(FIPS_i)
+        # Tigerline shapefile for state
+        shp = shapereader.Reader(DIR_GEO+
+            'tract_2010/tl_2019_%s_tract/tl_2019_%s_tract.shp'%(FIPS_i, FIPS_i))
+        records = shp.records()
+        tracts = shp.geometries()
+        for record, tract in zip(records, tracts):
+            # Find GEOID of tract
+            gi = record.attributes['GEOID']
+            # Look up harmonized NO2 and PM25 data for tract
+            harm2010_tract = harm2010.loc[harm2010.index.isin([gi])]
+            harm2015_tract = harm2015.loc[harm2015.index.isin([gi])]
+            harm2019_tract = harm2019.loc[harm2019.index.isin([gi])]     
+            # Plot NO2 and PM25
+            if harm2010_tract.empty==True: 
+                ax1.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax4.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+            else: 
+                no2_harm2010_tract = harm2010_tract.NO2.values[0]
+                pm25_harm2010_tract = harm2010_tract.PM25.values[0]
+                ax1.add_geometries([tract], proj, facecolor=cmapno2(
+                    normno2(no2_harm2010_tract)), edgecolor=cmapno2(
+                    normno2(no2_harm2010_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax4.add_geometries([tract], proj, facecolor=cmappm(
+                    normpm(pm25_harm2010_tract)), edgecolor=cmappm(
+                    normpm(pm25_harm2010_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+            if harm2015_tract.empty==True:
+                ax2.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax5.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)                
+            else:             
+                no2_harm2015_tract = harm2015_tract.NO2.values[0]
+                pm25_harm2015_tract = harm2015_tract.PM25.values[0]
+                ax2.add_geometries([tract], proj, facecolor=cmapno2(
+                    normno2(no2_harm2015_tract)), edgecolor=cmapno2(
+                    normno2(no2_harm2015_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax5.add_geometries([tract], proj, facecolor=cmappm(
+                    normpm(pm25_harm2015_tract)), edgecolor=cmappm(
+                    normpm(pm25_harm2015_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+            if harm2019_tract.empty==True:             
+                ax3.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax6.add_geometries([tract], proj, facecolor='#f2f2f2', 
+                    edgecolor='none', alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)                
+            else: 
+                no2_harm2019_tract = harm2019_tract.NO2.values[0]  
+                pm25_harm2019_tract = harm2019_tract.PM25.values[0]                  
+                ax3.add_geometries([tract], proj, facecolor=cmapno2(
+                    normno2(no2_harm2019_tract)), edgecolor=cmapno2(
+                    normno2(no2_harm2019_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)
+                ax6.add_geometries([tract], proj, facecolor=cmappm(
+                    normpm(pm25_harm2019_tract)), edgecolor=cmappm(
+                    normpm(pm25_harm2019_tract)), alpha=1., linewidth=0.1, 
+                    rasterized=True, zorder=10)                    
+    # Add borders, set map extent, etc. 
+    for ax in [ax1, ax2, ax3, ax4, ax5, ax6]:
+        ax.set_extent([-125,-66.5, 24.5, 49.48], proj)
+        ax.add_geometries(usa, crs=proj, lw=0.25, facecolor='None', 
+            edgecolor='k', zorder=1)
+        ax.add_geometries(great_lakes, crs=proj, facecolor='w',
+            lw=0.25, edgecolor='k', alpha=1., zorder=12)
+        ax.add_feature(cfeature.NaturalEarthFeature('physical', 
+            'ocean', '10m', edgecolor='None', facecolor='w', alpha=1.), 
+            zorder=11)
+        ax.axis('off')
+        # Add state borders
+        for astate in states_shp.records():
+            if astate.attributes['name'] in ['Alaska', 'Hawaii', 
+                'PRI-00 (Puerto Rico aggregation)']:
+                pass
+            elif astate.attributes['sr_adm0_a3']=='USA':
+                geometry = astate.geometry.geoms
+                ax.add_geometries([geometry], crs=proj, facecolor='None',
+                    lw=0.25, edgecolor='k', zorder=100)    
+    # Find shapefiles of states of interest
+    states_all = list(states_shp.records())
+    states_all_name = []
+    for s in states_all:
+        states_all_name.append(s.attributes['name'])
+    states_all = np.array(states_all)    
+    alaska = states_all[np.where(np.array(states_all_name)=='Alaska')[0]][0]
+    hawaii = states_all[np.where(np.array(states_all_name)=='Hawaii')[0]][0]
+    puertorico = states_all[np.where(np.array(states_all_name)==
+        'PRI-00 (Puerto Rico aggregation)')[0]][0]
+    # Select harmonized dataset in states in inset maps
+    alaska2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
+        (burdents.STATE=='Alaska')]
+    alaska2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
+        (burdents.STATE=='Alaska')]
+    alaska2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
+        (burdents.STATE=='Alaska')]
+    alaska2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
+        (burdents.STATE=='Alaska')]
+    alaska2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
+        (burdents.STATE=='Alaska')]
+    hawaii2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
+        (burdents.STATE=='Hawaii')]
+    hawaii2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
+        (burdents.STATE=='Hawaii')]
+    hawaii2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
+        (burdents.STATE=='Hawaii')]
+    hawaii2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
+        (burdents.STATE=='Hawaii')]
+    hawaii2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
+        (burdents.STATE=='Hawaii')]
+    puertorico2010 = burdents.loc[(burdents.YEAR=='2006-2010') & 
+        (burdents.STATE=='Puerto Rico')]
+    puertorico2014 = burdents.loc[(burdents.YEAR=='2010-2014') & 
+        (burdents.STATE=='Puerto Rico')]
+    puertorico2015 = burdents.loc[(burdents.YEAR=='2011-2015') & 
+        (burdents.STATE=='Puerto Rico')]
+    puertorico2017 = burdents.loc[(burdents.YEAR=='2013-2017') & 
+        (burdents.STATE=='Puerto Rico')]
+    puertorico2019 = burdents.loc[(burdents.YEAR=='2015-2019') & 
+        (burdents.STATE=='Puerto Rico')]
+    # Add inset maps 
+    axes = [ax1, ax2, ax3, ax4, ax5, ax6]
+    harms = [[alaska2010, hawaii2010, puertorico2010],
+        [alaska2015, hawaii2015, puertorico2015],
+        [alaska2019, hawaii2019, puertorico2019],
+        [alaska2010, hawaii2010, puertorico2010],
+        [alaska2014, hawaii2014, puertorico2014],
+        [alaska2017, hawaii2017, puertorico2017]]
+    cmaps = [cmapno2, cmapno2, cmapno2, cmappm, cmappm, cmappm]
+    norms = [normno2, normno2, normno2, normpm, normpm, normpm]
+    varsa = ['NO2', 'NO2', 'NO2', 'PM25', 'PM25', 'PM25']
+    for i in np.arange(0, len(axes), 1):
+        ax = axes[i]
+        harm = harms[i]
+        cmap = cmaps[i]
+        norm = norms[i]
+        vara = varsa[i]
+        # Hawaii 
+        axes_extent = (ax.get_position().x0-0.01, ax.get_position().y0-0.01, 
+            (ax.get_position().x1-ax.get_position().x0)*0.31,
+            (ax.get_position().x1-ax.get_position().x0)*0.31)
+        add_insetmap(axes_extent, (-162, -154, 18.75, 23), '', hawaii.geometry, 
+            [0.], [0.], [0.], proj, fips='15', harmonized=harm[1], vara=vara, 
+            cmap=cmap, norm=norm)
+        # Alaska
+        axes_extent = (ax.get_position().x0-0.085, ax.get_position().y0-0.04, 
+            (ax.get_position().x1-ax.get_position().x0)*0.62,
+            (ax.get_position().x1-ax.get_position().x0)*0.62)
+        add_insetmap(axes_extent, (-179.99, -130, 49, 73), '', alaska.geometry, 
+            [0.], [0.], [0.], proj, fips='02', harmonized=harm[0], vara=vara, 
+            cmap=cmap, norm=norm)    
+        # Puerto Rico 
+        axes_extent = (ax.get_position().x0+0.045, ax.get_position().y0-0.02, 
+            (ax.get_position().x1-ax.get_position().x0)*0.27,
+            (ax.get_position().x1-ax.get_position().x0)*0.27)        
+        add_insetmap(axes_extent, (-68., -65., 17.5, 19.), '', puertorico.geometry, 
+            [0.], [0.], [0.], proj, fips='72', harmonized=harm[2], vara=vara, 
+            cmap=cmap, norm=norm)
+    # Add colorbars 
+    caxno2 = fig.add_axes([ax3.get_position().x1+0.01, 
+        ax3.get_position().y0, 0.01,
+        (ax3.get_position().y1-ax3.get_position().y0)])
+    mpl.colorbar.ColorbarBase(caxno2, cmap=cmapno2, norm=normno2, 
+        spacing='proportional', orientation='vertical', extend='max', 
+        label='[ppbv]', ticks=np.linspace(0,24,5))
+    caxpm = fig.add_axes([ax6.get_position().x1+0.01, 
+        ax6.get_position().y0, 0.01,
+        (ax6.get_position().y1-ax6.get_position().y0)])
+    mpl.colorbar.ColorbarBase(caxpm, cmap=cmappm, norm=normpm, 
+        spacing='proportional', orientation='vertical', extend='max', 
+        label='[$\mathregular{\mu}$g m$^{\mathregular{-3}}$]', 
+        ticks=np.linspace(0,12,5))
+    plt.savefig(DIR_FIG+'figS4.png', dpi=1000)
     return 
 
-def figS7(burdents):
-    import numpy as np
+def figS5(burdents):
+    """
+
+    Returns
+    -------
+    None.
+
+    """
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
-    # For absolute concentrations/rates for racial subgroups
-    PM25_white, PM25_black = [], []
-    NO2_white, NO2_black = [], []
-    pd_white, pd_black = [], []
-    asthma_white, asthma_black = [], []
-    # For relative disparities
-    PM25_race_relative, NO2_race_relative = [], []
-    pd_race_relative, asthma_race_relative = [], []
-    # Same as above but for ethnic subgroups
-    PM25_hisp, PM25_nonhisp = [], []
-    NO2_hisp, NO2_nonhisp = [], []
-    pd_hisp, pd_nonhisp = [], []
-    asthma_hisp, asthma_nonhisp = [], []
-    PM25_ethnic_relative, NO2_ethnic_relative = [], []
-    pd_ethnic_relative, asthma_ethnic_relative = [], []
-    for year in np.arange(2010, 2020, 1):
-        yearst = '%d-%d'%(year-4, year)
-        burdenty = burdents.loc[burdents['YEAR']==yearst].copy(deep=True)
-        # Define ethnoracial groups
-        burdenty['fracwhite'] = ((burdenty[['race_nh_white','race_h_white'
-            ]].sum(axis=1))/burdenty['race_tot'])
-        burdenty['frachisp'] = (burdenty['race_h']/burdenty['race_tot'])    
-        # Define population-weighted categories
-        pm25black = ((burdenty['PM25']*burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1).sum())
-        pm25white = ((burdenty['PM25']*
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())         
-        no2black = ((burdenty['NO2']*burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1).sum())
-        no2white = ((burdenty['NO2']*
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())       
-        pdblack = ((burdenty['BURDENPMALLRATE']*burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1).sum())
-        pdwhite = ((burdenty['BURDENPMALLRATE']*
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())       
-        asthmablack = ((burdenty['BURDENASTHMARATE']*burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
-            'race_h_black']].sum(axis=1).sum())
-        asthmawhite = ((burdenty['BURDENASTHMARATE']*
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
-            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())     
-        pm25nh = ((burdenty['PM25']*burdenty['race_nh']).sum() /
-            burdenty['race_nh'].sum())
-        pm25h = ((burdenty['PM25']*burdenty['race_h']).sum() /
-            burdenty['race_h'].sum())
-        no2nh = ((burdenty['NO2']*burdenty['race_nh']).sum() /
-            burdenty['race_nh'].sum())
-        no2h = ((burdenty['NO2']*burdenty['race_h']).sum() /
-            burdenty['race_h'].sum())
-        pdnh = ((burdenty['BURDENPMALLRATE']*burdenty['race_nh']).sum() /
-            burdenty['race_nh'].sum())
-        pdh = ((burdenty['BURDENPMALLRATE']*burdenty['race_h']).sum() /
-            burdenty['race_h'].sum())    
-        asthmanh = ((burdenty['BURDENASTHMARATE']*burdenty['race_nh']).sum() /
-            burdenty['race_nh'].sum())
-        asthmah = ((burdenty['BURDENASTHMARATE']*burdenty['race_h']).sum() /
-            burdenty['race_h'].sum())
-        # For absolute concentrations/rates for racial subgroups
-        PM25_white.append(pm25white)
-        PM25_black.append(pm25black)
-        NO2_white.append(no2white)
-        NO2_black.append(no2black)
-        pd_white.append(pdwhite)
-        pd_black.append(pdblack)
-        asthma_white.append(asthmawhite)
-        asthma_black.append(asthmablack)
-        PM25_race_relative.append(pm25black/pm25white)
-        NO2_race_relative.append(no2black/no2white)
-        pd_race_relative.append(pdblack/pdwhite)
-        asthma_race_relative.append(asthmablack/asthmawhite)
-        PM25_hisp.append(pm25h)
-        PM25_nonhisp.append(pm25nh)
-        NO2_hisp.append(no2h)
-        NO2_nonhisp.append(no2nh)
-        pd_hisp.append(pdh)
-        pd_nonhisp.append(pdnh)
-        asthma_hisp.append(asthmah)
-        asthma_nonhisp.append(asthmanh)
-        PM25_ethnic_relative.append(pm25h/pm25nh)
-        NO2_ethnic_relative.append(no2h/no2nh)
-        pd_ethnic_relative.append(pdh/pdnh)
-        asthma_ethnic_relative.append(asthmah/asthmanh)
-    fig = plt.figure(figsize=(8.5,11))    
-    ax1 = plt.subplot2grid((4,2),(0,0))
-    ax1t = ax1.twinx()
-    ax2 = plt.subplot2grid((4,2),(0,1))
-    ax2t = ax2.twinx()
-    ax3 = plt.subplot2grid((4,2),(1,0))
-    ax3t = ax3.twinx()
-    ax4 = plt.subplot2grid((4,2),(1,1))
-    ax4t = ax4.twinx()
-    ax5 = plt.subplot2grid((4,2),(2,0))
-    ax5t = ax5.twinx()
-    ax6 = plt.subplot2grid((4,2),(2,1))
-    ax6t = ax6.twinx()
-    ax7 = plt.subplot2grid((4,2),(3,0))
-    ax7t = ax7.twinx()
-    ax8 = plt.subplot2grid((4,2),(3,1))
-    ax8t = ax8.twinx()
-    years = np.arange(2010,2020,1)
-    # Racial PM2.5 disparities
-    ax1t.bar(years, PM25_race_relative, color='grey', zorder=0)
-    ax1.plot(years, PM25_white, lw=2, color=color3, zorder=10)
-    ax1.plot(years, PM25_black, lw=2, color=color2, zorder=10)
-    # Ethnic PM2.5 disparities
-    ax2t.bar(years, PM25_ethnic_relative, color='grey', zorder=0)
-    ax2.plot(years, PM25_nonhisp, lw=2, color=color3, zorder=10)
-    ax2.plot(years, PM25_hisp, lw=2, color=color2, zorder=10)
-    # Racial NO2 disparities
-    ax3t.bar(years, NO2_race_relative, color='grey', zorder=0)
-    ax3.plot(years, NO2_white, lw=2, color=color3, zorder=10)
-    ax3.plot(years, NO2_black, lw=2, color=color2, zorder=10)
-    # Ethnic NO2 disparities
-    ax4t.bar(years, NO2_ethnic_relative, color='grey', zorder=0)
-    ax4.plot(years, NO2_nonhisp, lw=2, color=color3, zorder=10)
-    ax4.plot(years, NO2_hisp, lw=2, color=color2, zorder=10)
-    # Racial premature death disparities
-    ax5t.bar(years, pd_race_relative, color='grey', zorder=0)
-    ax5.plot(years, pd_white, lw=2, color=color3, zorder=10)
-    ax5.plot(years, pd_black, lw=2, color=color2, zorder=10)
-    # Ethnic premature death disparities
-    ax6t.bar(years, pd_ethnic_relative, color='grey', zorder=0)
-    ax6.plot(years, pd_nonhisp, lw=2, color=color3, zorder=10)
-    ax6.plot(years, pd_hisp, lw=2, color=color2, zorder=10)
-    # Racial asthma disparities
-    ax7t.bar(years, asthma_race_relative, color='grey', zorder=0)
-    ax7.plot(years, asthma_white, lw=2, color=color3, zorder=10)
-    ax7.plot(years, asthma_black, lw=2, color=color2, zorder=10)
-    # Ethnic asthma disparities
-    ax8t.bar(years, asthma_ethnic_relative, color='grey', zorder=0)
-    ax8.plot(years, asthma_nonhisp, lw=2, color=color3, zorder=10)
-    ax8.plot(years, asthma_hisp, lw=2, color=color2, zorder=10)
-    # Aesthetics    
-    for ax in [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8]:    
-        ax.set_xlim([2010,2019])
-        ax.set_xticks(np.arange(2010,2020,1))
-        ax.set_xticklabels([])
-    # PM25
-    for ax in [ax1, ax2]:
-        ax.set_ylim([0, 12])
-        ax.set_yticks(np.linspace(0, 12, 5))
-    for ax in [ax1t, ax2t]:
-        ax.set_ylim([0.9,1.3])
-    # NO2
-    for ax in [ax3, ax4]:
-        ax.set_ylim([0, 20])
-        ax.set_yticks(np.linspace(0, 20, 5))
-    for ax in [ax3t, ax4t]:
-        ax.set_ylim([1.0, 2.5])
-    # PM2.5-attributable mortality 
-    for ax in [ax5, ax6]:
-        ax.set_ylim([0, 28])
-        ax.set_yticks(np.linspace(0, 28, 5))
-    for ax in [ax5t, ax6t]:
-        ax.set_ylim([0.6, 1.2])
-        # ax.set_yticks(np.linspace(0.5, 1.1, 5))    
-    # NO2-attributable asthma
-    for ax in [ax7, ax8]:
-        ax.set_xticklabels(['2010', '', '', '2013', '', '', '2016', '', '', 
-            '2019'])
-        ax.set_ylim([0, 450])
-        ax.set_yticks(np.linspace(0, 500, 6))
-    for ax in [ax7t, ax8t]:
-        ax.set_ylim([1, 8])
-    # Change default zorder     
-    for ax, axt in zip([ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8], 
-        [ax1t, ax2t, ax3t, ax4t, ax5t, ax6t, ax7t, ax8t]):   
-        ax.set_zorder(axt.get_zorder()+1)
-        ax.patch.set_visible(False)
-    # Y-axis labels for primary axes
-    ax1.set_ylabel('PM$_{\mathregular{2.5}}$\n[$\mathregular{\mu}$g'+\
-        ' m$^{\mathregular{-3}}$]', loc='bottom', fontsize=14)
-    ax1.yaxis.set_label_coords(-0.18,0.0)
-    ax2.set_ylabel('')
-    ax2.set_yticklabels([])
-    ax3.set_ylabel('NO$_{\mathregular{2}}$\n[ppbv]', loc='bottom', fontsize=14)
-    ax3.yaxis.set_label_coords(-0.18,0.0)
-    ax4.set_ylabel('')
-    ax4.set_yticklabels([])    
-    ax5.set_ylabel('Premature deaths due \nto PM$_\mathregular{2.5}$ '+\
-        '[per 100000]', loc='bottom', fontsize=14)
-    ax5.yaxis.set_label_coords(-0.18,0.0)
-    ax6.set_ylabel('')
-    ax6.set_yticklabels([])    
-    ax7.set_ylabel('New asthma cases due \nto NO$_\mathregular{2}$ '+\
-        '[per 100000]', loc='bottom', fontsize=14)    
-    ax7.yaxis.set_label_coords(-0.18,0.0)
-    ax8.set_ylabel('')
-    ax8.set_yticklabels([])    
-    # Y-axis labels for secondary axes
-    ax1t.set_ylabel('')
-    ax1t.set_yticklabels([])
-    ax2t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax2t.yaxis.set_label_coords(1.25,0.5)
-    ax3t.set_ylabel('')
-    ax3t.set_yticklabels([])
-    ax4t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax4t.yaxis.set_label_coords(1.25,0.5)
-    ax5t.set_ylabel('')
-    ax5t.set_yticklabels([])
-    ax6t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax6t.yaxis.set_label_coords(1.25,0.5)
-    ax7t.set_ylabel('')
-    ax7t.set_yticklabels([])
-    ax8t.set_ylabel('Relative disparities [$\mathregular{\cdot}$]', 
-        rotation=270, fontsize=14)
-    ax8t.yaxis.set_label_coords(1.25,0.5)
-    # Generate legend 
-    patch2 = mpatches.Patch(color=color2, label='Black')
-    patch1 = mpatches.Patch(color=color3, label='White')
-    all_handles = (patch2, patch1)
-    ax7.legend(handles=all_handles, loc=8, frameon=False, ncol=2,
-        bbox_to_anchor=(0.5, -0.5), fontsize=14)
-    patch1 = mpatches.Patch(color=color2, label='Hispanic')
-    patch2 = mpatches.Patch(color=color3, label='Non-Hispanic')
-    all_handles = (patch1, patch2)
-    ax8.legend(handles=all_handles, loc=8, frameon=False, ncol=2,
-        bbox_to_anchor=(0.5, -0.5), fontsize=14)
-    # Subplot labels
-    ax1.set_title('(A) Racial disparities', fontsize=14, loc='left')
-    ax2.set_title('(B) Ethnic disparities', fontsize=14, loc='left')
-    ax3.set_title('(C)', fontsize=14, loc='left')
-    ax4.set_title('(D)', fontsize=14, loc='left')
-    ax5.set_title('(E)', fontsize=14, loc='left')
-    ax6.set_title('(F)', fontsize=14, loc='left')
-    ax7.set_title('(G)', fontsize=14, loc='left')
-    ax8.set_title('(H)', fontsize=14, loc='left')
-    plt.subplots_adjust(wspace=0.2, top=0.95, bottom=0.1, hspace=0.3)
-    plt.savefig(DIR_FIG+'figS7.png', dpi=600)
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.stats import ks_2samp    
+    # Select burdens from beginning, midpoint, and final years of analysis
+    # (2010, 2015, 2019) 
+    burden10 = burdents.loc[burdents['YEAR']=='2006-2010'].copy(deep=True)
+    burden15 = burdents.loc[burdents['YEAR']=='2011-2015'].copy(deep=True)
+    burden19 = burdents.loc[burdents['YEAR']=='2015-2019'].copy(deep=True)
+    # Calculate racial characteristics
+    fracwhite10 = ((burden10[['race_nh_white','race_h_white']].sum(axis=1))/
+        burden10['race_tot'])
+    burden10['fracwhite10'] = fracwhite10
+    fracwhite15 = ((burden15[['race_nh_white','race_h_white']].sum(axis=1))/
+        burden15['race_tot'])
+    burden15['fracwhite15'] = fracwhite15
+    fracwhite19 = ((burden19[['race_nh_white','race_h_white']].sum(axis=1))/
+        burden19['race_tot'])
+    burden19['fracwhite19'] = fracwhite19
+    # Find tracts with largest NO2-, PM25-, or PM25- and NO2-attributable 
+    # health burdens
+    # For 2010
+    whereleast10 = burden10.loc[
+        (burden10.BURDENASTHMARATE<=np.nanpercentile(burden10.BURDENASTHMARATE,10)) & 
+        (burden10.BURDENPMALLRATE<=np.nanpercentile(burden10.BURDENPMALLRATE,10))]
+    wheremost10 = burden10.loc[
+        (burden10.BURDENASTHMARATE>=np.nanpercentile(burden10.BURDENASTHMARATE,90)) & 
+        (burden10.BURDENPMALLRATE>=np.nanpercentile(burden10.BURDENPMALLRATE,90))]
+    wheremostpm10 = burden10.loc[burden10.BURDENPMALLRATE>=
+        np.nanpercentile(burden10.BURDENPMALLRATE,90)]
+    wheremostasthma10 = burden10.loc[burden10.BURDENASTHMARATE>=
+        np.nanpercentile(burden10.BURDENASTHMARATE,90)]
+    whereleastpm10 = burden10.loc[burden10.BURDENPMALLRATE<=
+        np.nanpercentile(burden10.BURDENPMALLRATE,10)]
+    whereleastasthma10 = burden10.loc[burden10.BURDENASTHMARATE<=
+        np.nanpercentile(burden10.BURDENASTHMARATE,10)]
+    # For 2015
+    whereleast15 = burden15.loc[
+        (burden15.BURDENASTHMARATE<=np.nanpercentile(burden15.BURDENASTHMARATE,10)) & 
+        (burden15.BURDENPMALLRATE<=np.nanpercentile(burden15.BURDENPMALLRATE,10))]
+    wheremost15 = burden15.loc[
+        (burden15.BURDENASTHMARATE>=np.nanpercentile(burden15.BURDENASTHMARATE,90)) & 
+        (burden15.BURDENPMALLRATE>=np.nanpercentile(burden15.BURDENPMALLRATE,90))]
+    wheremostpm15 = burden15.loc[burden15.BURDENPMALLRATE>=
+        np.nanpercentile(burden15.BURDENPMALLRATE,90)]
+    wheremostasthma15 = burden15.loc[burden15.BURDENASTHMARATE>=
+        np.nanpercentile(burden15.BURDENASTHMARATE,90)]
+    whereleastpm15 = burden15.loc[burden15.BURDENPMALLRATE<=
+        np.nanpercentile(burden15.BURDENPMALLRATE,10)]
+    whereleastasthma15 = burden15.loc[burden15.BURDENASTHMARATE<=
+        np.nanpercentile(burden15.BURDENASTHMARATE,10)]
+    # For 2019 
+    whereleast19 = burden19.loc[
+        (burden19.BURDENASTHMARATE<=np.nanpercentile(burden19.BURDENASTHMARATE,10)) & 
+        (burden19.BURDENPMALLRATE<=np.nanpercentile(burden19.BURDENPMALLRATE,10))]
+    wheremost19 = burden19.loc[
+        (burden19.BURDENASTHMARATE>=np.nanpercentile(burden19.BURDENASTHMARATE,90)) & 
+        (burden19.BURDENPMALLRATE>=np.nanpercentile(burden19.BURDENPMALLRATE,90))]
+    wheremostpm19 = burden19.loc[burden19.BURDENPMALLRATE>=
+        np.nanpercentile(burden19.BURDENPMALLRATE,90)]
+    wheremostasthma19 = burden19.loc[burden19.BURDENASTHMARATE>=
+        np.nanpercentile(burden19.BURDENASTHMARATE,90)]
+    whereleastpm19 = burden19.loc[burden19.BURDENPMALLRATE<=
+        np.nanpercentile(burden19.BURDENPMALLRATE,10)]
+    whereleastasthma19 = burden19.loc[burden19.BURDENASTHMARATE<=
+        np.nanpercentile(burden19.BURDENASTHMARATE,10)]
+    colorsyear = [color1, color2, color3]
+    # Plotting
+    fig = plt.figure(figsize=(8,5))
+    ax1 = plt.subplot2grid((1,1), (0,0))
+    # Denote median percent white in years 
+    ax1.axhline(burden10.fracwhite10.median(), ls='-', color=colorsyear[0], 
+        zorder=0, lw=0.75)
+    ax1.axhline(burden15.fracwhite15.median(), ls='-', color=colorsyear[1], 
+        zorder=0, lw=0.75) 
+    ax1.axhline(burden19.fracwhite19.median(), ls='-', color=colorsyear[2], 
+        zorder=0, lw=0.75)
+    # Racial composition of tracts with the smallest PM2.5-
+    # attributable burdens
+    heights = [whereleastpm10.fracwhite10, whereleastpm15.fracwhite15, 
+        whereleastpm19.fracwhite19]
+    pos = [0,1,2]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance 
+    ks_1015 = ks_2samp(whereleastpm10.fracwhite10, whereleastpm15.fracwhite15)
+    ks_1519 = ks_2samp(whereleastpm15.fracwhite15, whereleastpm19.fracwhite19)
+    ks_1019 = ks_2samp(whereleastpm10.fracwhite10, whereleastpm19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
+    # Racial composition of tracts with the smallest NO2-attributable 
+    # burdens
+    heights = [whereleastasthma10.fracwhite10, 
+        whereleastasthma15.fracwhite15, whereleastasthma19.fracwhite19]
+    pos = [4,5,6]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance
+    ks_1015 = ks_2samp(whereleastasthma10.fracwhite10, 
+        whereleastasthma15.fracwhite15)
+    ks_1519 = ks_2samp(whereleastasthma15.fracwhite15, 
+        whereleastasthma19.fracwhite19)
+    ks_1019 = ks_2samp(whereleastasthma10.fracwhite10, 
+        whereleastasthma19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
+    # Racial composition of tracts with the smallest NO2- and PM2.5-
+    # attributable burdens
+    heights = [whereleast10.fracwhite10, whereleast15.fracwhite15, 
+        whereleast19.fracwhite19]
+    pos = [8,9,10]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance
+    ks_1015 = ks_2samp(whereleast10.fracwhite10, whereleast15.fracwhite15)
+    ks_1519 = ks_2samp(whereleast15.fracwhite15, whereleast19.fracwhite19)
+    ks_1019 = ks_2samp(whereleast10.fracwhite10, whereleast19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
+    # Racial composition of tracts with the largest PM2.5-attributable burdens    
+    heights = [wheremostpm10.fracwhite10, wheremostpm15.fracwhite15, 
+        wheremostpm19.fracwhite19]
+    pos = [13,14,15]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance
+    ks_1015 = ks_2samp(wheremostpm10.fracwhite10, wheremostpm15.fracwhite15)
+    ks_1519 = ks_2samp(wheremostpm15.fracwhite15, wheremostpm19.fracwhite19)
+    ks_1019 = ks_2samp(wheremostpm10.fracwhite10, wheremostpm19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
+    # Racial composition of tracts with the largest NO2-attributable burdens    
+    heights = [wheremostasthma10.fracwhite10, 
+        wheremostasthma15.fracwhite15, wheremostasthma19.fracwhite19]
+    pos = [17,18,19]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance
+    ks_1015 = ks_2samp(wheremostasthma10.fracwhite10, 
+        wheremostasthma15.fracwhite15)
+    ks_1519 = ks_2samp(wheremostasthma15.fracwhite15, 
+        wheremostasthma19.fracwhite19)
+    ks_1019 = ks_2samp(wheremostasthma10.fracwhite10, 
+        wheremostasthma19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, ks_1019.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.08, maxasterix=(3))
+    # Racial composition of tracts with the largest NO2- and PM2.5-attributable burdens    
+    heights = [wheremost10.fracwhite10, wheremost15.fracwhite15, 
+        wheremost19.fracwhite19]
+    pos = [21,22,23]
+    box = ax1.boxplot(heights, positions=pos, whis=0, showfliers=False, 
+        widths=0.6, patch_artist=True, medianprops=dict(color='w'), 
+        capprops=dict(color='None'), whiskerprops=dict(color='None'))
+    for patch, color in zip(box['boxes'], colorsyear):
+        patch.set_facecolor(color)
+        patch.set_edgecolor(color)
+    # Calculate significance
+    ks_1015 = ks_2samp(wheremost10.fracwhite10, wheremost15.fracwhite15)
+    ks_1519 = ks_2samp(wheremost15.fracwhite15, wheremost19.fracwhite19)
+    ks_1019 = ks_2samp(wheremost10.fracwhite10, wheremost19.fracwhite19)
+    barplot_annotate_brackets(0, 1, ks_1015.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(1, 2, ks_1519.pvalue, pos, 
+        [np.nanpercentile(x, 25) for x in heights], maxasterix=(3))
+    barplot_annotate_brackets(0, 2, np.round(ks_1019.pvalue,2), pos, 
+        [np.nanpercentile(x, 25) for x in heights], dh=.07, maxasterix=(3))
+    # Aesthetics
+    ax1.set_xlim([-0.75, 23.75])
+    ax1.set_xticks([1,5,9,14,18,22])
+    ax1.set_xticklabels([
+        'PM$_\mathregular{2.5}$-\nattributable',
+        'NO$_\mathregular{2}$-\nattributable',
+        'NO$_\mathregular{2}$- and PM$_{\mathregular{2.5}}$-\nattributable',
+        'PM$_\mathregular{2.5}$-\nattributable',
+        'NO$_\mathregular{2}$-\nattributable',    
+        'NO$_\mathregular{2}$- and PM$_{\mathregular{2.5}}$-\nattributable'])
+    ax1.tick_params(axis=u'x', which=u'both',length=0)
+    ax1.set_ylim([0,1])
+    ax1.set_yticks([0,0.2,0.4,0.6,0.8,1.])
+    ax1.set_yticklabels(['0','20','40','60','80','100'])
+    ax1.set_ylabel('Proportion of white population [%]', fontsize=14)
+    # Hide the right and top spines
+    ax1.spines['right'].set_visible(False)
+    ax1.spines['top'].set_visible(False)
+    # Create legend
+    ax1.text(5, 1.05,'L e a s t    b u r d e n e d', fontsize=18, ha='center')
+    ax1.text(18, 1.05,'M o s t    b u r d e n e d', fontsize=18, ha='center')
+    patch1 = mpatches.Patch(color=colorsyear[0], label='2010')
+    patch2 = mpatches.Patch(color=colorsyear[1], label='2015')
+    patch3 = mpatches.Patch(color=colorsyear[2], label='2019')
+    all_handles = (patch1, patch2, patch3)
+    leg = ax1.legend(handles=all_handles, frameon=False, ncol=1,
+        bbox_to_anchor=(0.2,0.25))
+    plt.savefig(DIR_FIG+'figS5.pdf', dpi=500)
+    # Calculate some pithy statistics
+    print('Median white population [%]')
+    print('2010 = %.2f'%(burden10.fracwhite10.median()*100.))
+    print('2015 = %.2f'%(burden15.fracwhite15.median()*100.))
+    print('2019 = %.2f'%(burden19.fracwhite19.median()*100.))
+    print('\n')
+    print('White population in tracts with smallest '+\
+        'PM2.5-attributable burdens [%]')
+    print('2010 = %.2f'%(whereleastpm10.fracwhite10.median()*100.))
+    print('2015 = %.2f'%(whereleastpm15.fracwhite15.median()*100.))
+    print('2019 = %.2f'%(whereleastpm19.fracwhite19.median()*100.)) 
+    print('White population in tracts with largest '+\
+        'PM2.5-attributable burdens [%]')
+    print('2010 = %.2f'%(wheremostpm10.fracwhite10.median()*100.))
+    print('2015 = %.2f'%(wheremostpm15.fracwhite15.median()*100.))
+    print('2019 = %.2f'%(wheremostpm19.fracwhite19.median()*100.))    
+    print('\n')
+    print('White population in tracts with smallest '+\
+        'NO2-attributable burdens [%]')
+    print('2010 = %.2f'%(whereleastasthma10.fracwhite10.median()*100.))
+    print('2015 = %.2f'%(whereleastasthma15.fracwhite15.median()*100.))
+    print('2019 = %.2f'%(whereleastasthma19.fracwhite19.median()*100.))
+    print('White population in tracts with largest '+\
+        'NO2-attributable burdens [%]')
+    print('2010 = %.2f'%(wheremostasthma10.fracwhite10.median()*100.))
+    print('2015 = %.2f'%(wheremostasthma15.fracwhite15.median()*100.))
+    print('2019 = %.2f'%(wheremostasthma19.fracwhite19.median()*100.))
+    print('\n')
+    print('White population in tracts with smallest '+\
+        'PM2.5- AND NO2-attributable burdens [%]')
+    print('2010 = %.2f'%(whereleast10.fracwhite10.median()*100.), 
+        '(%d tracts)'%whereleast10.shape[0])
+    print('2015 = %.2f'%(whereleast15.fracwhite15.median()*100.), 
+        '(%d tracts)'%whereleast15.shape[0])
+    print('2019 = %.2f'%(whereleast19.fracwhite19.median()*100.), 
+        '(%d tracts)'%whereleast19.shape[0]) 
+    print('White population in tracts with largest '+\
+        'PM2.5- AND NO2-attributable burdens [%]')
+    print('2010 = %.2f'%(wheremost10.fracwhite10.median()*100.), 
+        '(%d tracts)'%wheremost10.shape[0])
+    print('2015 = %.2f'%(wheremost15.fracwhite15.median()*100.), 
+        '(%d tracts)'%wheremost15.shape[0])
+    print('2019 = %.2f'%(wheremost19.fracwhite19.median()*100.), 
+        '(%d tracts)'%wheremost19.shape[0])
     return
 
-def figS8(burdents):
+def figS6(burdents):
     """
     Parameters
     ----------
@@ -4294,7 +4118,7 @@ def figS8(burdents):
     all_handles = (patch1, patch2, patch3)
     ax1.legend(handles=all_handles, frameon=False, ncol=1,
         bbox_to_anchor=(0.2,0.25))
-    plt.savefig(DIR_FIG+'figS8.pdf', dpi=500)
+    plt.savefig(DIR_FIG+'figS6.pdf', dpi=500)
     # Calculate some pithy statistics
     print('Median non-Hispanic population [%]')
     print('2010 = %.2f'%(burden10.fracnh10.median()*100.))
@@ -4341,106 +4165,377 @@ def figS8(burdents):
         '(%d tracts)'%wheremost19.shape[0])
     return
 
-import pandas as pd
-import math
-import time
-from datetime import datetime
-import numpy as np   
-from scipy import stats
-import sys
-sys.path.append(DIR)
-import edf_open, edf_calculate
-sys.path.append('/Users/ghkerr/GW/tropomi_ej/')
-import tropomi_census_utils
-sys.path.append('/Users/ghkerr/GW/edf/')
-import pm25no2_constants
+def figS8(burdents):
+    """
+    
 
-# Load crosswalk to enable subsampling of MSAs
-crosswalk = pd.read_csv(DIR_CROSS+'qcew-county-msa-csa-crosswalk.csv', 
-    engine='python', encoding='latin1')
-# Add a leading zero to FIPS codes 0-9
-crosswalk['County Code'] = crosswalk['County Code'].map(lambda x:
-    f'{x:0>5}')
-# Open 2010-2019 harmonized tables and calculate burdens
-harmts = []
-burdents = []
-for year in np.arange(2010, 2020, 1):
-    print(year)
-    vintage = '%d-%d'%(year-4, year)
-    harm = edf_open.load_vintageharmonized(vintage)
-    burden = edf_calculate.calculate_pm25no2burden(harm)
-    # Total PM2.5-attributable deaths and new cases of NO2-attributable asthma
-    print('sum(Stroke) = %d'%round(burden.BURDENST.sum()))
-    print('sum(COPD) = %d'%round(burden.BURDENCOPD.sum()))
-    print('sum(Lung cancer) = %d'%round(burden.BURDENLC.sum()))
-    print('sum(Type 2 diabetes) = %d'%round(burden.BURDENDM.sum()))
-    print('sum(Total IHD) = %d'%round(burden.BURDENIHD.sum()))
-    print('sum(Lower respiratory infection) = %d'%round(burden.BURDENLRI.sum()))
-    print('sum(Pediatric asthma) = %d'%round(burden.BURDENASTHMA.sum()))
-    print('Total PM deaths = %d'%round(burden.BURDENST.sum()+
-        burden.BURDENCOPD.sum()+burden.BURDENLC.sum()+burden.BURDENDM.sum()+
-        burden.BURDENIHD.sum()+burden.BURDENLRI.sum()))
-    print('\n')
-    harmts.append(harm)
-    burdents.append(burden)
-harmts = pd.concat(harmts)
-burdents = pd.concat(burdents)
+    Parameters
+    ----------
+    burdents : TYPE
+        DESCRIPTION.
 
-# # # # Subset harmonized tables in MSAs
-harm_msa, burden_msa = [], []
-geoids = harm.index.values
-for i, msa in enumerate(pm25no2_constants.majors):
-    crosswalk_msa = crosswalk.loc[crosswalk['MSA Title']==msa]
-    # Umlaut and accent screw with .loc
-    if msa=='Mayagüez, PR':
-        crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C3242']
-    if msa=='San Germán, PR':
-        crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C4190']
-    # Find GEOIDs in MSA
-    geoids_msa = []
-    for prefix in crosswalk_msa['County Code'].values: 
-        prefix = str(prefix).zfill(5)
-        incounty = [x for x in geoids if x.startswith(prefix)]
-        geoids_msa.append(incounty)
-    geoids_msa = sum(geoids_msa, [])
-    harm_imsa = harmts.loc[harmts.index.isin(geoids_msa)]
-    harm_msa.append(harm_imsa)
-    burden_imsa = burdents.loc[burdents.index.isin(geoids_msa)]
-    burden_msa.append(burden_imsa)
-harm_msa = pd.concat(harm_msa)
-burden_msa = pd.concat(burden_msa)
+    Returns
+    -------
+    None.
 
-pmburden_allmsa, asthmaburden_allmsa = [], []
-pmburdenrate_allmsa, asthmaburdenrate_allmsa = [], []
-lng_allmsa, lat_allmsa, name_allmsa = [], [], []
-burden19 = burdents.loc[burdents.YEAR=='2015-2019']
-geoids = burden19.index.values
-# Loop through MSAs in U.S. 
-for i, msa in enumerate(pm25no2_constants.majors):
-    crosswalk_msa = crosswalk.loc[crosswalk['MSA Title']==msa]
-    # Umlaut and accent screw with .loc
-    if msa=='Mayagüez, PR':
-        crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C3242']
-    if msa=='San Germán, PR':
-        crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C4190']
-    # Find GEOIDs in MSA
-    geoids_msa = []
-    for prefix in crosswalk_msa['County Code'].values: 
-        prefix = str(prefix).zfill(5)
-        incounty = [x for x in geoids if x.startswith(prefix)]
-        geoids_msa.append(incounty)
-    geoids_msa = sum(geoids_msa, [])
-    # Select NO2-attributable burdens for most recent year available (2019)
-    burden_imsa = burden19.loc[burden19.index.isin(geoids_msa)]
-    asthmaburdenrate_allmsa.append(burden_imsa['BURDENASTHMARATE'].mean())
-    asthmaburden_allmsa.append(burden_imsa['BURDENASTHMA'].sum())
-    pmburdenrate_allmsa.append(burden_imsa['BURDENPMALLRATE'].mean())
-    pmburden_allmsa.append(burden_imsa['BURDENPMALL'].sum())
-    lng_allmsa.append(burden_imsa['LNG_CENTROID'].mean())
-    lat_allmsa.append(burden_imsa['LAT_CENTROID'].mean())
-    name_allmsa.append(msa)
-asthmaburdenrate_allmsa = np.array(asthmaburdenrate_allmsa)
-pmburdenrate_allmsa = np.array(pmburdenrate_allmsa)
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as mpatches
+    PM25_white, PM25_black = [], []
+    NO2_white, NO2_black = [], []
+    pd_white, pd_black = [], []
+    asthma_white, asthma_black = [], []
+    # For relative disparities
+    PM25_race_relative, NO2_race_relative = [], []
+    pd_race_relative, asthma_race_relative = [], []
+    # Same as above but for ethnic subgroups
+    PM25_hisp, PM25_nonhisp = [], []
+    NO2_hisp, NO2_nonhisp = [], []
+    pd_hisp, pd_nonhisp = [], []
+    asthma_hisp, asthma_nonhisp = [], []
+    PM25_ethnic_relative, NO2_ethnic_relative = [], []
+    pd_ethnic_relative, asthma_ethnic_relative = [], []
+    for year in np.arange(2010, 2020, 1):
+        yearst = '%d-%d'%(year-4, year)
+        burdenty = burdents.loc[burdents['YEAR']==yearst].copy(deep=True)
+        # Define ethnoracial groups
+        burdenty['fracwhite'] = ((burdenty[['race_nh_white','race_h_white'
+            ]].sum(axis=1))/burdenty['race_tot'])
+        burdenty['frachisp'] = (burdenty['race_h']/burdenty['race_tot'])    
+        # Define population-weighted categories
+        pm25black = ((burdenty['PM25']*burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1).sum())
+        pm25white = ((burdenty['PM25']*
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())         
+        no2black = ((burdenty['NO2']*burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1).sum())
+        no2white = ((burdenty['NO2']*
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())       
+        pdblack = ((burdenty['BURDENPMALLRATE']*burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1).sum())
+        pdwhite = ((burdenty['BURDENPMALLRATE']*
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())       
+        asthmablack = ((burdenty['BURDENASTHMARATE']*burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1)).sum()/burdenty[['race_nh_black',
+            'race_h_black']].sum(axis=1).sum())
+        asthmawhite = ((burdenty['BURDENASTHMARATE']*
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1)).sum()/
+            burdenty[['race_nh_white','race_h_white']].sum(axis=1).sum())     
+        pm25nh = ((burdenty['PM25']*burdenty['race_nh']).sum() /
+            burdenty['race_nh'].sum())
+        pm25h = ((burdenty['PM25']*burdenty['race_h']).sum() /
+            burdenty['race_h'].sum())
+        no2nh = ((burdenty['NO2']*burdenty['race_nh']).sum() /
+            burdenty['race_nh'].sum())
+        no2h = ((burdenty['NO2']*burdenty['race_h']).sum() /
+            burdenty['race_h'].sum())
+        pdnh = ((burdenty['BURDENPMALLRATE']*burdenty['race_nh']).sum() /
+            burdenty['race_nh'].sum())
+        pdh = ((burdenty['BURDENPMALLRATE']*burdenty['race_h']).sum() /
+            burdenty['race_h'].sum())    
+        asthmanh = ((burdenty['BURDENASTHMARATE']*burdenty['race_nh']).sum() /
+            burdenty['race_nh'].sum())
+        asthmah = ((burdenty['BURDENASTHMARATE']*burdenty['race_h']).sum() /
+            burdenty['race_h'].sum())
+        # For absolute concentrations/rates for racial subgroups
+        PM25_white.append(pm25white)
+        PM25_black.append(pm25black)
+        NO2_white.append(no2white)
+        NO2_black.append(no2black)
+        pd_white.append(pdwhite)
+        pd_black.append(pdblack)
+        asthma_white.append(asthmawhite)
+        asthma_black.append(asthmablack)
+        PM25_race_relative.append(pm25black/pm25white)
+        NO2_race_relative.append(no2black/no2white)
+        pd_race_relative.append(pdblack/pdwhite)
+        asthma_race_relative.append(asthmablack/asthmawhite)
+        PM25_hisp.append(pm25h)
+        PM25_nonhisp.append(pm25nh)
+        NO2_hisp.append(no2h)
+        NO2_nonhisp.append(no2nh)
+        pd_hisp.append(pdh)
+        pd_nonhisp.append(pdnh)
+        asthma_hisp.append(asthmah)
+        asthma_nonhisp.append(asthmanh)
+        PM25_ethnic_relative.append(pm25h/pm25nh)
+        NO2_ethnic_relative.append(no2h/no2nh)
+        pd_ethnic_relative.append(pdh/pdnh)
+        asthma_ethnic_relative.append(asthmah/asthmanh)
+    fig = plt.figure(figsize=(8,6))
+    ax1t = plt.subplot2grid((10,2),(0,0), rowspan=3)
+    ax1b = plt.subplot2grid((10,2),(3,0), rowspan=2) 
+    ax2t = plt.subplot2grid((10,2),(5,0), rowspan=3)
+    ax2b = plt.subplot2grid((10,2),(8,0), rowspan=2)
+    ax3t = plt.subplot2grid((10,2),(0,1), rowspan=3)
+    ax3b = plt.subplot2grid((10,2),(3,1), rowspan=2)
+    ax4t = plt.subplot2grid((10,2),(5,1), rowspan=3)
+    ax4b = plt.subplot2grid((10,2),(8,1), rowspan=2)
+    years = np.arange(2010,2020,1)
+    # Racial NO2-attributable pediatric asthma
+    for i, year in enumerate(years): 
+        ax1t.vlines(x=year, ymin=asthma_white[i], ymax=asthma_black[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax1t.scatter(years, asthma_white, color=color3, zorder=10, 
+        label='White')
+    ax1t.scatter(years, asthma_black, color=color2, zorder=10, 
+        label='Black')
+    # Text for first and last years
+    ax1t.text(years[0], asthma_white[0]-30, '%d'%asthma_white[0], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax1t.text(years[0], asthma_black[0]+25, '%d'%asthma_black[0], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax1t.text(years[-1], asthma_white[-1]-30, '%d'%asthma_white[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax1t.text(years[-1], asthma_black[-1]+25, '%d'%asthma_black[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax1b.plot(years, asthma_race_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(asthma_race_relative):
+        ax1b.text(years[i], asthma_race_relative[i]*1.015, '%.2f'%txt, 
+            ha='center', fontsize=8, clip_on=False)    
+    # Racial PM2.5-attributable premature mortality 
+    for i, year in enumerate(years): 
+        ax2t.vlines(x=year, ymin=pd_white[i], ymax=pd_black[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax2t.scatter(years, pd_white, color=color3, zorder=10,
+        label='White')
+    ax2t.scatter(years, pd_black, color=color2, zorder=10, 
+        label='Black')
+    ax2t.text(years[0], pd_white[0]-3.5, '%d'%pd_white[0], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax2t.text(years[0], pd_black[0]+3.5, '%d'%pd_black[0], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax2t.text(years[-1], pd_white[-1]-1.2, '%d'%pd_white[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax2t.text(years[-1], pd_black[-1]+1, '%d'%pd_black[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax2b.plot(years, pd_race_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(pd_race_relative):
+        if i==3:
+            ax2b.text(years[i], pd_race_relative[i]*1.02, '%.2f'%txt, 
+                fontsize=8, ha='center', clip_on=False)
+        elif i==6:
+            ax2b.text(years[i], pd_race_relative[i]*1.01, '%.2f'%txt, 
+                fontsize=8, ha='center', clip_on=False)
+        elif i==7:
+            ax2b.text(years[i], pd_race_relative[i]*1.025, '%.2f'%txt, 
+                fontsize=8, ha='center', clip_on=False)
+        elif i==8:
+            ax2b.text(years[i], pd_race_relative[i]*1.025, '%.2f'%txt, 
+                fontsize=8, ha='center', clip_on=False)        
+        else:
+            ax2b.text(years[i], pd_race_relative[i]*1.015, '%.2f'%txt, 
+                fontsize=8, ha='center', clip_on=False)
+    # Ethnic NO2-attributable pediatric asthma
+    for i, year in enumerate(years): 
+        ax3t.vlines(x=year, ymin=asthma_nonhisp[i], ymax=asthma_hisp[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax3t.scatter(years, asthma_nonhisp, color=color3, zorder=10, 
+        label='Non-Hispanic')             
+    ax3t.scatter(years, asthma_hisp, color=color2, zorder=10, 
+        label='Hispanic')
+    ax3t.text(years[0], asthma_nonhisp[0]-30, '%d'%asthma_nonhisp[0], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax3t.text(years[0], asthma_hisp[0]+25, '%d'%asthma_hisp[0], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax3t.text(years[-1], asthma_nonhisp[-1]-30, '%d'%asthma_nonhisp[-1], 
+        ha='center', va='top', color=color3, fontsize=8)
+    ax3t.text(years[-1], asthma_hisp[-1]+25, '%d'%asthma_hisp[-1], 
+        ha='center', va='bottom', color=color2, fontsize=8)
+    ax3b.plot(years, asthma_ethnic_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(asthma_ethnic_relative):
+        ax3b.text(years[i], asthma_ethnic_relative[i]*1.013, '%.2f'%txt, fontsize=8, 
+            ha='center', clip_on=False)
+    # Ethnic PM2.5-attributable premature mortality 
+    for i, year in enumerate(years): 
+        ax4t.vlines(x=year, ymin=pd_nonhisp[i], ymax=pd_hisp[i], 
+            colors='darkgrey', ls='-', lw=1)
+    ax4t.scatter(years, pd_nonhisp, color=color3, zorder=10, 
+        label='Least Hispanic')
+    ax4t.scatter(years, pd_hisp, color=color2, zorder=10, 
+        label='Most Hispanic')
+    ax4t.text(years[0], pd_nonhisp[0]+1, '%d'%pd_nonhisp[0], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax4t.text(years[0], pd_hisp[0]-1.2, '%d'%pd_hisp[0], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax4t.text(years[-1], pd_nonhisp[-1]+1, '%d'%pd_nonhisp[-1], 
+        ha='center', va='bottom', color=color3, fontsize=8)
+    ax4t.text(years[-1], pd_hisp[-1]-1.2, '%d'%pd_hisp[-1], 
+        ha='center', va='top', color=color2, fontsize=8)
+    ax4b.plot(years, pd_ethnic_relative, color='k', marker='o',
+        markerfacecolor='w', markeredgecolor='k', clip_on=False)
+    for i, txt in enumerate(pd_ethnic_relative):
+        ax4b.text(years[i], pd_ethnic_relative[i]*1.045, '%.2f'%txt, fontsize=8, 
+            ha='center', clip_on=False)
+    # Aesthetics  
+    ax1t.set_title('(A) Racial disparities', fontsize=14, loc='left', y=1.07)
+    ax2t.set_title('(C)', fontsize=14, loc='left', y=1.07)
+    ax3t.set_title('(B) Ethnic disparities', fontsize=14, loc='left', y=1.07)
+    ax4t.set_title('(D)', fontsize=14, loc='left', y=1.07)
+    ax1t.set_ylabel('New asthma cases due\nto NO$_{\mathregular{2}}$ '+\
+        'per 100000')
+    ax1t.get_yaxis().set_label_coords(-0.15,0.5)
+    ax2t.set_ylabel('Premature deaths due\nto PM$_{\mathregular{2.5}}$ '+\
+        'per 100000') 
+    ax2t.get_yaxis().set_label_coords(-0.15,0.5)
+    # Axis limits
+    for ax in [ax1t, ax3t]:
+        ax.set_ylim([100, 400])
+        ax.set_yticks(np.arange(100,400+100,100))
+        ax.set_yticklabels([])
+    ax1t.set_yticklabels([int(x) for x in np.arange(100,400+100,100)])
+    for ax in [ax2t, ax4t]:
+        ax.set_ylim([12, 28])
+        ax.set_yticks(np.linspace(12,32,5))
+        ax.set_yticklabels([])
+    ax2t.set_yticklabels([int(x) for x in np.linspace(12,28,5)])
+    # # Relative disparities plots 
+    ax1b.set_ylim([min(asthma_race_relative)*0.97, 
+        max(asthma_race_relative)*1.0])
+    ax2b.set_ylim([min(pd_race_relative)*0.985, 
+        max(pd_race_relative)*1.0])
+    ax3b.set_ylim([min(asthma_ethnic_relative)*0.98, 
+        max(asthma_ethnic_relative)*1.0])
+    ax4b.set_ylim([min(pd_ethnic_relative)*0.9, 
+        max(pd_ethnic_relative)*0.95])
+    plt.subplots_adjust(wspace=0.2, hspace=15.5, bottom=0.08, top=0.92, right=0.96)
+    ax2t.legend(ncol=2, frameon=False, bbox_to_anchor=(0.83, -1.))
+    ax4t.legend(ncol=2, frameon=False, bbox_to_anchor=(1.01, -1.))
+    for ax in [ax1t, ax2t, ax3t, ax4t]:
+        ax.set_xlim([2009.5,2019.5])
+        for spine in ['top', 'right', 'bottom']:
+            ax.spines[spine].set_visible(False)
+        ax.set_xticklabels([])
+        ax.tick_params(axis='x', which='both', bottom=False)
+    for ax in [ax1b, ax2b, ax3b, ax4b]:
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.set_xlim([2009.5,2019.5])
+        # Only draw spine between the y-ticks
+        ax.spines.bottom.set_bounds((2010, 2019))    
+        ax.set_xticks(years)
+        ax.set_xticklabels(['2010', '', '', '2013', '', '', '2016', '', '', 
+            '2019'])
+        ax.set_yticks([])
+        # Move relative disparities subplots up
+        box = ax.get_position()
+        box.y0 = box.y0 + 0.04
+        box.y1 = box.y1 + 0.04
+        ax.set_position(box)
+    plt.savefig(DIR_FIG+'figS8.pdf', dpi=500)
+    return 
+
+# import pandas as pd
+# import math
+# import time
+# from datetime import datetime
+# import numpy as np   
+# from scipy import stats
+# import sys
+# sys.path.append(DIR)
+# import edf_open, edf_calculate
+# sys.path.append('/Users/ghkerr/GW/tropomi_ej/')
+# import tropomi_census_utils
+# sys.path.append('/Users/ghkerr/GW/edf/')
+# import pm25no2_constants
+
+# # Load crosswalk to enable subsampling of MSAs
+# crosswalk = pd.read_csv(DIR_CROSS+'qcew-county-msa-csa-crosswalk.csv', 
+#     engine='python', encoding='latin1')
+# # Add a leading zero to FIPS codes 0-9
+# crosswalk['County Code'] = crosswalk['County Code'].map(lambda x:
+#     f'{x:0>5}')
+# # Open 2010-2019 harmonized tables and calculate burdens
+# harmts = []
+# burdents = []
+# for year in np.arange(2010, 2020, 1):
+#     print(year)
+#     vintage = '%d-%d'%(year-4, year)
+#     harm = edf_open.load_vintageharmonized(vintage)
+#     burden = edf_calculate.calculate_pm25no2burden(harm)
+#     # Total PM2.5-attributable deaths and new cases of NO2-attributable asthma
+#     print('sum(Stroke) = %d'%round(burden.BURDENST.sum()))
+#     print('sum(COPD) = %d'%round(burden.BURDENCOPD.sum()))
+#     print('sum(Lung cancer) = %d'%round(burden.BURDENLC.sum()))
+#     print('sum(Type 2 diabetes) = %d'%round(burden.BURDENDM.sum()))
+#     print('sum(Total IHD) = %d'%round(burden.BURDENIHD.sum()))
+#     print('sum(Lower respiratory infection) = %d'%round(burden.BURDENLRI.sum()))
+#     print('sum(Pediatric asthma) = %d'%round(burden.BURDENASTHMA.sum()))
+#     print('Total PM deaths = %d'%round(burden.BURDENST.sum()+
+#         burden.BURDENCOPD.sum()+burden.BURDENLC.sum()+burden.BURDENDM.sum()+
+#         burden.BURDENIHD.sum()+burden.BURDENLRI.sum()))
+#     print('\n')
+#     harmts.append(harm)
+#     burdents.append(burden)
+# harmts = pd.concat(harmts)
+# burdents = pd.concat(burdents)
+
+# # # # # Subset harmonized tables in MSAs
+# harm_msa, burden_msa = [], []
+# geoids = harm.index.values
+# for i, msa in enumerate(pm25no2_constants.majors):
+#     crosswalk_msa = crosswalk.loc[crosswalk['MSA Title']==msa]
+#     # Umlaut and accent screw with .loc
+#     if msa=='Mayagüez, PR':
+#         crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C3242']
+#     if msa=='San Germán, PR':
+#         crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C4190']
+#     # Find GEOIDs in MSA
+#     geoids_msa = []
+#     for prefix in crosswalk_msa['County Code'].values: 
+#         prefix = str(prefix).zfill(5)
+#         incounty = [x for x in geoids if x.startswith(prefix)]
+#         geoids_msa.append(incounty)
+#     geoids_msa = sum(geoids_msa, [])
+#     harm_imsa = harmts.loc[harmts.index.isin(geoids_msa)]
+#     harm_msa.append(harm_imsa)
+#     burden_imsa = burdents.loc[burdents.index.isin(geoids_msa)]
+#     burden_msa.append(burden_imsa)
+# harm_msa = pd.concat(harm_msa)
+# burden_msa = pd.concat(burden_msa)
+
+# pmburden_allmsa, asthmaburden_allmsa = [], []
+# pmburdenrate_allmsa, asthmaburdenrate_allmsa = [], []
+# lng_allmsa, lat_allmsa, name_allmsa = [], [], []
+# burden19 = burdents.loc[burdents.YEAR=='2015-2019']
+# geoids = burden19.index.values
+# # Loop through MSAs in U.S. 
+# for i, msa in enumerate(pm25no2_constants.majors):
+#     crosswalk_msa = crosswalk.loc[crosswalk['MSA Title']==msa]
+#     # Umlaut and accent screw with .loc
+#     if msa=='Mayagüez, PR':
+#         crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C3242']
+#     if msa=='San Germán, PR':
+#         crosswalk_msa = crosswalk.loc[crosswalk['MSA Code']=='C4190']
+#     # Find GEOIDs in MSA
+#     geoids_msa = []
+#     for prefix in crosswalk_msa['County Code'].values: 
+#         prefix = str(prefix).zfill(5)
+#         incounty = [x for x in geoids if x.startswith(prefix)]
+#         geoids_msa.append(incounty)
+#     geoids_msa = sum(geoids_msa, [])
+#     # Select NO2-attributable burdens for most recent year available (2019)
+#     burden_imsa = burden19.loc[burden19.index.isin(geoids_msa)]
+#     asthmaburdenrate_allmsa.append(burden_imsa['BURDENASTHMARATE'].mean())
+#     asthmaburden_allmsa.append(burden_imsa['BURDENASTHMA'].sum())
+#     pmburdenrate_allmsa.append(burden_imsa['BURDENPMALLRATE'].mean())
+#     pmburden_allmsa.append(burden_imsa['BURDENPMALL'].sum())
+#     lng_allmsa.append(burden_imsa['LNG_CENTROID'].mean())
+#     lat_allmsa.append(burden_imsa['LAT_CENTROID'].mean())
+#     name_allmsa.append(msa)
+# asthmaburdenrate_allmsa = np.array(asthmaburdenrate_allmsa)
+# pmburdenrate_allmsa = np.array(pmburdenrate_allmsa)
 
 
 # fig1(burdents, pmburdenrate_allmsa, asthmaburdenrate_allmsa, lng_allmsa, 
@@ -4448,7 +4543,6 @@ pmburdenrate_allmsa = np.array(pmburdenrate_allmsa)
 # fig2(burdents)
 # fig3(burdents)
 # table1(burdents)
-
 
 # figS1(burdents)
 # figS2()
@@ -4474,10 +4568,12 @@ pmburdenrate_allmsa = np.array(pmburdenrate_allmsa)
 #     np.nanpercentile(frac_white19, 10))]
 # mwp = mosthisp[['pop_m_lt5', 'pop_m_5-9', 'pop_m_10-14',
 # 'pop_m_15-17', 'pop_m_18-19', 'pop_m_20', 'pop_m_21', 'pop_m_22-24', 'pop_f_lt5',
-# 'pop_f_5-9', 'pop_f_10-14', 'pop_f_15-17', 'pop_f_18-19', 'pop_f_20', 'pop_f_21', 'pop_f_22-24']].sum(axis=1)/mosthisp['pop_tot']
+# 'pop_f_5-9', 'pop_f_10-14', 'pop_f_15-17', 'pop_f_18-19', 'pop_f_20', 
+# 'pop_f_21', 'pop_f_22-24']].sum(axis=1)/mosthisp['pop_tot']
 # lwp = leasthisp[['pop_m_lt5', 'pop_m_5-9', 'pop_m_10-14',
 # 'pop_m_15-17', 'pop_m_18-19', 'pop_m_20', 'pop_m_21', 'pop_m_22-24', 'pop_f_lt5',
-# 'pop_f_5-9', 'pop_f_10-14', 'pop_f_15-17', 'pop_f_18-19', 'pop_f_20', 'pop_f_21', 'pop_f_22-24']].sum(axis=1)/leasthisp['pop_tot'] 
+# 'pop_f_5-9', 'pop_f_10-14', 'pop_f_15-17', 'pop_f_18-19', 'pop_f_20', 
+# 'pop_f_21', 'pop_f_22-24']].sum(axis=1)/leasthisp['pop_tot'] 
 
 # areas = []
 # msa = harm_msa.index.unique()
@@ -4537,7 +4633,3 @@ pmburdenrate_allmsa = np.array(pmburdenrate_allmsa)
 # harm_urban = pd.concat(harm_urban)
 # geoids_urban = np.hstack(geoids_urban)
 # harm_rural = harm.loc[~harm.index.isin(geoids_urban)]
-
-
-
-
