@@ -29,6 +29,8 @@ v5 - Replace V4.NA.03 PM2.5 with V5.GL.02 PM2.5
 v6 - Update GBD RR curves to 2020 curves, which no longer have stratification 
      for different ages
    - Add columns for AF calculate from lower and upper bounds of RR curves
+v7 - Add senstivity simulation for attaining 8 µg/m3 of PM2.5 (this level 
+     follows proposed NAAQS revisions to PM2.5)
    
 Original version created on 25 May 2021
 """
@@ -702,10 +704,12 @@ def harmonize_afacs(vintage, statefips):
             # Interim target 15 ug/m3
             # NAAQS 12 ug/m3
             # Interim target 10 ug/m3
+            # Hypothetical NAAQS revision to 8 µg/m3
             # AQG levels 5 ug/m3
             pm_insidewho15 = pm_inside
             pm_insidenaaqs12 = pm_inside 
             pm_insidewho10 = pm_inside
+            pm_insidenaaqs8 = pm_inside
             pm_insidewho5 = pm_inside       
             if pm_insidewho15 > 15.:
                 pm_insidewho15 = 15.
@@ -713,6 +717,8 @@ def harmonize_afacs(vintage, statefips):
                 pm_insidenaaqs12 = 12.
             if pm_insidewho10 > 10.:
                 pm_insidewho10 = 10.
+            if pm_insidenaaqs8 > 8.:
+                pm_insidenaaqs8 = 8.                
             if pm_insidewho5 > 5.:
                 pm_insidewho5 = 5.                
             # Length of all GBD PM2.5-attributable RR is the same, so 
@@ -871,6 +877,44 @@ def harmonize_afacs(vintage, statefips):
             afpmlcwho10upper = (cirrpmlcupper-1.)/cirrpmlcupper
             afpmdmwho10upper = (cirrpmdmupper-1.)/cirrpmdmupper
             afpmlriwho10upper = (cirrpmlriupper-1.)/cirrpmlriupper
+            # EPA proposed NAAQS 8 µg/m3
+            cinaaqs8 = rrpmst['exposure'].sub(pm_insidenaaqs8).abs().idxmin()
+            cirrpmihd = rrpmihd.iloc[cinaaqs8]['mean']
+            cirrpmst = rrpmst.iloc[cinaaqs8]['mean']
+            cirrpmcopd = rrpmcopd.iloc[cinaaqs8]['mean']
+            cirrpmlc = rrpmlc.iloc[cinaaqs8]['mean']
+            cirrpmdm = rrpmdm.iloc[cinaaqs8]['mean']
+            cirrpmlri = rrpmlri.iloc[cinaaqs8]['mean']
+            cirrpmihdlower = rrpmihd.iloc[cinaaqs8]['lower']
+            cirrpmstlower = rrpmst.iloc[cinaaqs8]['lower']
+            cirrpmcopdlower = rrpmcopd.iloc[cinaaqs8]['lower']
+            cirrpmlclower = rrpmlc.iloc[cinaaqs8]['lower']
+            cirrpmdmlower = rrpmdm.iloc[cinaaqs8]['lower']
+            cirrpmlrilower = rrpmlri.iloc[cinaaqs8]['lower']
+            cirrpmihdupper = rrpmihd.iloc[cinaaqs8]['upper']
+            cirrpmstupper = rrpmst.iloc[cinaaqs8]['upper']
+            cirrpmcopdupper = rrpmcopd.iloc[cinaaqs8]['upper']
+            cirrpmlcupper = rrpmlc.iloc[cinaaqs8]['upper']
+            cirrpmdmupper = rrpmdm.iloc[cinaaqs8]['upper']
+            cirrpmlriupper = rrpmlri.iloc[cinaaqs8]['upper']
+            afpmihdnaaqs8 = (cirrpmihd-1.)/cirrpmihd
+            afpmstnaaqs8 = (cirrpmst-1.)/cirrpmst
+            afpmcopdnaaqs8 = (cirrpmcopd-1.)/cirrpmcopd
+            afpmlcnaaqs8 = (cirrpmlc-1.)/cirrpmlc
+            afpmdmnaaqs8 = (cirrpmdm-1.)/cirrpmdm
+            afpmlrinaaqs8 = (cirrpmlri-1.)/cirrpmlri
+            afpmihdnaaqs8lower = (cirrpmihdlower-1.)/cirrpmihdlower
+            afpmstnaaqs8lower = (cirrpmstlower-1.)/cirrpmstlower
+            afpmcopdnaaqs8lower = (cirrpmcopdlower-1.)/cirrpmcopdlower
+            afpmlcnaaqs8lower = (cirrpmlclower-1.)/cirrpmlclower
+            afpmdmnaaqs8lower = (cirrpmdmlower-1.)/cirrpmdmlower
+            afpmlrinaaqs8lower = (cirrpmlrilower-1.)/cirrpmlrilower
+            afpmihdnaaqs8upper = (cirrpmihdupper-1.)/cirrpmihdupper
+            afpmstnaaqs8upper = (cirrpmstupper-1.)/cirrpmstupper
+            afpmcopdnaaqs8upper = (cirrpmcopdupper-1.)/cirrpmcopdupper
+            afpmlcnaaqs8upper = (cirrpmlcupper-1.)/cirrpmlcupper
+            afpmdmnaaqs8upper = (cirrpmdmupper-1.)/cirrpmdmupper
+            afpmlrinaaqs8upper = (cirrpmlriupper-1.)/cirrpmlriupper
             # WHO AQG
             ciwho5 = rrpmst['exposure'].sub(pm_insidewho5).abs().idxmin()
             cirrpmihd = rrpmihd.iloc[ciwho5]['mean']
@@ -923,6 +967,9 @@ def harmonize_afacs(vintage, statefips):
             afpmihdwho10, afpmstwho10 = np.nan, np.nan
             afpmcopdwho10, afpmlcwho10 = np.nan, np.nan
             afpmdmwho10, afpmlriwho10 = np.nan, np.nan
+            afpmihdnaaqs8, afpmstnaaqs8 = np.nan, np.nan
+            afpmcopdnaaqs8, afpmlcnaaqs8 = np.nan, np.nan
+            afpmdmnaaqs8, afpmlrinaaqs8 = np.nan, np.nan  
             afpmihdwho5, afpmstwho5 = np.nan, np.nan
             afpmcopdwho5, afpmlcwho5 = np.nan, np.nan
             afpmdmwho5, afpmlriwho5 = np.nan, np.nan                
@@ -939,6 +986,9 @@ def harmonize_afacs(vintage, statefips):
             afpmihdwho10lower, afpmstwho10lower = np.nan, np.nan
             afpmcopdwho10lower, afpmlcwho10lower = np.nan, np.nan
             afpmdmwho10lower, afpmlriwho10lower = np.nan, np.nan
+            afpmihdnaaqs8lower, afpmstnaaqs8lower = np.nan, np.nan
+            afpmcopdnaaqs8lower, afpmlcnaaqs8lower = np.nan, np.nan
+            afpmdmnaaqs8lower, afpmlrinaaqs8lower = np.nan, np.nan                
             afpmihdwho5lower, afpmstwho5lower = np.nan, np.nan
             afpmcopdwho5lower, afpmlcwho5lower = np.nan, np.nan
             afpmdmwho5lower, afpmlriwho5lower = np.nan, np.nan                
@@ -955,6 +1005,9 @@ def harmonize_afacs(vintage, statefips):
             afpmihdwho10upper, afpmstwho10upper = np.nan, np.nan
             afpmcopdwho10upper, afpmlcwho10upper = np.nan, np.nan
             afpmdmwho10upper, afpmlriwho10upper = np.nan, np.nan
+            afpmihdnaaqs8upper, afpmstnaaqs8upper = np.nan, np.nan
+            afpmcopdnaaqs8upper, afpmlcnaaqs8upper = np.nan, np.nan
+            afpmdmnaaqs8upper, afpmlrinaaqs8upper = np.nan, np.nan                
             afpmihdwho5upper, afpmstwho5upper = np.nan, np.nan
             afpmcopdwho5upper, afpmlcwho5upper = np.nan, np.nan
             afpmdmwho5upper, afpmlriwho5upper = np.nan, np.nan                
@@ -1034,7 +1087,25 @@ def harmonize_afacs(vintage, statefips):
         dicttemp['AFDMWHO10UPPER'] = afpmdmwho10upper
         dicttemp['AFLRIWHO10'] = afpmlriwho10     
         dicttemp['AFLRIWHO10LOWER'] = afpmlriwho10lower  
-        dicttemp['AFLRIWHO10UPPER'] = afpmlriwho10upper   
+        dicttemp['AFLRIWHO10UPPER'] = afpmlriwho10upper 
+        dicttemp['AFIHDNAAQS8'] = afpmihdnaaqs8
+        dicttemp['AFIHDNAAQS8LOWER'] = afpmihdnaaqs8lower
+        dicttemp['AFIHDNAAQS8UPPER'] = afpmihdnaaqs8upper
+        dicttemp['AFSTNAAQS8'] = afpmstnaaqs8
+        dicttemp['AFSTNAAQS8LOWER'] = afpmstnaaqs8lower
+        dicttemp['AFSTNAAQS8UPPER'] = afpmstnaaqs8upper
+        dicttemp['AFCOPDNAAQS8'] = afpmcopdnaaqs8
+        dicttemp['AFCOPDNAAQS8LOWER'] = afpmcopdnaaqs8lower
+        dicttemp['AFCOPDNAAQS8UPPER'] = afpmcopdnaaqs8upper
+        dicttemp['AFLCNAAQS8'] = afpmlcnaaqs8
+        dicttemp['AFLCNAAQS8LOWER'] = afpmlcnaaqs8lower
+        dicttemp['AFLCNAAQS8UPPER'] = afpmlcnaaqs8upper
+        dicttemp['AFDMNAAQS8'] = afpmdmnaaqs8
+        dicttemp['AFDMNAAQS8LOWER'] = afpmdmnaaqs8lower
+        dicttemp['AFDMNAAQS8UPPER'] = afpmdmnaaqs8upper
+        dicttemp['AFLRINAAQS8'] = afpmlrinaaqs8
+        dicttemp['AFLRINAAQS8LOWER'] = afpmlrinaaqs8lower
+        dicttemp['AFLRINAAQS8UPPER'] = afpmlrinaaqs8upper
         dicttemp['AFIHDWHO5'] = afpmihdwho5
         dicttemp['AFIHDWHO5LOWER'] = afpmihdwho5lower
         dicttemp['AFIHDWHO5UPPER'] = afpmihdwho5upper
@@ -1156,22 +1227,22 @@ def harmonize_afacs(vintage, statefips):
     # ACS vintage, and version  
     #----------------------
     df = df.replace('NaN', '', regex=True)
-    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v6.csv'%(no2year, vintage, 
+    df.to_csv(DIR_OUT+'asthma_af%s_acs%s_%s_v7.csv'%(no2year, vintage, 
         statefips), sep = ',')
     print('# # # # Output file written!\n', file=f)
     return 
-# vintages = ['2015-2019', '2006-2010', '2014-2018', '2013-2017', '2012-2016', 
-#     '2011-2015', '2010-2014', '2009-2013', '2008-2012', '2007-2011']
-vintages = ['2006-2010']
-vintages = ['2007-2011']
-vintages = ['2008-2012']
-vintages = ['2009-2013']
-vintages = ['2010-2014']
-vintages = ['2011-2015']
-vintages = ['2012-2016']
-vintages = ['2013-2017']
-vintages = ['2014-2018']
-vintages = ['2015-2019']
+vintages = ['2015-2019', '2006-2010', '2014-2018', '2013-2017', '2012-2016', 
+    '2011-2015', '2010-2014', '2009-2013', '2008-2012', '2007-2011']
+# vintages = ['2006-2010']
+# vintages = ['2007-2011']
+# vintages = ['2008-2012']
+# vintages = ['2009-2013']
+# vintages = ['2010-2014']
+# vintages = ['2011-2015']
+# vintages = ['2012-2016']
+# vintages = ['2013-2017']
+# vintages = ['2014-2018']
+# vintages = ['2015-2019']
 
 fips = ['01', '02', '04', '05', '06', '08', '09', '10', '11', '12', 
     '13', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24',
